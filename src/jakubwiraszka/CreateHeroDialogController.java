@@ -1,6 +1,5 @@
 package jakubwiraszka;
 
-import jakubwiraszka.gamefiles.Enemy;
 import jakubwiraszka.gamefiles.Hero;
 import jakubwiraszka.gamefiles.Statistics;
 import javafx.fxml.FXML;
@@ -24,7 +23,6 @@ public class CreateHeroDialogController {
         int power = powerSpinner.getValue();
         int agility = agilitySpinner.getValue();
 
-        Hero hero = new Hero(name,  new Statistics(health, power, agility));
-        return hero;
+        return new Hero(name,  new Statistics(health, power, agility));
     }
 }

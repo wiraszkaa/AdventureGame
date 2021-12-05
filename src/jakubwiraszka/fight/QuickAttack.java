@@ -1,9 +1,9 @@
 package jakubwiraszka.fight;
 
 public class QuickAttack implements Attack {
-    private double power;
-    private double hitChance;
-    private int charge;
+    private final double power;
+    private final double hitChance;
+    private final int charge;
 
     public QuickAttack() {
         power = 0.6;

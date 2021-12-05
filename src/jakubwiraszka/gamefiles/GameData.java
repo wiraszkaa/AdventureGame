@@ -8,10 +8,10 @@ public class GameData {
     private static GameData instance = new GameData();
     public static final String PATH = "C:\\Users\\Wirac\\OneDrive\\Dokumenty\\My Games\\Adventure\\";
 
-    private ObservableList<World> worlds;
-    private ObservableList<String> randomLocationName = FXCollections.observableArrayList();
-    private ObservableList<String> randomLocationDescription = FXCollections.observableArrayList();
-    private ObservableList<String> randomLocationContent = FXCollections.observableArrayList();
+    private static ObservableList<World> worlds;
+    private static final ObservableList<String> randomLocationName = FXCollections.observableArrayList();
+    private static final ObservableList<String> randomLocationDescription = FXCollections.observableArrayList();
+    private static final ObservableList<String> randomLocationContent = FXCollections.observableArrayList();
 
     public static GameData getInstance() {
         return instance;
@@ -21,18 +21,22 @@ public class GameData {
         return worlds;
     }
 
-    public String saveOne(String pathWorldName) {
+    public static String saveOne(String pathWorldName) {
         World world = findWorld(pathWorldName);
         StringBuilder content = new StringBuilder();
         if (world == null) {
             System.out.println("World not found!");
         } else {
-            content.append(
-                    world.getName() + "\n" +
-                            world.getHeight() + "\n" +
-                            world.getWidth() + "\n" +
-                            world.isStart() + "\n@\n" +
-                            world.getHero().save() + "\n@\n");
+            content.append(world.getName())
+                    .append("\n")
+                    .append(world.getHeight())
+                    .append("\n")
+                    .append(world.getWidth())
+                    .append("\n")
+                    .append(world.isStart())
+                    .append("\n@\n")
+                    .append(world.getHero().save())
+                    .append("\n@\n");
             for (Location i : world.getLocations()) {
                 if (world.getLocations().indexOf(i) > 0) {
                     if (world.getLocations().indexOf(i) < (world.getLocations().size() - 1)) {
@@ -68,12 +72,7 @@ public class GameData {
         return content.toString();
     }
 
-    public String getContent(String pathWorldName) {
-        String path = "C:\\Users\\Wirac\\OneDrive\\Dokumenty\\My Games\\Adventure\\" + pathWorldName + ".txt";
-        return FileEditor.read(path);
-    }
-
-    public void loadOne(String content) {
+    public static void loadOne(String content) {
         if (content == null) {
             System.out.println("World wasn't loaded. Wrong world name!");
         } else {
@@ -141,7 +140,7 @@ public class GameData {
 
 
 
-    public void loadAll() {
+    public static void loadAll() {
         worlds = FXCollections.observableArrayList();
 
         String input = FileEditor.read(PATH + "Worlds.txt");
@@ -149,22 +148,24 @@ public class GameData {
         if(input != null) {
             String[] worlds = input.split("\n✹\n");
 
-            for (int i = 0; i < (worlds.length); i++) {
-                loadOne(worlds[i]);
+            for (String world : worlds) {
+                loadOne(world);
             }
         }
 
         String content = FileEditor.read(GameData.PATH + "randomLocations.txt");
-        String[] randomLocations = content.split("\n");
-        for (String randomLocation : randomLocations) {
-            String[] locationParameters = randomLocation.split("\t");
-            this.randomLocationName.add(locationParameters[0]);
-            this.randomLocationDescription.add(locationParameters[1]);
-            this.randomLocationContent.add(locationParameters[2]);
+        if(content != null) {
+            String[] randomLocations = content.split("\n");
+            for (String randomLocation : randomLocations) {
+                String[] locationParameters = randomLocation.split("\t");
+                randomLocationName.add(locationParameters[0]);
+                randomLocationDescription.add(locationParameters[1]);
+                randomLocationContent.add(locationParameters[2]);
+            }
         }
     }
 
-    public void saveAll() {
+    public static void saveAll() {
         Iterator<World> iterator = worlds.iterator();
         StringBuilder worlds = new StringBuilder();
         while (iterator.hasNext()) {
@@ -176,7 +177,7 @@ public class GameData {
         FileEditor.write(worlds.toString(), (PATH + "Worlds.txt"));
     }
 
-    private void addLocations(String[] locationsList, World world) {
+    private static void addLocations(String[] locationsList, World world) {
         for (String s : locationsList) {
             String[] locationParameters = s.split("\n★\n");
             String locationName = locationParameters[0];
@@ -208,7 +209,7 @@ public class GameData {
         }
     }
 
-    private void addEnemies(String[] enemiesList, World world) {
+    private static void addEnemies(String[] enemiesList, World world) {
         System.out.println("=================================");
         for (String s : enemiesList) {
             String[] enemyParameters = s.split("\n");
@@ -225,14 +226,14 @@ public class GameData {
         }
     }
 
-    private void addTreasures(String[] treasuresList, World world) {
+    private static void addTreasures(String[] treasuresList, World world) {
         System.out.println("=================================");
         for (String s : treasuresList) {
             String[] treasureParameters = s.split("\n");
             String treasureName = treasureParameters[0];
             String treasureStatistic = treasureParameters[1];
             String treasureValue = treasureParameters[2];
-            String id = world.createTreasure(new Treasure(treasureName, new Treasure.Content(treasureStatistic, Integer.parseInt(treasureValue)), 1)).getId();
+            String id = world.createTreasure(new Treasure(treasureName, new Treasure.Content(treasureStatistic, Integer.parseInt(treasureValue)))).getId();
             if (world.findTreasure(id) == null) {
                 System.out.println("Treasure " + treasureName + " not loaded properly!");
             } else {
@@ -241,7 +242,7 @@ public class GameData {
         }
     }
 
-    public World findWorld(String name) {
+    public static World findWorld(String name) {
         for (World i : worlds) {
             if (Objects.equals(i.getName(), name)) {
                 return i;

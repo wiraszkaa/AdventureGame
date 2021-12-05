@@ -1,7 +1,6 @@
 package jakubwiraszka;
 
 import jakubwiraszka.gamefiles.GameData;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -18,8 +17,8 @@ public class GameOverController implements ChangePane {
     }
 
     public void restart() {
-        GameData.getInstance().saveAll();
-        Node node = (Node) imageView;
+        GameData.saveAll();
+        Node node = imageView;
         changePane(node, "mainmenu.fxml");
     }
 

@@ -4,14 +4,12 @@ public class Treasure implements LocationContent {
     private String id;
 
     private final String name;
-    private int uses;
-    private Content content;
+    private final Content content;
     private Position position;
 
-    public Treasure(String name, Content content, int uses) {
+    public Treasure(String name, Content content) {
         this.name = name;
         this.content = content;
-        this.uses = uses;
     }
 
     public String getName() {
@@ -20,14 +18,6 @@ public class Treasure implements LocationContent {
 
     public Content getContent() {
         return content;
-    }
-
-    public int getUses() {
-        return uses;
-    }
-
-    public void setUses(int uses) {
-        this.uses = uses;
     }
 
     public String getId() {

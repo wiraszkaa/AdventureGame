@@ -1,9 +1,9 @@
 package jakubwiraszka.fight;
 
 public class StrongAttack implements Attack {
-    private double power;
-    private double hitChance;
-    private int charge;
+    private final double power;
+    private final double hitChance;
+    private final int charge;
 
     public StrongAttack() {
         power = 1;

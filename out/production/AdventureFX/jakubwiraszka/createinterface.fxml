@@ -12,8 +12,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-
 <?import javafx.scene.control.Slider?>
 <BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jakubwiraszka.CreateInterfaceController">
         <top>
@@ -47,7 +45,7 @@
                <HBox.margin>
                   <Insets left="100.0" />
                </HBox.margin></Button>
-                    <Button fx:id="newButton" alignment="CENTER_RIGHT" onAction="#newWorld" text="New" />
+                    <Button alignment="CENTER_RIGHT" onAction="#newWorld" text="New" />
             <padding>
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
@@ -62,15 +60,13 @@
             </HBox>
         </right>
    <center>
-      <ScrollPane maxHeight="800.0" maxWidth="1600.0" BorderPane.alignment="CENTER">
-         <content>
-                  <StackPane>
-                      <GridPane fx:id="gameMapGridPane" alignment="CENTER" style="-fx-background-color: #30b832"/>
-                      <GridPane fx:id="contentMapGridPane" alignment="CENTER"/>
-                      <GridPane fx:id="playerMapGridPane" alignment="CENTER"/>
-                  </StackPane>
-         </content>
-      </ScrollPane>
+       <ScrollPane maxHeight="800.0" maxWidth="1600.0" pannable="true" BorderPane.alignment="CENTER">
+           <StackPane>
+               <GridPane fx:id="gameMapGridPane" alignment="CENTER" style="-fx-background-color: #30b832"/>
+               <GridPane fx:id="contentMapGridPane" alignment="CENTER"/>
+               <GridPane fx:id="playerMapGridPane" alignment="CENTER"/>
+           </StackPane>
+       </ScrollPane>
    </center>
     <bottom>
         <Slider fx:id="zoomSlider" min="0.1" max="1.0" value="1.0" prefWidth="100"/>

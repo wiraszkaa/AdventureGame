@@ -10,7 +10,7 @@ public class FileEditor {
     public static boolean write(String content, String path) {
 
         File file = new File(path);
-        PrintWriter save = null;
+        PrintWriter save;
         try {
             save = new PrintWriter(file);
         } catch (FileNotFoundException e) {
@@ -27,7 +27,7 @@ public class FileEditor {
         StringBuilder message = new StringBuilder();
 
         File file = new File(path);
-        Scanner scanner = null;
+        Scanner scanner;
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException e) {

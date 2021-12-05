@@ -1,17 +1,13 @@
 package jakubwiraszka.gamefiles;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableBooleanValue;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class Location {
-    private final String name;
-    private final String description;
+    private String name;
+    private String description;
     private final Position position;
-    private LocationContent content = null;
+    private LocationContent content;
     private Map<String, Position> exits;
     private boolean visited = false;
 
@@ -35,8 +31,16 @@ public class Location {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Position getPosition() {
@@ -53,7 +57,7 @@ public class Location {
     }
 
     public HashMap<String, Position> getExits() {
-        return new HashMap<String, Position>(exits);
+        return new HashMap<>(exits);
     }
 
     public void setExits(HashMap<String, Position> exits) {
@@ -65,16 +69,21 @@ public class Location {
         if(getContent() != null) {
             locationContent = getContent().getId();
         }
-        String content = getName() + "\n★\n"
+        StringBuilder content = new StringBuilder(getName() + "\n★\n"
                 + getDescription() + "\n★\n"
                 + position.getX() + " " + position.getY() + "\n★\n"
-                + locationContent + "\n★\n";
+                + locationContent + "\n★\n");
         for (String key : exits.keySet()) {
-            content += (key + " " + exits.get(key).getX() + " " + exits.get(key).getY() + "\n");
+            content.append(key)
+                    .append(" ")
+                    .append(exits.get(key).getX())
+                    .append(" ")
+                    .append(exits.get(key).getY()).append("\n");
         }
-        content += ("★\n" +
-                isVisited() + "\n");
-        return content;
+        content.append("★\n")
+                .append(isVisited())
+                .append("\n");
+        return content.toString();
     }
 
     public boolean isVisited() {

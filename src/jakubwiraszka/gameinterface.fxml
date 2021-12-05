@@ -8,11 +8,9 @@
         <top>
             <VBox alignment="CENTER" spacing="10">
                 <MenuBar>
-                <Menu text="Exit">
-                    <items>
-                        <MenuItem onAction="#mainMenu" text="Main Menu" />
-                    </items>
-                </Menu>
+                    <Menu text="Exit">
+                        <MenuItem onAction="#mainMenu" text="Main Menu"/>
+                    </Menu>
             </MenuBar>
                 <Label fx:id="locationNameLabel">
                     <font>
@@ -32,14 +30,12 @@
             </VBox>
         </top>
         <center>
-            <ScrollPane maxHeight="800.0" maxWidth="1600.0" BorderPane.alignment="CENTER">
-                <content>
-                    <StackPane>
-                        <GridPane fx:id="gameMapGridPane" alignment="CENTER" style="-fx-background-color: #30b832" />
-                        <GridPane fx:id="contentMapGridPane" alignment="CENTER" />
-                        <GridPane fx:id="playerMapGridPane" alignment="CENTER" />
-                    </StackPane>
-                </content>
+            <ScrollPane maxHeight="800.0" maxWidth="1600.0" pannable="true" BorderPane.alignment="CENTER">
+                <StackPane>
+                    <GridPane fx:id="gameMapGridPane" alignment="CENTER" style="-fx-background-color: #30b832"/>
+                    <GridPane fx:id="contentMapGridPane" alignment="CENTER"/>
+                    <GridPane fx:id="playerMapGridPane" alignment="CENTER"/>
+                </StackPane>
             </ScrollPane>
         </center>
         <right>

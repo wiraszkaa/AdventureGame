@@ -4,16 +4,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane fx:id="mainStackPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.2" fx:controller="jakubwiraszka.GameInterfaceController">
-    <BorderPane fx:id="gameBorderPane">
+<BorderPane fx:id="gameBorderPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.2" fx:controller="jakubwiraszka.GameInterfaceController">
         <top>
             <VBox alignment="CENTER" spacing="10">
                 <MenuBar>
-                <Menu text="Exit">
-                    <items>
-                        <MenuItem onAction="#mainMenu" text="Main Menu" />
-                    </items>
-                </Menu>
+                    <Menu text="Exit">
+                        <MenuItem onAction="#mainMenu" text="Main Menu"/>
+                    </Menu>
             </MenuBar>
                 <Label fx:id="locationNameLabel">
                     <font>
@@ -33,14 +30,12 @@
             </VBox>
         </top>
         <center>
-            <ScrollPane maxHeight="800.0" maxWidth="1600.0" BorderPane.alignment="CENTER">
-                <content>
-                    <StackPane>
-                        <GridPane fx:id="gameMapGridPane" alignment="CENTER" style="-fx-background-color: #30b832" />
-                        <GridPane fx:id="contentMapGridPane" alignment="CENTER" />
-                        <GridPane fx:id="playerMapGridPane" alignment="CENTER" />
-                    </StackPane>
-                </content>
+            <ScrollPane maxHeight="800.0" maxWidth="1600.0" pannable="true" BorderPane.alignment="CENTER">
+                <StackPane>
+                    <GridPane fx:id="gameMapGridPane" alignment="CENTER" style="-fx-background-color: #30b832"/>
+                    <GridPane fx:id="contentMapGridPane" alignment="CENTER"/>
+                    <GridPane fx:id="playerMapGridPane" alignment="CENTER"/>
+                </StackPane>
             </ScrollPane>
         </center>
         <right>
@@ -123,5 +118,3 @@
             </VBox>
         </bottom>
     </BorderPane>
-    <Button fx:id="enterButton" onAction="#start" text="Press to start!" />
-</StackPane>

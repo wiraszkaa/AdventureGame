@@ -1,7 +1,6 @@
 package jakubwiraszka;
 
 import jakubwiraszka.gamefiles.Enemy;
-import jakubwiraszka.gamefiles.GameData;
 import jakubwiraszka.gamefiles.Statistics;
 import jakubwiraszka.gamefiles.World;
 import javafx.fxml.FXML;
@@ -11,7 +10,6 @@ import javafx.scene.control.TextField;
 public class NewEnemyDialogController {
 
     private World world;
-    private String enemyId;
     @FXML
     private TextField nameTextField;
     @FXML

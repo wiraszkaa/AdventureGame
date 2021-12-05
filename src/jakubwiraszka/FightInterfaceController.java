@@ -1,6 +1,10 @@
 package jakubwiraszka;
 
-import jakubwiraszka.fight.*;
+import jakubwiraszka.Randomize;
+import jakubwiraszka.fight.Attack;
+import jakubwiraszka.fight.ChargedAttack;
+import jakubwiraszka.fight.QuickAttack;
+import jakubwiraszka.fight.StrongAttack;
 import jakubwiraszka.gamefiles.Enemy;
 import jakubwiraszka.gamefiles.Hero;
 import javafx.animation.KeyFrame;
@@ -126,8 +130,7 @@ public class FightInterfaceController implements Randomize {
 
             if(enemyHit) {
                 Label enemyAttack = new Label(enemy.getName() + " attacks You for " + (int) enemyAttackValue + " with " + enemyAttackType);
-                double finalEnemyAttackValue = enemyAttackValue;
-                hero.changeHealth((int) -finalEnemyAttackValue);
+                hero.changeHealth((int) -enemyAttackValue);
                 createDelay(1, event -> {
                     actionVBox.getChildren().add(enemyAttack);
                     heroHealthLabel.setText("" + hero.getStatistics().getHealthValue());

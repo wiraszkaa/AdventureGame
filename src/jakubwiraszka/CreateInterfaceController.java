@@ -1,7 +1,6 @@
 package jakubwiraszka;
 
 import jakubwiraszka.gamefiles.*;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -121,9 +120,5 @@ public class CreateInterfaceController extends ModifyInterfaceController {
     @Override
     public FXMLLoader changePane(Node node, String name) {
         return super.changePane(node, name);
-    }
-
-    public World getWorld() {
-        return world;
     }
 }

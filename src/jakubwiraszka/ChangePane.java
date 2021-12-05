@@ -20,12 +20,14 @@ public interface ChangePane {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Scene scene = new Scene(secondPane, 1920, 1000);
-
-        Stage primaryStage = (Stage) node.getScene().getWindow();
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-        return loader;
+        if(secondPane != null) {
+            Scene scene = new Scene(secondPane, 1920, 1000);
+            Stage primaryStage = (Stage) node.getScene().getWindow();
+            primaryStage.setScene(scene);
+            primaryStage.show();
+            return loader;
+        } else {
+            return null;
+        }
     }
 }

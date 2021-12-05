@@ -2,7 +2,7 @@ package jakubwiraszka.gamefiles;
 
 public class Portal implements LocationContent {
 
-    private String name;
+    private final String name;
     private boolean isActive;
     private Position position;
 

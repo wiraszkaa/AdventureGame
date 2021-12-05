@@ -9,9 +9,7 @@
     <top>
     <MenuBar>
         <Menu text="Exit">
-            <items>
-                <MenuItem text="Main Menu" onAction="#restart"/>
-            </items>
+            <MenuItem text="Main Menu" onAction="#restart"/>
         </Menu>
     </MenuBar>
     </top>

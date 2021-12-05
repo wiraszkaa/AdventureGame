@@ -6,59 +6,52 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 
-<StackPane fx:id="mainStackPane" fx:controller="jakubwiraszka.ModifyInterfaceController"
-           xmlns:fx="http://javafx.com/fxml">
-    <BorderPane fx:id="mainBorderPane">
-        <top>
-            <VBox alignment="CENTER" spacing="10">
-                <MenuBar>
-                    <Menu text="Create">
-                        <items>
-                            <MenuItem text="New Enemy" onAction="#showNewEnemyDialog"/>
-                            <MenuItem text="New Treasure" onAction="#showNewTreasureDialog"/>
-                        </items>
-                    </Menu>
-                </MenuBar>
-                <Label fx:id="locationNameLabel">
-                    <font>
-                        <Font name="Arial italic" size="25"/>
-                    </font>
-                </Label>
-                <Label fx:id="locationDescriptionLabel">
-                    <font>
-                        <Font name="Arial italic" size="20"/>
-                    </font>
-                </Label>
-            </VBox>
-        </top>
-        <center>
-            <ScrollPane maxHeight="800.0" maxWidth="1600.0" BorderPane.alignment="CENTER">
-                <content>
-                    <StackPane>
-                        <GridPane fx:id="gameMapGridPane" alignment="CENTER" style="-fx-background-color: #30b832"/>
-                        <GridPane fx:id="contentMapGridPane" alignment="CENTER"/>
-                        <GridPane fx:id="playerMapGridPane" alignment="CENTER"/>
-                    </StackPane>
-                </content>
-            </ScrollPane>
-        </center>
-        <right>
-            <HBox>
-                <ListView fx:id="locationsListView"/>
-                <ListView fx:id="enemiesListView"/>
-                <ListView fx:id="treasuresListView"/>
-            </HBox>
-        </right>
-        <bottom>
-            <Slider fx:id="zoomSlider" min="0.1" max="1.0" value="1.0" prefWidth="100"/>
-        </bottom>
-    </BorderPane>
-    <Button fx:id="enterButton" onAction="#start" text="Press to start!"/>
-</StackPane>
+<BorderPane fx:id="mainBorderPane" fx:controller="jakubwiraszka.ModifyInterfaceController"
+            xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <VBox alignment="CENTER" spacing="10">
+            <MenuBar>
+                <Menu text="Create">
+                    <MenuItem text="New Enemy" onAction="#showNewEnemyDialog"/>
+                    <MenuItem text="New Treasure" onAction="#showNewTreasureDialog"/>
+                    <MenuItem text="New Location" onAction="#showNewLocationDialog"/>
+                </Menu>
+            </MenuBar>
+            <Label fx:id="locationNameLabel">
+                <font>
+                    <Font name="Arial italic" size="25"/>
+                </font>
+            </Label>
+            <Label fx:id="locationDescriptionLabel">
+                <font>
+                    <Font name="Arial italic" size="20"/>
+                </font>
+            </Label>
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane maxHeight="800.0" maxWidth="1600.0" pannable="true" BorderPane.alignment="CENTER">
+            <StackPane>
+                <GridPane fx:id="gameMapGridPane" alignment="CENTER" style="-fx-background-color: #30b832"/>
+                <GridPane fx:id="contentMapGridPane" alignment="CENTER"/>
+                <GridPane fx:id="playerMapGridPane" alignment="CENTER"/>
+            </StackPane>
+        </ScrollPane>
+    </center>
+    <right>
+        <HBox>
+            <ListView fx:id="locationsListView"/>
+            <ListView fx:id="enemiesListView"/>
+            <ListView fx:id="treasuresListView"/>
+        </HBox>
+    </right>
+    <bottom>
+        <Slider fx:id="zoomSlider" min="0.1" max="1.0" value="1.0" prefWidth="100"/>
+    </bottom>
+</BorderPane>

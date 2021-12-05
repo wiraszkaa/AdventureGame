@@ -6,23 +6,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-import java.util.Iterator;
-
 public class CreateMap {
     final static String ICONS_LOC = "D:\\Projekty\\Java\\AdventureFX\\icons\\";
 
     public static void createMap(World world, GridPane gameMapGridPane, GridPane contentMapGridPane, GridPane playerMapGridPane, boolean readVisited) {
-        Iterator<Location> i = world.getLocations().iterator();
-        while (i.hasNext()) {
-            Location location = i.next();
-
+        for (Location location : world.getLocations()) {
             ImageView imageViewMap = new ImageView();
             modifyMapCell(location, imageViewMap, readVisited);
             GridPane.setConstraints(imageViewMap, location.getPosition().getX(), location.getPosition().getY());
             gameMapGridPane.getChildren().add(imageViewMap);
 
             ImageView imageViewContent = new ImageView();
-            modifyContentCell(location, imageViewContent, world, readVisited);
+            modifyContentCell(location, imageViewContent, readVisited);
             GridPane.setConstraints(imageViewContent, location.getPosition().getX(), location.getPosition().getY());
             contentMapGridPane.getChildren().add(imageViewContent);
 
@@ -99,7 +94,7 @@ public class CreateMap {
         imageView.setPreserveRatio(true);
     }
 
-    public static void modifyContentCell(Location location, ImageView imageView, World world, boolean readVisited) {
+    public static void modifyContentCell(Location location, ImageView imageView, boolean readVisited) {
         if (location.isVisited() || !readVisited) {
             if (location.getContent() != null) {
                 if (location.getContent().isEnemy()) {

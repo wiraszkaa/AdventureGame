@@ -1,8 +1,6 @@
 package jakubwiraszka;
 
 import jakubwiraszka.gamefiles.Hero;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -105,17 +103,14 @@ public class HeroStatsDialogController {
     public void setHero(Hero hero) {
         this.hero = hero;
         pointsToSpendLabel.setText("Points left: " + hero.getLevel().getPointsToSpend().intValue());
-        hero.getLevel().getPointsToSpend().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newNumber) {
-                pointsToSpendLabel.setText("Points left: " + newNumber.intValue());
-                if(newNumber.intValue() == 0) {
-                    setAddition(true);
+        hero.getLevel().getPointsToSpend().addListener((observableValue, number, newNumber) -> {
+            pointsToSpendLabel.setText("Points left: " + newNumber.intValue());
+            if(newNumber.intValue() == 0) {
+                setAddition(true);
 
-                }
-                if(newNumber.intValue() == 1) {
-                    setAddition(false);
-                }
+            }
+            if(newNumber.intValue() == 1) {
+                setAddition(false);
             }
         });
     }

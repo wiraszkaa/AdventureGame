@@ -1,5 +1,4 @@
 <?import javafx.scene.control.DialogPane?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -21,7 +20,7 @@
                     <ToggleGroup fx:id="difficultyToggleGroup"/>
                 </fx:define>
                 <RadioButton fx:id="easyRadioButton" text="Easy" toggleGroup="$difficultyToggleGroup"/>
-                <RadioButton fx:id="mediumRadioButton" text="Medium" toggleGroup="$difficultyToggleGroup"
+                <RadioButton text="Medium" toggleGroup="$difficultyToggleGroup"
                              selected="true"/>
                 <RadioButton fx:id="hardRadioButton" text="Hard" toggleGroup="$difficultyToggleGroup"/>
             </HBox>

@@ -3,8 +3,6 @@ package jakubwiraszka;
 import jakubwiraszka.gamefiles.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -140,34 +138,21 @@ public class GameInterfaceController implements ChangePane {
 
         getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
 
-        world.getHero().getLevel().getPointsToSpend().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newNumber) {
-                System.out.println("You have " + newNumber.intValue() + " points to spend");
-                if(newNumber.intValue() == 1) {
-                    spendPointsButton.setText("Spend Points");
-                    spendPointsButton.setOnAction(event -> showHeroStatsDialog());
-                    statsHBox.getChildren().add(spendPointsButton);
-                    world.getHero().getStatistics().setHealth(world.getHero().getMaxHealth());
-                } else if(newNumber.intValue() == 0 && spendPointsButton.getParent().equals(statsHBox)) {
-                    statsHBox.getChildren().remove(spendPointsButton);
-                }
+        world.getHero().getLevel().getPointsToSpend().addListener((observableValue, number, newNumber) -> {
+            System.out.println("You have " + newNumber.intValue() + " points to spend");
+            if(newNumber.intValue() == 1) {
+                spendPointsButton.setText("Spend Points");
+                spendPointsButton.setOnAction(event -> showHeroStatsDialog());
+                statsHBox.getChildren().add(spendPointsButton);
+                world.getHero().getStatistics().setHealth(world.getHero().getMaxHealth());
+            } else if(newNumber.intValue() == 0 && spendPointsButton.getParent().equals(statsHBox)) {
+                statsHBox.getChildren().remove(spendPointsButton);
             }
         });
 
-        world.getHero().getLevel().getCurrentExperience().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                levelLabel.setText(world.getHero().getLevel().toString());
-            }
-        });
+        world.getHero().getLevel().getCurrentExperience().addListener((observableValue, number, t1) -> levelLabel.setText(world.getHero().getLevel().toString()));
 
-        world.getHero().getStatistics().getHealth().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                statisticsLabel.setText(world.getHero().statsToString());
-            }
-        });
+        world.getHero().getStatistics().getHealth().addListener((observableValue, number, t1) -> statisticsLabel.setText(world.getHero().statsToString()));
 
         lockButtons();
         if (world.getHero().isAlive()) {
@@ -254,7 +239,7 @@ public class GameInterfaceController implements ChangePane {
                 CreateMap.modifyMapCell(currentLocation, mapImageView, true);
 
                 ImageView contentImageView = getImageView(contentMapGridPane, position.getX(), position.getY());
-                CreateMap.modifyContentCell(currentLocation, contentImageView, world, true);
+                CreateMap.modifyContentCell(currentLocation, contentImageView, true);
 
                 world.getHero().getLevel().addExperience(10);
                 levelLabel.setText(world.getHero().getLevel().toString());
@@ -455,7 +440,7 @@ public class GameInterfaceController implements ChangePane {
         FXMLLoader fxmlLoader = getFxmlLoader(dialog, "herostatsdialog.fxml", true, false);
         if (fxmlLoader == null) return;
         HeroStatsDialogController controller = fxmlLoader.getController();
-        Hero hero = world.getHero();;
+        Hero hero = world.getHero();
         controller.setHero(hero);
         controller.setHealthLabel("" + hero.getMaxHealth());
         controller.setPowerLabel("" + hero.getStatistics().getPower());
@@ -520,7 +505,7 @@ public class GameInterfaceController implements ChangePane {
     @FXML
     public void mainMenu() {
         changePane(gameBorderPane, "mainmenu.fxml");
-        GameData.getInstance().saveAll();
+        GameData.saveAll();
     }
 
     @Override
@@ -530,10 +515,6 @@ public class GameInterfaceController implements ChangePane {
 
     public void setWorld(World world) {
         this.world = world;
-    }
-
-    public boolean isEndlessMode() {
-        return endlessMode;
     }
 
     public void setEndlessMode(boolean endlessMode) {
@@ -546,17 +527,5 @@ public class GameInterfaceController implements ChangePane {
 
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
-    }
-
-    public GridPane getGameMapGridPane() {
-        return gameMapGridPane;
-    }
-
-    public GridPane getContentMapGridPane() {
-        return contentMapGridPane;
-    }
-
-    public GridPane getPlayerMapGridPane() {
-        return playerMapGridPane;
     }
 }

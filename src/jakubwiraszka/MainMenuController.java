@@ -1,28 +1,23 @@
 package jakubwiraszka;
 
 import jakubwiraszka.gamefiles.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Callback;
 
-import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 public class MainMenuController extends CreateInterfaceController implements ChangePane {
-
     private String worldName;
-    private ObservableList<World> worlds;
+
     @FXML
     private ListView<World> worldsListView;
     @FXML
@@ -31,47 +26,41 @@ public class MainMenuController extends CreateInterfaceController implements Cha
     private BorderPane mainBorderPane;
 
     public void initialize() {
-        worldsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<World>() {
-            @Override
-            public void changed(ObservableValue<? extends World> observableValue, World oldValue, World newValue) {
-                if(newValue != null) {
-                    worldName = newValue.getName();
-                }
+        worldsListView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if(newValue != null) {
+                worldName = newValue.getName();
             }
         });
 
         worldsListView.setItems(GameData.getInstance().getWorlds());
         worldsListView.getSelectionModel().selectFirst();
 
-        worldsListView.getItems().addListener(new ListChangeListener<World>() {
-            @Override
-            public void onChanged(Change<? extends World> change) {
-                while(change.next()) {
-                    if (change.wasUpdated()) {
-//                        GameData.getInstance().saveAll();
-                        System.out.println("World was changed");
+        worldsListView.getItems().addListener((ListChangeListener<World>) change -> {
+            while(change.next()) {
+                if (change.wasUpdated()) {
+                    GameData.saveAll();
+                    System.out.println("World was changed");
 
-                    } else {
-                        for (World removedWorld : change.getRemoved()) {
-                            System.out.println(removedWorld.getName() + " was removed");
-                        }
-                        for (World addedWorld : change.getAddedSubList()) {
-                            System.out.println(addedWorld.getName() + " was added");
-                            GameData.getInstance().saveAll();
-                        }
+                } else {
+                    for (World removedWorld : change.getRemoved()) {
+                        System.out.println(removedWorld.getName() + " was removed");
+                    }
+                    for (World addedWorld : change.getAddedSubList()) {
+                        System.out.println(addedWorld.getName() + " was added");
+                        GameData.saveAll();
                     }
                 }
             }
         });
 
-        worldsListView.setCellFactory(new Callback<ListView<World>, ListCell<World>>() {
+        worldsListView.setCellFactory(new Callback<>() {
             @Override
             public ListCell<World> call(ListView<World> worldListView) {
-                ListCell<World> cell = new ListCell<>() {
+                return new ListCell<>() {
                     @Override
                     protected void updateItem(World world, boolean empty) {
                         super.updateItem(world, empty);
-                        if(empty) {
+                        if (empty) {
                             setText(null);
                         } else {
                             setText(world.toString());
@@ -79,7 +68,6 @@ public class MainMenuController extends CreateInterfaceController implements Cha
                         }
                     }
                 };
-                return cell;
             }
         });
     }
@@ -88,7 +76,7 @@ public class MainMenuController extends CreateInterfaceController implements Cha
     public void play(ActionEvent event) {
         Node node = (Node) event.getSource();
         GameInterfaceController gameInterfaceController = changePane(node, "gameinterface.fxml").getController();
-        gameInterfaceController.setWorld(GameData.getInstance().findWorld(worldName));
+        gameInterfaceController.setWorld(GameData.findWorld(worldName));
         gameInterfaceController.start();
     }
 
@@ -136,10 +124,10 @@ public class MainMenuController extends CreateInterfaceController implements Cha
 
     @FXML
     public void modify(ActionEvent event) {
-        if(!GameData.getInstance().findWorld(worldName).isStart()) {
+        if(!Objects.requireNonNull(GameData.findWorld(worldName)).isStart()) {
             Node node = (Node) event.getSource();
             ModifyInterfaceController modifyInterfaceController = changePane(node, "modifyinterface.fxml").getController();
-            modifyInterfaceController.setWorld(GameData.getInstance().findWorld(worldName));
+            modifyInterfaceController.setWorld(GameData.findWorld(worldName));
             modifyInterfaceController.start();
         } else {
             messageLabel.setText("You can't modify this world, because it has already started!");
@@ -170,14 +158,6 @@ public class MainMenuController extends CreateInterfaceController implements Cha
     @Override
     public FXMLLoader changePane(Node node, String name) {
         return super.changePane(node, name);
-    }
-
-    public String getWorldName() {
-        return worldName;
-    }
-
-    public void setWorldName(String worldName) {
-        this.worldName = worldName;
     }
 
     @Override

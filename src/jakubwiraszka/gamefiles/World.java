@@ -7,38 +7,17 @@ import java.util.*;
 
 public class World {
     private final String name;
-    private ObservableList<Position> visitedLocations;
-    private ObservableList<Location> locations;
-    private ObservableList<LocationContent> enemies;
+    private final ObservableList<Position> visitedLocations;
+    private final ObservableList<Location> locations;
+    private final ObservableList<LocationContent> enemies;
     private int enemyNumber;
-    private ObservableList<LocationContent> treasures;
+    private final ObservableList<LocationContent> treasures;
     private int treasureNumber;
-    private Portal portal;
+    private final Portal portal;
     private final int height;
     private final int width;
     private boolean start = false;
     private final Hero hero;
-
-    public static void main(String[] args) {  //JUST FOR TESTING
-//        GameData.getInstance().loadAll();
-//        World world = new World("World", 10, 10, new Hero("Kuba", new Statistics(5, 5, 10)));
-//        ArrayList<String> array = new ArrayList<>();
-//        array.add("cośtma");
-//        array.add("hellol");
-//        world.createRandom(array, array, array, Difficulty.HARD);
-//        GameData.getInstance().getWorlds().add(world);
-//        GameData.getInstance().saveAll();
-//        World world = GameData.getInstance().findWorld("KonarLand");
-//        System.out.println(world.findLocationByContent("Konar 1").toString());
-//        Level level = new Level(1);
-//        System.out.println(level.getPointsToSpend().intValue());
-//        level.changePointsToSpend(1);
-//        System.out.println(level.getPointsToSpend().intValue());
-//        Hero hero = new Hero("Jakub", new Statistics(10, 10, 10));
-//        System.out.println(hero.statsToString());
-//        hero.changeHealth(-5);
-//        System.out.println(hero.statsToString());
-    }
 
     public World(String name, int height, int width, Hero hero) {
         this.name = name;
@@ -166,7 +145,7 @@ public class World {
                         break;
                 }
                 int value = random.nextInt(2) + 1;
-                Treasure treasure = createTreasure(new Treasure("Chest", new Treasure.Content(statistic, value), 1));
+                Treasure treasure = createTreasure(new Treasure("Chest", new Treasure.Content(statistic, value)));
                 addTreasure(treasure.getId(), location.getPosition());
             }
             counter++;
@@ -318,7 +297,7 @@ public class World {
                 return true;
             } else {
                 while (moves < (width * height)) {
-                    HashMap<String, Position> exits = (HashMap<String, Position>) findLocation(x, y, locations).getExits();
+                    HashMap<String, Position> exits = findLocation(x, y, locations).getExits();
                     HashMap<String, Double> distances = new HashMap<>();
                     if (exits.get("N") != null) {
                         double newDistance = (x - startX) * (x - startX) + (y - startY - 1) * (y - startY - 1);
@@ -393,13 +372,11 @@ public class World {
         return key;
     }
 
-    public boolean addVisited(Position position) {
+    public void addVisited(Position position) {
         if (findVisitedLocation(position) == null) {
             findLocation(position.getX(), position.getY(), locations).setVisited(true);
             visitedLocations.add(position);
-            return true;
         }
-        return false;
     }
 
     public void handleVisited() {
@@ -467,15 +444,6 @@ public class World {
         }
         return null;
     }
-
-//    public Location findLocation(String name) {  //JESLI BEDZIE POTRZEBNE FINDLOCATION BY ID
-//        for (Location i : locations) {
-//            if (Objects.equals(i.getName(), name)) {
-//                return i;
-//            }
-//        }
-//        return null;
-//    }
 
     public Location findLocation(int x, int y, ObservableList<Location> locations) {
         Position position = new Position(x, y);

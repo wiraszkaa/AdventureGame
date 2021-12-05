@@ -4,7 +4,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Statistics {
-    private IntegerProperty health;
+    private final IntegerProperty health;
     private int power;
     private int agility;
 

@@ -30,7 +30,7 @@ public class NewTreasureDialogController {
 
         int value = valueSpinner.getValue();
 
-        Treasure newTreasure = new Treasure(name, new Treasure.Content(statistic, value), 1);
+        Treasure newTreasure = new Treasure(name, new Treasure.Content(statistic, value));
         world.createTreasure(newTreasure);
         return newTreasure;
     }

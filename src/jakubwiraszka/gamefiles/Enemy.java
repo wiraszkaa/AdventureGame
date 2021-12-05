@@ -4,7 +4,7 @@ public class Enemy implements LocationContent {
     private String id;
 
     String name;
-    private Statistics statistics;
+    private final Statistics statistics;
     private boolean alive;
     private Position position;
 

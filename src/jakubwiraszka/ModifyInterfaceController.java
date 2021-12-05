@@ -1,11 +1,7 @@
 package jakubwiraszka;
 
 import jakubwiraszka.gamefiles.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 
 import java.util.HashMap;
@@ -25,8 +20,6 @@ public class ModifyInterfaceController extends GameInterfaceController {
     private World world;
     @FXML
     private BorderPane mainBorderPane;
-    @FXML
-    private Button enterButton;
     @FXML
     private Label locationDescriptionLabel;
     @FXML
@@ -44,10 +37,6 @@ public class ModifyInterfaceController extends GameInterfaceController {
     @FXML
     private ListView<LocationContent> treasuresListView;
     @FXML
-    private ContextMenu enemyContextMenu;
-    @FXML
-    private ContextMenu treasureContextMenu;
-    @FXML
     private ContextMenu locationContextMenu;
     @FXML
     private Slider zoomSlider;
@@ -62,38 +51,32 @@ public class ModifyInterfaceController extends GameInterfaceController {
 
         CreateMap.createMap(world, gameMapGridPane, contentMapGridPane, playerMapGridPane, false);
 
-        createContextMenu(enemyContextMenu, enemiesListView);
-        createContextMenu(treasureContextMenu, treasuresListView);
+        createContextMenu(enemiesListView);
+        createContextMenu(treasuresListView);
         locationContextMenu = new ContextMenu();
         MenuItem deleteMenuItem = new MenuItem("Delete");
-        deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Location location = locationsListView.getSelectionModel().getSelectedItem();
-                delete(location);
-            }
+        deleteMenuItem.setOnAction(actionEvent -> {
+            Location location = locationsListView.getSelectionModel().getSelectedItem();
+            delete(location);
         });
 
         MenuItem editMenuItem = new MenuItem("Edit");
-        editMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Location location = locationsListView.getSelectionModel().getSelectedItem();
-//                edit(location);
-            }
+        editMenuItem.setOnAction(event -> {
+            Location location = locationsListView.getSelectionModel().getSelectedItem();
+                edit(location);
         });
 
         locationContextMenu.getItems().addAll(deleteMenuItem);
         locationContextMenu.getItems().addAll(editMenuItem);
 
-        locationsListView.setCellFactory(new Callback<ListView<Location>, ListCell<Location>>() {
+        locationsListView.setCellFactory(new Callback<>() {
             @Override
             public ListCell<Location> call(ListView<Location> deletableListView) {
                 ListCell<Location> cell = new ListCell<>() {
                     @Override
                     protected void updateItem(Location location, boolean empty) {
                         super.updateItem(location, empty);
-                        if(empty) {
+                        if (empty) {
                             setText(null);
                         } else {
                             setText(location.toString());
@@ -103,7 +86,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
 
                 cell.emptyProperty().addListener(
                         (obs, wasEmpty, isNowEmpty) -> {
-                            if(isNowEmpty) {
+                            if (isNowEmpty) {
                                 cell.setContextMenu(null);
                             } else {
                                 cell.setContextMenu(locationContextMenu);
@@ -115,58 +98,45 @@ public class ModifyInterfaceController extends GameInterfaceController {
             }
         });
 
-        locationsListView.getItems().addListener(new ListChangeListener<Location>() {
-            @Override
-            public void onChanged(Change<? extends Location> change) {
-                while (change.next()) {
-                    if (change.wasUpdated()) {
-
-                    } else {
-                        for (Location removedLocation : change.getRemoved()) {
-                            getImageView(gameMapGridPane, removedLocation.getPosition().getX(), removedLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Unknown.png"));
-                        }
-                        for (Location addedLocation : change.getAddedSubList()) {
-                            locationsListView.getSelectionModel().select(addedLocation);
-                        }
-                    }
+        locationsListView.getItems().addListener((ListChangeListener<Location>) change -> {
+            while (change.next()) {
+                for (Location removedLocation : change.getRemoved()) {
+                    getImageView(gameMapGridPane, removedLocation.getPosition().getX(), removedLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Unknown.png"));
+                }
+                for (Location addedLocation : change.getAddedSubList()) {
+                    locationsListView.getSelectionModel().select(addedLocation);
                 }
             }
         });
 
-        locationsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Location>() {
-            @Override
-            public void changed(ObservableValue<? extends Location> observableValue, Location location, Location newLocation) {
-                if(newLocation != null) {
-                    getImageView(playerMapGridPane, newLocation.getPosition().getX(), newLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
-                    locationNameLabel.setText(newLocation.getName());
-                    locationDescriptionLabel.setText(newLocation.getDescription());
-                    if(location != null) {
-                        getImageView(playerMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
-                    }
+        locationsListView.getSelectionModel().selectedItemProperty().addListener((observableValue, location, newLocation) -> {
+            if (newLocation != null) {
+                getImageView(playerMapGridPane, newLocation.getPosition().getX(), newLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
+                locationNameLabel.setText(newLocation.getName());
+                locationDescriptionLabel.setText(newLocation.getDescription());
+                if (location != null) {
+                    getImageView(playerMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
                 }
             }
         });
 
 
-        enemiesListView.getItems().addListener(new ListChangeListener<LocationContent>() {
-            @Override
-            public void onChanged(Change<? extends LocationContent> change) {
-                while (change.next()) {
-                    if (change.wasUpdated()) {
-                        System.out.println("Change!");
-                        enemiesListView.setItems(world.getEnemies());
-                    } else {
-                        for (LocationContent removedEnemy : change.getRemoved()) {
-                            System.out.println(removedEnemy.getId() + " was removed");
-                            Position position = removedEnemy.getPosition();
-                            if(position.getX() != -1 && position.getY() != -1) {
-                                getImageView(contentMapGridPane, position.getX(), position.getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
-                            }
+        enemiesListView.getItems().addListener((ListChangeListener<LocationContent>) change -> {
+            while (change.next()) {
+                if (change.wasUpdated()) {
+                    System.out.println("Change!");
+                    enemiesListView.setItems(world.getEnemies());
+                } else {
+                    for (LocationContent removedEnemy : change.getRemoved()) {
+                        System.out.println(removedEnemy.getId() + " was removed");
+                        Position position = removedEnemy.getPosition();
+                        if (position.getX() != -1 && position.getY() != -1) {
+                            getImageView(contentMapGridPane, position.getX(), position.getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
                         }
-                        for (LocationContent addedEnemy : change.getAddedSubList()) {
-                            System.out.println(addedEnemy.getId() + " was added");
-                            enemiesListView.getSelectionModel().select(addedEnemy);
-                        }
+                    }
+                    for (LocationContent addedEnemy : change.getAddedSubList()) {
+                        System.out.println(addedEnemy.getId() + " was added");
+                        enemiesListView.getSelectionModel().select(addedEnemy);
                     }
                 }
             }
@@ -189,6 +159,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
             NewEnemyDialogController controller = fxmlLoader.getController();
             controller.setWorld(world);
             Enemy newEnemy = controller.newEnemy();
+            enemiesListView.getSelectionModel().select(newEnemy);
         } else {
             System.out.println("Cancel Pressed");
         }
@@ -209,6 +180,28 @@ public class ModifyInterfaceController extends GameInterfaceController {
             controller.setWorld(world);
             Treasure newTreasure = controller.newTreasure();
             treasuresListView.getSelectionModel().select(newTreasure);
+        } else {
+            System.out.println("Cancel Pressed");
+        }
+    }
+
+    @FXML
+    public void showNewLocationDialog() {
+
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
+        dialog.setTitle("Add New Location");
+        dialog.setHeaderText("Use this dialog to create a new location");
+        FXMLLoader fxmlLoader = getFxmlLoader(dialog, "newlocationdialog.fxml", true, true);
+        if (fxmlLoader == null) return;
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            NewLocationDialogController controller = fxmlLoader.getController();
+            controller.setWorld(world);
+            Location newLocation = controller.newLocation();
+            locationsListView.getSelectionModel().select(newLocation);
         } else {
             System.out.println("Cancel Pressed");
         }
@@ -256,18 +249,34 @@ public class ModifyInterfaceController extends GameInterfaceController {
         }
     }
 
-    private void createContextMenu(ContextMenu contextMenu, ListView<LocationContent> listView) {
-        contextMenu = new ContextMenu();
+    public void showEditLocationDialog(Location location) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
+        dialog.setTitle("Edit Location");
+        dialog.setHeaderText("Use this dialog to edit location");
+        FXMLLoader fxmlLoader = getFxmlLoader(dialog, "newlocationdialog.fxml", true, true);
+        if (fxmlLoader == null) return;
+        NewLocationDialogController controller = fxmlLoader.getController();
+        controller.setWorld(world);
+        controller.setNameTextField(location.getName());
+        controller.setDescriptionTextArea(location.getDescription());
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            controller.updateLocation(location);
+        } else {
+            System.out.println("Cancel Pressed");
+        }
+    }
+
+    private void createContextMenu(ListView<LocationContent> listView) {
+        ContextMenu contextMenu = new ContextMenu();
         MenuItem deleteMenuItem = new MenuItem("Delete");
-        deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String id = listView.getSelectionModel().getSelectedItem().getId();
-                if (world.findEnemy(id) != null) {
-                    delete(world.findEnemy(id));
-                } else if (world.findTreasure(id) != null) {
-                    delete(world.findTreasure(id));
-                }
+        deleteMenuItem.setOnAction(actionEvent -> {
+            String id = listView.getSelectionModel().getSelectedItem().getId();
+            if (world.findEnemy(id) != null) {
+                delete(world.findEnemy(id));
+            } else if (world.findTreasure(id) != null) {
+                delete(world.findTreasure(id));
             }
         });
 
@@ -286,15 +295,14 @@ public class ModifyInterfaceController extends GameInterfaceController {
         contextMenu.getItems().addAll(deleteMenuItem);
         contextMenu.getItems().addAll(editMenuItem);
 
-        ContextMenu finalContextMenu = contextMenu;
-        listView.setCellFactory(new Callback<ListView<LocationContent>, ListCell<LocationContent>>() {
+        listView.setCellFactory(new Callback<>() {
             @Override
             public ListCell<LocationContent> call(ListView<LocationContent> deletableListView) {
                 ListCell<LocationContent> cell = new ListCell<>() {
                     @Override
                     protected void updateItem(LocationContent deletable, boolean empty) {
                         super.updateItem(deletable, empty);
-                        if(empty) {
+                        if (empty) {
                             setText(null);
                         } else {
                             setText(deletable.toString());
@@ -304,10 +312,10 @@ public class ModifyInterfaceController extends GameInterfaceController {
 
                 cell.emptyProperty().addListener(
                         (obs, wasEmpty, isNowEmpty) -> {
-                            if(isNowEmpty) {
+                            if (isNowEmpty) {
                                 cell.setContextMenu(null);
                             } else {
-                                cell.setContextMenu(finalContextMenu);
+                                cell.setContextMenu(contextMenu);
                             }
                         }
                 );
@@ -318,67 +326,63 @@ public class ModifyInterfaceController extends GameInterfaceController {
     }
 
     @FXML
-    public boolean delete(LocationContent locationContent) {
+    public void delete(LocationContent locationContent) {
         Location location = world.findLocationByContent(locationContent.getId());
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Delete item");
-            alert.setHeaderText("Delete item: " + locationContent.getName());
-            alert.setContentText("Are you sure? Press OK to confirm, or cancel to Back out.");
-            Optional<ButtonType> result = alert.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete item");
+        alert.setHeaderText("Delete item: " + locationContent.getName());
+        alert.setContentText("Are you sure? Press OK to confirm, or cancel to Back out.");
+        Optional<ButtonType> result = alert.showAndWait();
 
-        if(result.isPresent() && result.get() == ButtonType.OK) {
-            if(locationContent instanceof Enemy) {
-                if(world.removeEnemy((Enemy) locationContent)) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            if (locationContent instanceof Enemy) {
+                if (world.removeEnemy((Enemy) locationContent)) {
                     enemiesListView.getItems().remove(locationContent);
-                    return true;
-                } else {
-                    return false;
                 }
-            } else if(locationContent instanceof Treasure) {
-                if(world.removeTreasure((Treasure) locationContent)) {
+            } else if (locationContent instanceof Treasure) {
+                if (world.removeTreasure((Treasure) locationContent)) {
                     treasuresListView.getItems().remove(locationContent);
                     getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
-                    return true;
-                } else {
-                    return false;
                 }
             }
         }
-        return false;
     }
 
     @FXML
-    public boolean delete(Location location) {
+    public void delete(Location location) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Delete item");
         alert.setHeaderText("Delete item: " + location.getName());
         alert.setContentText("Are you sure? Press OK to confirm, or cancel to Back out.");
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
             HashMap<String, Position> exits = location.getExits();
             if (world.removeLocation(location)) {
                 locationsListView.getItems().remove(location);
-                for(String key: exits.keySet()) {
-                    if(!key.equals("Q")) {
+                for (String key : exits.keySet()) {
+                    if (!key.equals("Q")) {
                         Position position = exits.get(key);
                         Location nearLocation = world.findLocation(position, world.getLocations());
                         CreateMap.modifyMapCell(nearLocation, getImageView(gameMapGridPane, position.getX(), position.getY()), false);
                     }
                 }
-                return true;
             }
         }
-        return false;
     }
 
     @FXML
     public void edit(LocationContent locationContent) {
-        if(locationContent instanceof Enemy) {
+        if (locationContent instanceof Enemy) {
             showEditEnemyDialog((Enemy) locationContent);
-        } else if(locationContent instanceof Treasure) {
+        } else if (locationContent instanceof Treasure) {
             showEditTreasureDialog((Treasure) locationContent);
         }
+    }
+
+    @FXML
+    public void edit(Location location) {
+        showEditLocationDialog(location);
     }
 
     public void setWorld(World world) {

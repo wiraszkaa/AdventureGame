@@ -2,28 +2,23 @@ package jakubwiraszka.gamefiles;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 
 public class Level {
-    private IntegerProperty currentLevel;
+    private final IntegerProperty currentLevel;
     private int experienceForLevelUp;
-    private IntegerProperty currentExperience;
-    private IntegerProperty pointsToSpend;
+    private final IntegerProperty currentExperience;
+    private final IntegerProperty pointsToSpend;
 
     public Level(int level) {
         currentLevel  = new SimpleIntegerProperty(level);
         pointsToSpend = new SimpleIntegerProperty();
         currentExperience = new SimpleIntegerProperty();
         experienceForLevelUp = level * 100;
-        currentLevel.addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number level, Number newLevel) {
-                if(newLevel != null) {
-                    if(newLevel.intValue() > level.intValue()) {
-                        experienceForLevelUp = newLevel.intValue() * 100;
-                        pointsToSpend.set(pointsToSpend.intValue() + 1);
-                    }
+        currentLevel.addListener((observableValue, level1, newLevel) -> {
+            if(newLevel != null) {
+                if(newLevel.intValue() > level1.intValue()) {
+                    experienceForLevelUp = newLevel.intValue() * 100;
+                    pointsToSpend.set(pointsToSpend.intValue() + 1);
                 }
             }
         });

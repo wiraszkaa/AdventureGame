@@ -12,10 +12,6 @@ public interface Randomize {
                 counter++;
             }
         }
-        if(counter > (iterations / 2)) {
-            return true;
-        } else {
-            return false;
-        }
+        return counter > (iterations / 2);
     }
 }
