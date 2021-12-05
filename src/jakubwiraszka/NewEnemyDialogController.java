@@ -3,13 +3,14 @@ package jakubwiraszka;
 import jakubwiraszka.gamefiles.Enemy;
 import jakubwiraszka.gamefiles.GameData;
 import jakubwiraszka.gamefiles.Statistics;
+import jakubwiraszka.gamefiles.World;
 import javafx.fxml.FXML;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextField;
 
 public class NewEnemyDialogController {
 
-    private String worldName;
+    private World world;
     private String enemyId;
     @FXML
     private TextField nameTextField;
@@ -27,7 +28,7 @@ public class NewEnemyDialogController {
         int agility = agilitySpinner.getValue();
 
         Enemy newEnemy = new Enemy(name,  new Statistics(health, power, agility));
-        GameData.getInstance().findWorld(worldName).createEnemy(newEnemy);
+        world.createEnemy(newEnemy);
         return newEnemy;
     }
 
@@ -37,8 +38,8 @@ public class NewEnemyDialogController {
         enemy.getStatistics().setAgility(agilitySpinner.getValue());
     }
 
-    public void setWorldName(String worldName) {
-        this.worldName = worldName;
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public void setNameTextField(String name) {

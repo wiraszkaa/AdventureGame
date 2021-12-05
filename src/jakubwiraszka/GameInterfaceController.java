@@ -18,24 +18,17 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
 public class GameInterfaceController implements ChangePane {
 
-    private String worldName;
     private World world;
     private Location currentLocation;
     private boolean endlessMode;
     private Difficulty difficulty;
-    @FXML
-    private StackPane mainStackPane;
-    @FXML
-    private Button enterButton;
     @FXML
     private BorderPane gameBorderPane;
     @FXML
@@ -77,13 +70,10 @@ public class GameInterfaceController implements ChangePane {
     @FXML
     private Slider zoomSlider;
 
-    final String ICONS_LOC = "D:\\Projekty\\Java\\AdventureFX\\icons\\";
-
     public void initialize() {
-        gameBorderPane.setOpacity(0.2);
         spendPointsButton  = new Button();
 
-        mainStackPane.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+        gameBorderPane.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
             if (ev.getCode() == KeyCode.W) {
                 upButton.fire();
                 ev.consume();
@@ -106,12 +96,7 @@ public class GameInterfaceController implements ChangePane {
         });
     }
 
-    @FXML
     public void start() {
-        mainStackPane.getChildren().remove(enterButton);
-        gameBorderPane.setOpacity(1);
-
-        this.world = GameData.getInstance().findWorld(worldName);
         world.setStart(true);
         world.handleVisited();
         currentLocation = world.findLocation(world.getHero().getPosition().getX(), world.getHero().getPosition().getY(), world.getLocations());
@@ -151,22 +136,18 @@ public class GameInterfaceController implements ChangePane {
             }
         }
 
-        createMap(world, gameMapGridPane, contentMapGridPane, playerMapGridPane, true);
+        CreateMap.createMap(world, gameMapGridPane, contentMapGridPane, playerMapGridPane, true);
 
-        getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(ICONS_LOC + "Player.png"));
+        getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
 
         world.getHero().getLevel().getPointsToSpend().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number newNumber) {
                 System.out.println("You have " + newNumber.intValue() + " points to spend");
-                if(newNumber.intValue() > 0) {
+                if(newNumber.intValue() == 1) {
                     spendPointsButton.setText("Spend Points");
                     spendPointsButton.setOnAction(event -> showHeroStatsDialog());
-                    try {
-                        statsHBox.getChildren().add(spendPointsButton);
-                    } catch (Exception e) {
-                        System.out.println("Spend Points Button already added");
-                    }
+                    statsHBox.getChildren().add(spendPointsButton);
                     world.getHero().getStatistics().setHealth(world.getHero().getMaxHealth());
                 } else if(newNumber.intValue() == 0 && spendPointsButton.getParent().equals(statsHBox)) {
                     statsHBox.getChildren().remove(spendPointsButton);
@@ -231,110 +212,6 @@ public class GameInterfaceController implements ChangePane {
         }
     }
 
-    void createMap(World world, GridPane gameMapGridPane, GridPane contentMapGridPane, GridPane playerMapGridPane, boolean readVisited) {
-        Iterator<Location> i = world.getLocations().iterator();
-        while (i.hasNext()) {
-            Location location = i.next();
-
-            ImageView imageViewMap = new ImageView();
-            modifyMapCell(location, imageViewMap, readVisited);
-            GridPane.setConstraints(imageViewMap, location.getPosition().getX(), location.getPosition().getY());
-            gameMapGridPane.getChildren().add(imageViewMap);
-
-            ImageView imageViewContent = new ImageView();
-            modifyContentCell(location, imageViewContent, world, readVisited);
-            GridPane.setConstraints(imageViewContent, location.getPosition().getX(), location.getPosition().getY());
-            contentMapGridPane.getChildren().add(imageViewContent);
-
-            ImageView imageViewPlayer = new ImageView();
-            imageViewPlayer.setImage(new Image(ICONS_LOC + "Nothing.png"));
-            GridPane.setConstraints(imageViewPlayer, location.getPosition().getX(), location.getPosition().getY());
-            playerMapGridPane.getChildren().add(imageViewPlayer);
-        }
-    }
-
-    public void modifyMapCell(Location location, ImageView imageView, boolean readVisited) {
-        if (location.isVisited() || !readVisited) {
-            boolean north = false;
-            boolean south = false;
-            boolean east = false;
-            boolean west = false;
-            if (location.getExits().get("N") != null) {
-                north = true;
-            }
-            if (location.getExits().get("S") != null) {
-                south = true;
-            }
-            if (location.getExits().get("E") != null) {
-                east = true;
-            }
-            if (location.getExits().get("W") != null) {
-                west = true;
-            }
-            if (north && south && east && west) {
-                imageView.setImage(new Image(ICONS_LOC + "Road4.png"));
-            } else if (north && south && east) {
-                imageView.setImage(new Image(ICONS_LOC + "Road3.png"));
-                imageView.setRotate(90);
-            } else if (north && south && west) {
-                imageView.setImage(new Image(ICONS_LOC + "Road3.png"));
-                imageView.setRotate(-90);
-            } else if (west && south && east) {
-                imageView.setImage(new Image(ICONS_LOC + "Road3.png"));
-                imageView.setRotate(180);
-            } else if (north && west && east) {
-                imageView.setImage(new Image(ICONS_LOC + "Road3.png"));
-            } else if (north && south) {
-                imageView.setImage(new Image(ICONS_LOC + "Road2.1.png"));
-            } else if (east && west) {
-                imageView.setImage(new Image(ICONS_LOC + "Road2.1.png"));
-                imageView.setRotate(90);
-            } else if (north && east) {
-                imageView.setImage(new Image(ICONS_LOC + "Road2.2.png"));
-            } else if (south && east) {
-                imageView.setImage(new Image(ICONS_LOC + "Road2.2.png"));
-                imageView.setRotate(90);
-            } else if (south && west) {
-                imageView.setImage(new Image(ICONS_LOC + "Road2.2.png"));
-                imageView.setRotate(180);
-            } else if (north && west) {
-                imageView.setImage(new Image(ICONS_LOC + "Road2.2.png"));
-                imageView.setRotate(-90);
-            } else if (north) {
-                imageView.setImage(new Image(ICONS_LOC + "Road1.png"));
-            } else if (east) {
-                imageView.setImage(new Image(ICONS_LOC + "Road1.png"));
-                imageView.setRotate(90);
-            } else if (south) {
-                imageView.setImage(new Image(ICONS_LOC + "Road1.png"));
-                imageView.setRotate(180);
-            } else {
-                imageView.setImage(new Image(ICONS_LOC + "Road1.png"));
-                imageView.setRotate(-90);
-            }
-        } else {
-            imageView.setImage(new Image(ICONS_LOC + "Unknown.png"));
-        }
-        imageView.setFitHeight(81);
-        imageView.setPreserveRatio(true);
-    }
-
-    public void modifyContentCell(Location location, ImageView imageView, World world, boolean readVisited) {
-        if (location.isVisited() || !readVisited) {
-            if (location.getContent() != null) {
-                if (location.getContent().isEnemy()) {
-                    imageView.setImage(new Image(ICONS_LOC + "Enemy.png"));
-                } else if (location.getContent().isTreasure()) {
-                    imageView.setImage(new Image(ICONS_LOC + "Chest.png"));
-                } else {
-                    imageView.setImage(new Image(ICONS_LOC + "Portal.png"));
-                }
-            }
-        }
-        imageView.setFitHeight(81);
-        imageView.setFitWidth(81);
-    }
-
     @FXML
     public void move(ActionEvent e) {
         String direction = "Q";
@@ -352,19 +229,19 @@ public class GameInterfaceController implements ChangePane {
         if(position != null) {
             world.getHero().setPosition(position);
 
-            getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(ICONS_LOC + "Nothing.png"));
+            getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
 
             if (currentLocation.getContent() == null) {
-                getImageView(contentMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(ICONS_LOC + "Nothing.png"));
+                getImageView(contentMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
             } else if (currentLocation.getContent().isTreasure()) {
-                getImageView(contentMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(ICONS_LOC + "Chest.png"));
+                getImageView(contentMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Chest.png"));
             } else if (currentLocation.getContent().isEnemy()) {
-                getImageView(contentMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(ICONS_LOC + "Enemy.png"));
+                getImageView(contentMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Enemy.png"));
             }
 
             currentLocation = world.findLocation(position.getX(), position.getY(), world.getLocations());
 
-            getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(ICONS_LOC + "Player.png"));
+            getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
 
             if (world.allEnemiesDead()) {
                 world.getPortal().setActive(true);
@@ -374,10 +251,10 @@ public class GameInterfaceController implements ChangePane {
                 world.addVisited(currentLocation.getPosition());
 
                 ImageView mapImageView = getImageView(gameMapGridPane, position.getX(), position.getY());
-                modifyMapCell(currentLocation, mapImageView, true);
+                CreateMap.modifyMapCell(currentLocation, mapImageView, true);
 
                 ImageView contentImageView = getImageView(contentMapGridPane, position.getX(), position.getY());
-                modifyContentCell(currentLocation, contentImageView, world, true);
+                CreateMap.modifyContentCell(currentLocation, contentImageView, world, true);
 
                 world.getHero().getLevel().addExperience(10);
                 levelLabel.setText(world.getHero().getLevel().toString());
@@ -422,7 +299,7 @@ public class GameInterfaceController implements ChangePane {
                     unlockButtons();
                 } else {
                     messageLabel.setText("GAME OVER");
-                    gameOver(mainStackPane);
+                    gameOver(gameBorderPane);
                 }
             }
         } else {
@@ -467,7 +344,7 @@ public class GameInterfaceController implements ChangePane {
                     System.out.println("Fight initialized");
                     int experience = showFightDialog(enemy);
                     if(!world.getHero().isAlive()) {
-                        gameOver(mainStackPane);
+                        gameOver(gameBorderPane);
                     } else {
                         world.getHero().getLevel().addExperience(experience);
                         clearContent();
@@ -479,7 +356,7 @@ public class GameInterfaceController implements ChangePane {
                 int experience = showFightDialog(enemy);
                 statisticsLabel.setText(world.getHero().statsToString());
                 if(!world.getHero().isAlive()) {
-                    gameOver(mainStackPane);
+                    gameOver(gameBorderPane);
                 } else {
                     world.getHero().getLevel().addExperience(experience);
                     clearContent();
@@ -500,7 +377,7 @@ public class GameInterfaceController implements ChangePane {
         } else {
             if(e.getSource().equals(firstActionButton)) {
                 GameData.getInstance().getWorlds().remove(world);
-                newEndlessWorld(e, getDifficulty(), worldName, world.getHero());
+                newEndlessWorld(e, getDifficulty(), world.getName(), world.getHero());
             } else if (e.getSource().equals(secondActionButton)) {
                 Label leaveLabel = new Label("\nYou leave portal alone");
                 leaveLabel.setFont(new Font("Arial bold", 20));
@@ -518,9 +395,10 @@ public class GameInterfaceController implements ChangePane {
         GameData.getInstance().getWorlds().add(newWorld);
         Node node = (Node) event.getSource();
         GameInterfaceController gameInterfaceController = changePane(node, "gameinterface.fxml").getController();
-        gameInterfaceController.setWorldName(name);
+        gameInterfaceController.setWorld(newWorld);
         gameInterfaceController.setEndlessMode(true);
         gameInterfaceController.setDifficulty(difficulty);
+        gameInterfaceController.start();
     }
 
     private void take() {
@@ -551,7 +429,7 @@ public class GameInterfaceController implements ChangePane {
 
             Timeline timeline = new Timeline(
                     new KeyFrame(Duration.seconds(0), event -> actionVBox.getChildren().add(loseLabel)),
-                    new KeyFrame(Duration.seconds(1), event -> gameOver(mainStackPane))
+                    new KeyFrame(Duration.seconds(1), event -> gameOver(gameBorderPane))
             );
             timeline.play();
         } else {
@@ -572,7 +450,7 @@ public class GameInterfaceController implements ChangePane {
 
     public void showHeroStatsDialog() {
         Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(mainStackPane.getScene().getWindow());
+        dialog.initOwner(gameBorderPane.getScene().getWindow());
         dialog.setTitle("Change Statistics");
         FXMLLoader fxmlLoader = getFxmlLoader(dialog, "herostatsdialog.fxml", true, false);
         if (fxmlLoader == null) return;
@@ -593,7 +471,7 @@ public class GameInterfaceController implements ChangePane {
 
     public int showFightDialog(Enemy enemy) {
         Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(mainStackPane.getScene().getWindow());
+        dialog.initOwner(gameBorderPane.getScene().getWindow());
         dialog.setTitle("Fight");
         FXMLLoader fxmlLoader = getFxmlLoader(dialog, "fightinterface.fxml", false, false);
         if (fxmlLoader == null) return -1;
@@ -641,7 +519,7 @@ public class GameInterfaceController implements ChangePane {
 
     @FXML
     public void mainMenu() {
-        changePane(mainStackPane, "mainmenu.fxml");
+        changePane(gameBorderPane, "mainmenu.fxml");
         GameData.getInstance().saveAll();
     }
 
@@ -650,8 +528,8 @@ public class GameInterfaceController implements ChangePane {
         return ChangePane.super.changePane(node, name);
     }
 
-    public void setWorldName(String worldName) {
-        this.worldName = worldName;
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public boolean isEndlessMode() {
@@ -668,5 +546,17 @@ public class GameInterfaceController implements ChangePane {
 
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public GridPane getGameMapGridPane() {
+        return gameMapGridPane;
+    }
+
+    public GridPane getContentMapGridPane() {
+        return contentMapGridPane;
+    }
+
+    public GridPane getPlayerMapGridPane() {
+        return playerMapGridPane;
     }
 }

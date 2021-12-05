@@ -13,6 +13,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -61,13 +63,33 @@ public class MainMenuController extends CreateInterfaceController implements Cha
                 }
             }
         });
+
+        worldsListView.setCellFactory(new Callback<ListView<World>, ListCell<World>>() {
+            @Override
+            public ListCell<World> call(ListView<World> worldListView) {
+                ListCell<World> cell = new ListCell<>() {
+                    @Override
+                    protected void updateItem(World world, boolean empty) {
+                        super.updateItem(world, empty);
+                        if(empty) {
+                            setText(null);
+                        } else {
+                            setText(world.toString());
+                            setFont(new Font("Arial italic", 70));
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
     }
 
     @FXML
     public void play(ActionEvent event) {
         Node node = (Node) event.getSource();
         GameInterfaceController gameInterfaceController = changePane(node, "gameinterface.fxml").getController();
-        gameInterfaceController.setWorldName(worldName);
+        gameInterfaceController.setWorld(GameData.getInstance().findWorld(worldName));
+        gameInterfaceController.start();
     }
 
     @FXML
@@ -117,7 +139,8 @@ public class MainMenuController extends CreateInterfaceController implements Cha
         if(!GameData.getInstance().findWorld(worldName).isStart()) {
             Node node = (Node) event.getSource();
             ModifyInterfaceController modifyInterfaceController = changePane(node, "modifyinterface.fxml").getController();
-            modifyInterfaceController.setWorldName(worldName);
+            modifyInterfaceController.setWorld(GameData.getInstance().findWorld(worldName));
+            modifyInterfaceController.start();
         } else {
             messageLabel.setText("You can't modify this world, because it has already started!");
         }

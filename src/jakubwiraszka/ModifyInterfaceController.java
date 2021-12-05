@@ -22,10 +22,7 @@ import java.util.Optional;
 
 public class ModifyInterfaceController extends GameInterfaceController {
 
-    private String worldName;
     private World world;
-    @FXML
-    private StackPane mainStackPane;
     @FXML
     private BorderPane mainBorderPane;
     @FXML
@@ -56,22 +53,14 @@ public class ModifyInterfaceController extends GameInterfaceController {
     private Slider zoomSlider;
 
     public void initialize() {
-
-        mainBorderPane.setOpacity(0.1);
     }
 
-    @FXML
     public void start() {
-        mainStackPane.getChildren().remove(enterButton);
-        mainBorderPane.setOpacity(1);
-
-        this.world = GameData.getInstance().findWorld(worldName);
-
         locationsListView.setItems(world.getLocations());
         enemiesListView.setItems(world.getEnemies());
         treasuresListView.setItems(world.getTreasures());
 
-        createMap(world, gameMapGridPane, contentMapGridPane, playerMapGridPane, false);
+        CreateMap.createMap(world, gameMapGridPane, contentMapGridPane, playerMapGridPane, false);
 
         createContextMenu(enemyContextMenu, enemiesListView);
         createContextMenu(treasureContextMenu, treasuresListView);
@@ -134,7 +123,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
 
                     } else {
                         for (Location removedLocation : change.getRemoved()) {
-                            getImageView(gameMapGridPane, removedLocation.getPosition().getX(), removedLocation.getPosition().getY()).setImage(new Image(ICONS_LOC + "Unknown.png"));
+                            getImageView(gameMapGridPane, removedLocation.getPosition().getX(), removedLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Unknown.png"));
                         }
                         for (Location addedLocation : change.getAddedSubList()) {
                             locationsListView.getSelectionModel().select(addedLocation);
@@ -148,11 +137,11 @@ public class ModifyInterfaceController extends GameInterfaceController {
             @Override
             public void changed(ObservableValue<? extends Location> observableValue, Location location, Location newLocation) {
                 if(newLocation != null) {
-                    getImageView(playerMapGridPane, newLocation.getPosition().getX(), newLocation.getPosition().getY()).setImage(new Image(ICONS_LOC + "Player.png"));
+                    getImageView(playerMapGridPane, newLocation.getPosition().getX(), newLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
                     locationNameLabel.setText(newLocation.getName());
                     locationDescriptionLabel.setText(newLocation.getDescription());
                     if(location != null) {
-                        getImageView(playerMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(ICONS_LOC + "Nothing.png"));
+                        getImageView(playerMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
                     }
                 }
             }
@@ -171,7 +160,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
                             System.out.println(removedEnemy.getId() + " was removed");
                             Position position = removedEnemy.getPosition();
                             if(position.getX() != -1 && position.getY() != -1) {
-                                getImageView(contentMapGridPane, position.getX(), position.getY()).setImage(new Image(ICONS_LOC + "Nothing.png"));
+                                getImageView(contentMapGridPane, position.getX(), position.getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
                             }
                         }
                         for (LocationContent addedEnemy : change.getAddedSubList()) {
@@ -189,7 +178,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
     @FXML
     public void showNewEnemyDialog() {
         Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(mainStackPane.getScene().getWindow());
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
         dialog.setTitle("Add New Enemy");
         dialog.setHeaderText("Use this dialog to create a new enemy");
         FXMLLoader fxmlLoader = getFxmlLoader(dialog, "newenemydialog.fxml", true, true);
@@ -198,7 +187,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             NewEnemyDialogController controller = fxmlLoader.getController();
-            controller.setWorldName(worldName);
+            controller.setWorld(world);
             Enemy newEnemy = controller.newEnemy();
         } else {
             System.out.println("Cancel Pressed");
@@ -208,7 +197,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
     @FXML
     public void showNewTreasureDialog() {
         Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(mainStackPane.getScene().getWindow());
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
         dialog.setTitle("Add New Treasure");
         dialog.setHeaderText("Use this dialog to create a new treasure");
         FXMLLoader fxmlLoader = getFxmlLoader(dialog, "newtreasuredialog.fxml", true, true);
@@ -217,7 +206,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             NewTreasureDialogController controller = fxmlLoader.getController();
-            controller.setWorldName(worldName);
+            controller.setWorld(world);
             Treasure newTreasure = controller.newTreasure();
             treasuresListView.getSelectionModel().select(newTreasure);
         } else {
@@ -227,13 +216,13 @@ public class ModifyInterfaceController extends GameInterfaceController {
 
     public void showEditEnemyDialog(Enemy enemy) {
         Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(mainStackPane.getScene().getWindow());
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
         dialog.setTitle("Edit Enemy");
         dialog.setHeaderText("Use this dialog to edit enemy");
         FXMLLoader fxmlLoader = getFxmlLoader(dialog, "newenemydialog.fxml", true, true);
         if (fxmlLoader == null) return;
         NewEnemyDialogController controller = fxmlLoader.getController();
-        controller.setWorldName(worldName);
+        controller.setWorld(world);
         controller.setNameTextField(enemy.getName());
         controller.setHealthSpinnerValue(enemy.getStatistics().getHealthValue());
         controller.setPowerSpinnerValue(enemy.getStatistics().getPower());
@@ -249,13 +238,13 @@ public class ModifyInterfaceController extends GameInterfaceController {
 
     public void showEditTreasureDialog(Treasure treasure) {
         Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(mainStackPane.getScene().getWindow());
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
         dialog.setTitle("Edit Treasure");
         dialog.setHeaderText("Use this dialog to edit treasure");
         FXMLLoader fxmlLoader = getFxmlLoader(dialog, "newtreasuredialog.fxml", true, true);
         if (fxmlLoader == null) return;
         NewTreasureDialogController controller = fxmlLoader.getController();
-        controller.setWorldName(worldName);
+        controller.setWorld(world);
         controller.setNameTextField(treasure.getName());
         controller.setRadioButton(treasure.getContent().getStatistic());
         controller.setValueSpinner(treasure.getContent().getValue());
@@ -348,7 +337,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
             } else if(locationContent instanceof Treasure) {
                 if(world.removeTreasure((Treasure) locationContent)) {
                     treasuresListView.getItems().remove(locationContent);
-                    getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(ICONS_LOC + "Nothing.png"));
+                    getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
                     return true;
                 } else {
                     return false;
@@ -366,7 +355,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
         alert.setContentText("Are you sure? Press OK to confirm, or cancel to Back out.");
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
-            getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(ICONS_LOC + "Nothing.png"));
+            getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
             HashMap<String, Position> exits = location.getExits();
             if (world.removeLocation(location)) {
                 locationsListView.getItems().remove(location);
@@ -374,7 +363,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
                     if(!key.equals("Q")) {
                         Position position = exits.get(key);
                         Location nearLocation = world.findLocation(position, world.getLocations());
-                        modifyMapCell(nearLocation, getImageView(gameMapGridPane, position.getX(), position.getY()), false);
+                        CreateMap.modifyMapCell(nearLocation, getImageView(gameMapGridPane, position.getX(), position.getY()), false);
                     }
                 }
                 return true;
@@ -392,19 +381,8 @@ public class ModifyInterfaceController extends GameInterfaceController {
         }
     }
 
-    @Override
-    public void modifyMapCell(Location location, ImageView imageView, boolean readVisited) {
-        super.modifyMapCell(location, imageView, readVisited);
-    }
-
-    @Override
-    public void modifyContentCell(Location location, ImageView imageView, World world, boolean readVisited) {
-        super.modifyContentCell(location, imageView, world, readVisited);
-    }
-
-    @Override
-    void createMap(World world, GridPane gameMapGridPane, GridPane contentMapGridPane, GridPane playerMapGridPane, boolean readVisited) {
-        super.createMap(world, gameMapGridPane, contentMapGridPane, playerMapGridPane, readVisited);
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     @Override
@@ -425,9 +403,5 @@ public class ModifyInterfaceController extends GameInterfaceController {
     @Override
     public FXMLLoader changePane(Node node, String name) {
         return super.changePane(node, name);
-    }
-
-    public void setWorldName(String worldName) {
-        this.worldName = worldName;
     }
 }

@@ -72,7 +72,7 @@ public class CreateInterfaceController extends ModifyInterfaceController {
         }
         if(wasCreated) {
             this.world = world;
-            createMap(this.world, gameMapGridPane, contentMapGridPane, playerMapGridPane, false);
+            CreateMap.createMap(this.world, gameMapGridPane, contentMapGridPane, playerMapGridPane, false);
             emptyButton.setDisable(true);
             randomButton.setDisable(true);
         }
@@ -111,11 +111,6 @@ public class CreateInterfaceController extends ModifyInterfaceController {
     @Override
     public FXMLLoader getFxmlLoader(Dialog<ButtonType> dialog, String name, boolean okButton, boolean cancelButton) {
         return super.getFxmlLoader(dialog, name, okButton, cancelButton);
-    }
-
-    @Override
-    void createMap(World world, GridPane gameMapGridPane, GridPane contentMapGridPane, GridPane playerMapGridPane, boolean readVisited) {
-        super.createMap(world, gameMapGridPane, contentMapGridPane, playerMapGridPane, readVisited);
     }
 
     @Override

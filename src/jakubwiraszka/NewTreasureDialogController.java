@@ -1,9 +1,6 @@
 package jakubwiraszka;
 
-import jakubwiraszka.gamefiles.Enemy;
-import jakubwiraszka.gamefiles.GameData;
-import jakubwiraszka.gamefiles.Statistics;
-import jakubwiraszka.gamefiles.Treasure;
+import jakubwiraszka.gamefiles.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
@@ -11,7 +8,7 @@ import javafx.scene.control.TextField;
 
 public class NewTreasureDialogController {
 
-    private String worldName;
+    private World world;
     @FXML
     private TextField nameTextField;
     @FXML
@@ -34,7 +31,7 @@ public class NewTreasureDialogController {
         int value = valueSpinner.getValue();
 
         Treasure newTreasure = new Treasure(name, new Treasure.Content(statistic, value), 1);
-        GameData.getInstance().findWorld(worldName).createTreasure(newTreasure);
+        world.createTreasure(newTreasure);
         return newTreasure;
     }
 
@@ -52,8 +49,8 @@ public class NewTreasureDialogController {
         treasure.getContent().setStatistic(statistic);
     }
 
-    public void setWorldName(String worldName) {
-        this.worldName = worldName;
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public void setNameTextField(String name) {

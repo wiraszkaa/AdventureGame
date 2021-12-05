@@ -4,8 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane fx:id="mainStackPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.2" fx:controller="jakubwiraszka.GameInterfaceController">
-    <BorderPane fx:id="gameBorderPane">
+<BorderPane fx:id="gameBorderPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.2" fx:controller="jakubwiraszka.GameInterfaceController">
         <top>
             <VBox alignment="CENTER" spacing="10">
                 <MenuBar>
@@ -123,5 +122,3 @@
             </VBox>
         </bottom>
     </BorderPane>
-    <Button fx:id="enterButton" onAction="#start" text="Press to start!" />
-</StackPane>
