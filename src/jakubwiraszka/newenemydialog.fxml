@@ -1,0 +1,21 @@
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Spinner?>
+
+<DialogPane fx:controller="jakubwiraszka.NewEnemyDialogController"
+            xmlns:fx="http://javafx.com/fxml">
+    <content>
+        <GridPane vgap="10" hgap="10">
+            <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="nameTextField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="Health:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <Spinner fx:id="healthSpinner" min="1" max="50" GridPane.rowIndex="1" GridPane.columnIndex="1" editable="true"/>
+            <Label text="Power:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <Spinner fx:id="powerSpinner" min="0" max="20" GridPane.rowIndex="2" GridPane.columnIndex="1" editable="true"/>
+            <Label text="Agility:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <Spinner fx:id="agilitySpinner" min="0" max="20" GridPane.rowIndex="3" GridPane.columnIndex="1" editable="true"/>
+        </GridPane>
+    </content>
+</DialogPane>
