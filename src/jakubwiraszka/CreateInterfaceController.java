@@ -4,8 +4,6 @@ import jakubwiraszka.gamefiles.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -47,16 +45,18 @@ public class CreateInterfaceController extends ModifyInterfaceController {
     private Slider zoomSlider;
 
     public void initialize() {
-        this.locationName = GameData.getInstance().getRandomLocationName();
-        this.locationDescription = GameData.getInstance().getRandomLocationDescription();
-        this.locationContent = GameData.getInstance().getRandomLocationContent();
+        this.locationName = GameData.getRandomLocationName();
+        this.locationDescription = GameData.getRandomLocationDescription();
+        this.locationContent = GameData.getRandomLocationContent();
 
         makeZoomable(gameMapGridPane, contentMapGridPane, playerMapGridPane, zoomSlider);
 
+        nameTextField.setText("World");
         heightSpinner.getValueFactory().setValue(15);
         widthSpinner.getValueFactory().setValue(15);
     }
 
+    @FXML
     public void create(ActionEvent event) {
         String name = nameTextField.getText();
         int height = heightSpinner.getValue();
@@ -79,28 +79,26 @@ public class CreateInterfaceController extends ModifyInterfaceController {
 
     @FXML
     public void newWorld() {
-        changePane(mainBorderPane, "createinterface.fxml");
+        NewWindow.changePane(mainBorderPane, "createinterface.fxml");
     }
 
     @FXML
     public void saveWorld() {
-        MainMenuController mainMenuController = changePane(mainBorderPane, "mainmenu.fxml").getController();
+        MainMenuController mainMenuController = NewWindow.changePane(mainBorderPane, "mainmenu.fxml").getController();
         mainMenuController.addWorld(world);
     }
 
     @FXML
     public boolean showCreateHeroDialog() {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(mainBorderPane.getScene().getWindow());
-        dialog.setTitle("Create Hero");
-        dialog.setHeaderText("Use this dialog to create hero");
-        FXMLLoader fxmlLoader = getFxmlLoader(dialog, "createherodialog.fxml", true,  false);
-        if (fxmlLoader == null) return false;
-
+        NewWindow newDialog = new NewWindow();
+        Dialog<ButtonType> dialog = newDialog.showDialog(mainBorderPane, "Create Hero", "Use this dialog to create hero", "newenemydialog.fxml", true, false);
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            CreateHeroDialogController controller = fxmlLoader.getController();
-            this.hero = controller.processResults();
+            NewEnemyDialogController controller = newDialog.getFxmlLoader().getController();
+            controller.setHealthSpinnerValue(10);
+            controller.setPowerSpinnerValue(5);
+            controller.setAgilitySpinnerValue(4);
+            this.hero = controller.createHero();
             return true;
         } else {
             return false;
@@ -108,17 +106,7 @@ public class CreateInterfaceController extends ModifyInterfaceController {
     }
 
     @Override
-    public FXMLLoader getFxmlLoader(Dialog<ButtonType> dialog, String name, boolean okButton, boolean cancelButton) {
-        return super.getFxmlLoader(dialog, name, okButton, cancelButton);
-    }
-
-    @Override
     void makeZoomable(GridPane gameMapGridPane, GridPane contentMapGridPane, GridPane playerMapGridPane, Slider zoomSlider) {
         super.makeZoomable(gameMapGridPane, contentMapGridPane, playerMapGridPane, zoomSlider);
-    }
-
-    @Override
-    public FXMLLoader changePane(Node node, String name) {
-        return super.changePane(node, name);
     }
 }

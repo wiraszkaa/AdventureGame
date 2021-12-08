@@ -4,7 +4,6 @@ import jakubwiraszka.gamefiles.*;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -15,7 +14,7 @@ import javafx.util.Callback;
 import java.util.Objects;
 import java.util.Optional;
 
-public class MainMenuController extends CreateInterfaceController implements ChangePane {
+public class MainMenuController extends CreateInterfaceController {
     private String worldName;
 
     @FXML
@@ -32,7 +31,7 @@ public class MainMenuController extends CreateInterfaceController implements Cha
             }
         });
 
-        worldsListView.setItems(GameData.getInstance().getWorlds());
+        worldsListView.setItems(GameData.getWorlds());
         worldsListView.getSelectionModel().selectFirst();
 
         worldsListView.getItems().addListener((ListChangeListener<World>) change -> {
@@ -75,21 +74,18 @@ public class MainMenuController extends CreateInterfaceController implements Cha
     @FXML
     public void play(ActionEvent event) {
         Node node = (Node) event.getSource();
-        GameInterfaceController gameInterfaceController = changePane(node, "gameinterface.fxml").getController();
+        GameInterfaceController gameInterfaceController = NewWindow.changePane(node, "gameinterface.fxml").getController();
         gameInterfaceController.setWorld(GameData.findWorld(worldName));
         gameInterfaceController.start();
     }
 
     @FXML
     public void startNew(ActionEvent event) {
-        Dialog<ButtonType> heroDialog = new Dialog<>();
-        heroDialog.initOwner(mainBorderPane.getScene().getWindow());
-        heroDialog.setTitle("Create Hero");
-        FXMLLoader heroFxmlLoader = getFxmlLoader(heroDialog, "herostatsdialog.fxml", true, false);
-        if(heroFxmlLoader == null) return;
+        NewWindow newDialog = new NewWindow();
+        Dialog<ButtonType> dialog = newDialog.showDialog(mainBorderPane, "Create Hero", "", "herostatsdialog.fxml", true, false);
         Hero hero = new Hero("Hero", new Statistics(4, 2, 0));
         hero.getLevel().setPointsToSpend(10);
-        HeroStatsDialogController heroStatsDialogController = heroFxmlLoader.getController();
+        HeroStatsDialogController heroStatsDialogController = newDialog.getFxmlLoader().getController();
         heroStatsDialogController.setHero(hero);
         heroStatsDialogController.setHealthLabel("" + hero.getMaxHealth());
         heroStatsDialogController.setPowerLabel("" + hero.getStatistics().getPower());
@@ -99,26 +95,23 @@ public class MainMenuController extends CreateInterfaceController implements Cha
         GridPane.setConstraints(nameTextField, 0, 0);
         GridPane.setColumnSpan(nameTextField, 4);
         gridPane.getChildren().add(nameTextField);
-        heroDialog.showAndWait();
+        Optional<ButtonType> heroDialogResult = dialog.showAndWait();
         hero.setName(nameTextField.getText());
-
-        Dialog<ButtonType> difficultyDialog = new Dialog<>();
-        difficultyDialog.initOwner(mainBorderPane.getScene().getWindow());
-        difficultyDialog.setTitle("Choose Difficulty");
-        FXMLLoader fxmlLoader = getFxmlLoader(difficultyDialog, "difficultydialog.fxml", true, false);
-        if (fxmlLoader == null) return;
-        DifficultyDialogController controller = fxmlLoader.getController();
-        Optional<ButtonType> result = difficultyDialog.showAndWait();
-        Difficulty difficulty = null;
-        String name = "";
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            difficulty = controller.getDifficulty();
-            name = controller.getName();
-        } else {
-            System.out.println("Cancel Pressed");
-        }
-        if(difficulty != null && !name.equals("")) {
-            newEndlessWorld(event, difficulty, name, hero);
+        if(heroDialogResult.isPresent() && heroDialogResult.get() == ButtonType.OK) {
+            dialog = newDialog.showDialog(mainBorderPane, "Choose Difficulty", "", "difficultydialog.fxml", true, false);
+            DifficultyDialogController controller = newDialog.getFxmlLoader().getController();
+            Optional<ButtonType> result = dialog.showAndWait();
+            Difficulty difficulty = null;
+            String name = "";
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                difficulty = controller.getDifficulty();
+                name = controller.getName();
+            } else {
+                System.out.println("Cancel Pressed");
+            }
+            if (difficulty != null && !name.equals("")) {
+                newEndlessWorld(event, difficulty, name, hero);
+            }
         }
     }
 
@@ -126,7 +119,7 @@ public class MainMenuController extends CreateInterfaceController implements Cha
     public void modify(ActionEvent event) {
         if(!Objects.requireNonNull(GameData.findWorld(worldName)).isStart()) {
             Node node = (Node) event.getSource();
-            ModifyInterfaceController modifyInterfaceController = changePane(node, "modifyinterface.fxml").getController();
+            ModifyInterfaceController modifyInterfaceController = NewWindow.changePane(node, "modifyinterface.fxml").getController();
             modifyInterfaceController.setWorld(GameData.findWorld(worldName));
             modifyInterfaceController.start();
         } else {
@@ -137,12 +130,12 @@ public class MainMenuController extends CreateInterfaceController implements Cha
     @FXML
     public void create(ActionEvent event) {
         Node node = (Node) event.getSource();
-        changePane(node, "createinterface.fxml");
+        NewWindow.changePane(node, "createinterface.fxml");
     }
 
     public void addWorld(World world) {
         if(findWorld(world.getName()) == null) {
-            GameData.getInstance().getWorlds().add(world);
+            GameData.getWorlds().add(world);
         }
     }
 
@@ -153,16 +146,6 @@ public class MainMenuController extends CreateInterfaceController implements Cha
             }
         }
         return null;
-    }
-
-    @Override
-    public FXMLLoader changePane(Node node, String name) {
-        return super.changePane(node, name);
-    }
-
-    @Override
-    public FXMLLoader getFxmlLoader(Dialog<ButtonType> dialog, String name, boolean okButton, boolean cancelButton) {
-        return super.getFxmlLoader(dialog, name, okButton, cancelButton);
     }
 
     @Override

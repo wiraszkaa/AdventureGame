@@ -1,0 +1,12 @@
+Haunted Forest	It's really moist and dark in here.	Ghost
+Ruins	Long time ago it was someones home.	Skeleton
+Cave	All dark but there's light at the end.	Bear
+Old Castle	Some voices can still be heard.	Awoken King
+Weird Stone	It's monumental and covered with glowing carvings.	Witch
+Strange Pond	Seems very deep but somehow invites to swim in it.	Siren
+Ruined Building	Something macabric happened here.	Zombie
+Small Canyon	Looks like a good place for an ambush.	Robbers
+Pavement	Old as great Rome.	Rat
+Just a road	Simple road. Nothing to see here.	Thief
+
+

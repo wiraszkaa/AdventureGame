@@ -1,6 +1,7 @@
 package jakubwiraszka;
 
 import jakubwiraszka.gamefiles.Enemy;
+import jakubwiraszka.gamefiles.Hero;
 import jakubwiraszka.gamefiles.Statistics;
 import jakubwiraszka.gamefiles.World;
 import javafx.fxml.FXML;
@@ -18,6 +19,15 @@ public class NewEnemyDialogController {
     private Spinner<Integer> powerSpinner;
     @FXML
     private Spinner<Integer> agilitySpinner;
+
+    public Hero createHero() {
+        String name = nameTextField.getText().trim();
+        int health = healthSpinner.getValue();
+        int power = powerSpinner.getValue();
+        int agility = agilitySpinner.getValue();
+
+        return new Hero(name,  new Statistics(health, power, agility));
+    }
 
     public Enemy newEnemy() {
         String name = nameTextField.getText().trim();
@@ -42,6 +52,10 @@ public class NewEnemyDialogController {
 
     public void setNameTextField(String name) {
         nameTextField.setText(name);
+    }
+
+    public void blockNameTextField() {
+        nameTextField.setEditable(false);
     }
 
     public void setHealthSpinnerValue(int health) {

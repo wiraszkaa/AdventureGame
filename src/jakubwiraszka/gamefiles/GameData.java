@@ -5,19 +5,14 @@ import javafx.collections.ObservableList;
 import java.util.*;
 
 public class GameData {
-    private static GameData instance = new GameData();
-    public static final String PATH = "C:\\Users\\Wirac\\OneDrive\\Dokumenty\\My Games\\Adventure\\";
+    public static final String PATH = "D:\\Projekty\\Java\\AdventureFX\\saves\\";
 
     private static ObservableList<World> worlds;
     private static final ObservableList<String> randomLocationName = FXCollections.observableArrayList();
     private static final ObservableList<String> randomLocationDescription = FXCollections.observableArrayList();
     private static final ObservableList<String> randomLocationContent = FXCollections.observableArrayList();
 
-    public static GameData getInstance() {
-        return instance;
-    }
-
-    public ObservableList<World> getWorlds() {
+    public static ObservableList<World> getWorlds() {
         return worlds;
     }
 
@@ -62,7 +57,7 @@ public class GameData {
                     content.append(i.save());
                 }
             }
-            String path = "C:\\Users\\Wirac\\OneDrive\\Dokumenty\\My Games\\Adventure\\" + pathWorldName + ".txt";
+            String path = PATH + pathWorldName + ".txt";
             if (FileEditor.write(content.toString(), path)) {
                 System.out.println(pathWorldName + " successfully saved");
             } else {
@@ -108,8 +103,8 @@ public class GameData {
             hero.setMaxHealth(maxHealth);
 
             String worldName = worldParameters[0];
-            int height = Integer.parseInt(worldParameters[1]) + 1;
-            int width = Integer.parseInt(worldParameters[2]) + 1;
+            int height = Integer.parseInt(worldParameters[1]);
+            int width = Integer.parseInt(worldParameters[2]);
             boolean isStarted = Boolean.parseBoolean(worldParameters[3]);
             worlds.add(new World(worldName, height, width, hero));
             World world = findWorld(worldName);
@@ -153,7 +148,7 @@ public class GameData {
             }
         }
 
-        String content = FileEditor.read(GameData.PATH + "randomLocations.txt");
+        String content = FileEditor.read("D:\\Projekty\\Java\\AdventureFX\\resources\\randomLocations.txt");
         if(content != null) {
             String[] randomLocations = content.split("\n");
             for (String randomLocation : randomLocations) {
@@ -251,15 +246,15 @@ public class GameData {
         return null;
     }
 
-    public ObservableList<String> getRandomLocationName() {
+    public static ObservableList<String> getRandomLocationName() {
         return randomLocationName;
     }
 
-    public ObservableList<String> getRandomLocationDescription() {
+    public static ObservableList<String> getRandomLocationDescription() {
         return randomLocationDescription;
     }
 
-    public ObservableList<String> getRandomLocationContent() {
+    public static ObservableList<String> getRandomLocationContent() {
         return randomLocationContent;
     }
 }

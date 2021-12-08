@@ -57,6 +57,10 @@ public class NewTreasureDialogController {
         nameTextField.setText(name);
     }
 
+    public void blockNameTextField() {
+        nameTextField.setEditable(false);
+    }
+
     public void setRadioButton(String statistic) {
         if(statistic.equals("Power")) {
             powerRadioButton.selectedProperty().set(true);

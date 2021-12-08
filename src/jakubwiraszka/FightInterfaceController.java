@@ -1,6 +1,5 @@
 package jakubwiraszka;
 
-import jakubwiraszka.Randomize;
 import jakubwiraszka.fight.Attack;
 import jakubwiraszka.fight.ChargedAttack;
 import jakubwiraszka.fight.QuickAttack;
@@ -20,7 +19,7 @@ import javafx.util.Duration;
 
 import java.util.Random;
 
-public class FightInterfaceController implements Randomize {
+public class FightInterfaceController {
     private Hero hero;
     private Enemy enemy;
     private Attack attack;
@@ -77,17 +76,11 @@ public class FightInterfaceController implements Randomize {
             attack = new ChargedAttack();
         }
 
-        double hitChance = attack.getHitChance() + (double) (hero.getStatistics().getAgility() - enemy.getStatistics().getAgility()) / 50.0;
-        boolean heroHit = randomize(hitChance, 100);
-        double heroAttackValue = hero.getStatistics().getPower() * attack.getPower();
-        int heroDeviation = Math.max((int) (heroAttackValue / 5), 1);
-        heroAttackValue += random.nextInt(heroDeviation * 2) - heroDeviation;
-
         if(charge >= attack.getCharge()) {
-            if (heroHit) {
-                Label heroAttack = new Label("You attack " + enemy.getName() + " for " + (int) heroAttackValue + " with " + attack.toString());
+            double damage = attack.attack(hero, enemy);
+            if (damage != -1) {
+                Label heroAttack = new Label("You attack " + enemy.getName() + " for " + damage + " with " + attack.toString());
                 actionVBox.getChildren().add(heroAttack);
-                enemy.changeHealth((int) -heroAttackValue);
                 enemyHealthLabel.setText("" + enemy.getStatistics().getHealthValue());
             } else {
                 Label heroMiss = new Label("Unfortunately you miss");
@@ -121,16 +114,9 @@ public class FightInterfaceController implements Randomize {
                 enemyAttackType = new StrongAttack();
             }
 
-
-            double enemyHitChance = enemyAttackType.getHitChance() - (double) (hero.getStatistics().getAgility() - enemy.getStatistics().getAgility()) / 50.0;
-            boolean enemyHit = randomize(enemyHitChance, 100);
-            double enemyAttackValue = enemy.getStatistics().getPower() * enemyAttackType.getPower();
-            int enemyDeviation = Math.max((int) (enemyAttackValue / 5), 1);
-            enemyAttackValue += random.nextInt(enemyDeviation * 2) - enemyDeviation;
-
-            if(enemyHit) {
-                Label enemyAttack = new Label(enemy.getName() + " attacks You for " + (int) enemyAttackValue + " with " + enemyAttackType);
-                hero.changeHealth((int) -enemyAttackValue);
+            double enemyDamage = attack.attack(enemy, hero);
+            if(enemyDamage != -1) {
+                Label enemyAttack = new Label(enemy.getName() + " attacks You for " + enemyDamage + " with " + enemyAttackType);
                 createDelay(1, event -> {
                     actionVBox.getChildren().add(enemyAttack);
                     heroHealthLabel.setText("" + hero.getStatistics().getHealthValue());
@@ -231,10 +217,5 @@ public class FightInterfaceController implements Randomize {
 
     public void setEnemyNameLabel(String text) {
         enemyNameLabel.setText(text);
-    }
-
-    @Override
-    public boolean randomize(double chance, int iterations) {
-        return Randomize.super.randomize(chance, iterations);
     }
 }

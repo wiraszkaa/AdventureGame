@@ -91,7 +91,7 @@
             <VBox>
                 <HBox spacing="10">
                     <Label text="Change map zoom:"/>
-                    <Slider fx:id="zoomSlider" majorTickUnit="0.2" max="1.0" maxWidth="500.0" min="0.1" minorTickCount="2" prefWidth="100" showTickMarks="true" value="1.0" />
+                    <Slider fx:id="zoomSlider" majorTickUnit="0.2" max="1.0" maxWidth="500.0" min="0.1" minorTickCount="2" prefWidth="500.0" showTickMarks="true" value="1.0" />
                 </HBox>
                 <HBox fx:id="statsHBox" spacing="10">
                     <Label text="Statistics: ">

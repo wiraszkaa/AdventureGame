@@ -2,9 +2,9 @@ package jakubwiraszka;
 
 import java.util.Random;
 
-public interface Randomize {
+public class Randomize {
 
-    default boolean randomize(double chance, int iterations) {
+    public static boolean randomize(double chance, int iterations) {
         Random random = new Random();
         int counter = 0;
         for (int i = 0; i < iterations; i++) {

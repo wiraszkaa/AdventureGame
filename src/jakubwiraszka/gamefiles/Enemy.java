@@ -15,7 +15,7 @@ public class Enemy implements LocationContent {
         this.setPosition(new Position(-1, -1));
     }
 
-    public void changeHealth(int value) {
+    public void changeHealth(double value) {
         statistics.setHealth(statistics.getHealthValue() + value);
     }
 

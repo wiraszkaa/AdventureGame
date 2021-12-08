@@ -13,18 +13,19 @@ public class World {
     private int enemyNumber;
     private final ObservableList<LocationContent> treasures;
     private int treasureNumber;
-    private final Portal portal;
     private final int height;
     private final int width;
     private boolean start = false;
     private final Hero hero;
+    private final Portal portal;
+    private final Enemy boss;
 
     public World(String name, int height, int width, Hero hero) {
         this.name = name;
         System.out.println("Set name to " + name);
-        this.height = height - 1;
+        this.height = height;
         System.out.println("Set " + name + "'s height to " + height);
-        this.width = width - 1;
+        this.width = width;
         System.out.println("Set " + name + "'s width to " + width);
         this.visitedLocations = FXCollections.observableArrayList();
         this.locations = FXCollections.observableArrayList();
@@ -33,19 +34,18 @@ public class World {
         locations.add(start);
         addVisited(start.getPosition());
         System.out.println("Set Starting location to position " + start.getPosition().toString());
-        this.portal = new Portal("Portal");
         this.enemies = FXCollections.observableArrayList();
-        Enemy enemy = new Enemy("Boss", new Statistics(1, 0, 0));
-        createEnemy(enemy);
         this.treasures = FXCollections.observableArrayList();
         this.hero = hero;
         this.hero.setPosition(start.getPosition());
+        this.portal = new Portal("Portal");
+        this.boss = new Enemy("Boss", new Statistics(1, 0, 0));
     }
 
     public void createRandom(List<String> locationName, List<String> locationDescription, List<String> locationContent, Difficulty difficulty) {
         Random random = new Random();
 
-        double value = (double) (random.nextInt(4) + 5) / 10 * (double) (height + 1) * (double) (width + 1);
+        double value = (double) (random.nextInt(4) + 5) / 10 * (double) height * (double) width;
         int operations = (int) (value);
         double level = 1;
         switch (difficulty) {
@@ -67,28 +67,34 @@ public class World {
             Location newLocation;
             int index = random.nextInt(locationName.size());
             Location location = locations.get(random.nextInt(locations.size()));
+            int locationX = location.getPosition().getX();
+            int locationY = location.getPosition().getY();
             if (random.nextInt(2) == 0) {
                 int y = -1;
-                if (findLocation(location.getPosition().getX(), (location.getPosition().getY() + 1), locations) == null) {
-                    y = location.getPosition().getY() + 1;
-                } else if (findLocation(location.getPosition().getX(), (location.getPosition().getY() - 1), locations) == null) {
-                    y = location.getPosition().getY() - 1;
+                if (findLocation(locationX, (locationY + 1), locations) == null) {
+                    if(locationY + 1 <= height) {
+                        y = locationY + 1;
+                    }
+                } else if (findLocation(locationX, (locationY - 1), locations) == null) {
+                    y = locationY - 1;
                 }
-                if (y != -1) {
-                    newLocation = new Location(locationName.get(index), locationDescription.get(index), new Position(location.getPosition().getX(), y));
+                if (y >= 0) {
+                    newLocation = new Location(locationName.get(index), locationDescription.get(index), new Position(locationX, y));
                     if (addLocation(newLocation, false)) {
                         i++;
                     }
                 }
             } else {
                 int x = -1;
-                if (findLocation(location.getPosition().getX() + 1, (location.getPosition().getY()), locations) == null) {
-                    x = location.getPosition().getX() + 1;
-                } else if (findLocation(location.getPosition().getX() - 1, (location.getPosition().getY()), locations) == null) {
-                    x = location.getPosition().getX() - 1;
+                if (findLocation(locationX + 1, (locationY), locations) == null) {
+                    if(locationX + 1 <= width) {
+                        x = locationX + 1;
+                    }
+                } else if (findLocation(locationX - 1, (locationY), locations) == null) {
+                    x = locationX - 1;
                 }
-                if (x != -1) {
-                    newLocation = new Location(locationName.get(index), locationDescription.get(index), new Position(x, location.getPosition().getY()));
+                if (x >= 0) {
+                    newLocation = new Location(locationName.get(index), locationDescription.get(index), new Position(x, locationY));
                     if (addLocation(newLocation, false)) {
                         i++;
                     }
@@ -246,21 +252,7 @@ public class World {
 
     private boolean checkDeletedLocation(Location location) {
         if(findLocation(location.getPosition(), locations) != null) {
-            ArrayList<Location> nearLocations = new ArrayList<>();
-            for (Location i : locations) {
-                if ((i.getPosition().getX() == location.getPosition().getX()) && (i.getPosition().getY() - location.getPosition().getY()) == 1) { //UP - location
-                    nearLocations.add(i);
-                }
-                if ((i.getPosition().getX() == location.getPosition().getX()) && (i.getPosition().getY() - location.getPosition().getY()) == -1) { //DOWN
-                    nearLocations.add(i);
-                }
-                if ((i.getPosition().getY() == location.getPosition().getY()) && (i.getPosition().getX() - location.getPosition().getX()) == 1) { //LEFT
-                    nearLocations.add(i);
-                }
-                if ((i.getPosition().getY() == location.getPosition().getY()) && (i.getPosition().getX() - location.getPosition().getX()) == -1) { //RIGHT
-                    nearLocations.add(i);
-                }
-            }
+            ArrayList<Location> nearLocations = getNearLocations(location);
             ObservableList<Location> locationsToCheck = FXCollections.observableArrayList();
             for (Location i : locations) {
                 Location copyLocation = new Location(i.getName(), i.getDescription(), i.getPosition());
@@ -278,6 +270,25 @@ public class World {
         } else {
             return false;
         }
+    }
+
+    private ArrayList<Location> getNearLocations(Location location) {
+        ArrayList<Location> nearLocations = new ArrayList<>();
+        for (Location i : locations) {
+            if ((i.getPosition().getX() == location.getPosition().getX()) && (i.getPosition().getY() - location.getPosition().getY()) == 1) { //UP - location
+                nearLocations.add(i);
+            }
+            if ((i.getPosition().getX() == location.getPosition().getX()) && (i.getPosition().getY() - location.getPosition().getY()) == -1) { //DOWN
+                nearLocations.add(i);
+            }
+            if ((i.getPosition().getY() == location.getPosition().getY()) && (i.getPosition().getX() - location.getPosition().getX()) == 1) { //LEFT
+                nearLocations.add(i);
+            }
+            if ((i.getPosition().getY() == location.getPosition().getY()) && (i.getPosition().getX() - location.getPosition().getX()) == -1) { //RIGHT
+                nearLocations.add(i);
+            }
+        }
+        return nearLocations;
     }
 
     private boolean goToStart(Location location, ObservableList<Location> locations) {
@@ -564,5 +575,9 @@ public class World {
 
     public Hero getHero() {
         return hero;
+    }
+
+    public Enemy getBoss() {
+        return boss;
     }
 }

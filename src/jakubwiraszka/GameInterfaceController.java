@@ -3,10 +3,8 @@ package jakubwiraszka;
 import jakubwiraszka.gamefiles.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -16,12 +14,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
-public class GameInterfaceController implements ChangePane {
+public class GameInterfaceController {
 
     private World world;
     private Location currentLocation;
@@ -126,9 +123,10 @@ public class GameInterfaceController implements ChangePane {
             }
             Location bossLocation = world.findLocation(secondFurthestPosition, world.getLocations());
             if(bossLocation != null) {
-                Enemy enemy = world.findEnemy("Boss0");
+                Enemy enemy = world.getBoss();
                 enemy.getStatistics().setHealth(world.getHero().getMaxHealth() * 2);
                 enemy.getStatistics().setPower(world.getHero().getStatistics().getPower());
+                enemy.getStatistics().setAgility(world.getHero().getStatistics().getAgility());
                 bossLocation.setContent(enemy);
                 System.out.println("Added " + enemy + " to " + bossLocation.getPosition());
             }
@@ -136,7 +134,7 @@ public class GameInterfaceController implements ChangePane {
 
         CreateMap.createMap(world, gameMapGridPane, contentMapGridPane, playerMapGridPane, true);
 
-        getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
+        CreateMap.getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
 
         world.getHero().getLevel().getPointsToSpend().addListener((observableValue, number, newNumber) -> {
             System.out.println("You have " + newNumber.intValue() + " points to spend");
@@ -214,19 +212,19 @@ public class GameInterfaceController implements ChangePane {
         if(position != null) {
             world.getHero().setPosition(position);
 
-            getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
+            CreateMap.getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
 
             if (currentLocation.getContent() == null) {
-                getImageView(contentMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
+                CreateMap.getImageView(contentMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
             } else if (currentLocation.getContent().isTreasure()) {
-                getImageView(contentMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Chest.png"));
+                CreateMap.getImageView(contentMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Chest.png"));
             } else if (currentLocation.getContent().isEnemy()) {
-                getImageView(contentMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Enemy.png"));
+                CreateMap.getImageView(contentMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Enemy.png"));
             }
 
             currentLocation = world.findLocation(position.getX(), position.getY(), world.getLocations());
 
-            getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
+            CreateMap.getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
 
             if (world.allEnemiesDead()) {
                 world.getPortal().setActive(true);
@@ -235,10 +233,10 @@ public class GameInterfaceController implements ChangePane {
             if (world.findVisitedLocation(currentLocation.getPosition()) == null) {
                 world.addVisited(currentLocation.getPosition());
 
-                ImageView mapImageView = getImageView(gameMapGridPane, position.getX(), position.getY());
+                ImageView mapImageView = CreateMap.getImageView(gameMapGridPane, position.getX(), position.getY());
                 CreateMap.modifyMapCell(currentLocation, mapImageView, true);
 
-                ImageView contentImageView = getImageView(contentMapGridPane, position.getX(), position.getY());
+                ImageView contentImageView = CreateMap.getImageView(contentMapGridPane, position.getX(), position.getY());
                 CreateMap.modifyContentCell(currentLocation, contentImageView, true);
 
                 world.getHero().getLevel().addExperience(10);
@@ -292,18 +290,6 @@ public class GameInterfaceController implements ChangePane {
         }
     }
 
-    ImageView getImageView(GridPane gridPane, int x, int y) {
-        ObservableList<Node> children = gridPane.getChildren();
-
-        for (Node node : children) {
-            if (GridPane.getColumnIndex(node) == x && GridPane.getRowIndex(node) == y) {
-                return (ImageView) node;
-            }
-        }
-
-        return null;
-    }
-
     @FXML
     public void contentAppears(ActionEvent e) {
         if (currentLocation.getContent().isEnemy()) {
@@ -314,7 +300,7 @@ public class GameInterfaceController implements ChangePane {
             int value = Math.max(world.getHero().getStatistics().getAgility() - enemy.getStatistics().getAgility(), 0);
 
             if (e.getSource().equals(secondActionButton)) {
-                if ((random.nextInt(11) + value) >= 5) {
+                if ((random.nextInt(11) + value) >= 5 || currentLocation.getContent().equals(world.getBoss())) {
                     unlockButtons();
                     firstActionButton.setDisable(true);
                     secondActionButton.setDisable(true);
@@ -361,7 +347,7 @@ public class GameInterfaceController implements ChangePane {
             }
         } else {
             if(e.getSource().equals(firstActionButton)) {
-                GameData.getInstance().getWorlds().remove(world);
+                GameData.getWorlds().remove(world);
                 newEndlessWorld(e, getDifficulty(), world.getName(), world.getHero());
             } else if (e.getSource().equals(secondActionButton)) {
                 Label leaveLabel = new Label("\nYou leave portal alone");
@@ -376,10 +362,10 @@ public class GameInterfaceController implements ChangePane {
 
     public void newEndlessWorld(ActionEvent event, Difficulty difficulty, String name, Hero hero) {
         World newWorld = new World(name, 15, 15, hero);
-        newWorld.createRandom(GameData.getInstance().getRandomLocationName(), GameData.getInstance().getRandomLocationDescription(), GameData.getInstance().getRandomLocationContent(), difficulty);
-        GameData.getInstance().getWorlds().add(newWorld);
+        newWorld.createRandom(GameData.getRandomLocationName(), GameData.getRandomLocationDescription(), GameData.getRandomLocationContent(), difficulty);
+        GameData.getWorlds().add(newWorld);
         Node node = (Node) event.getSource();
-        GameInterfaceController gameInterfaceController = changePane(node, "gameinterface.fxml").getController();
+        GameInterfaceController gameInterfaceController = NewWindow.changePane(node, "gameinterface.fxml").getController();
         gameInterfaceController.setWorld(newWorld);
         gameInterfaceController.setEndlessMode(true);
         gameInterfaceController.setDifficulty(difficulty);
@@ -430,16 +416,13 @@ public class GameInterfaceController implements ChangePane {
     }
 
     public void gameOver(Node node) {
-        changePane(node, "gameover.fxml");
+        NewWindow.changePane(node, "gameover.fxml");
     }
 
     public void showHeroStatsDialog() {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(gameBorderPane.getScene().getWindow());
-        dialog.setTitle("Change Statistics");
-        FXMLLoader fxmlLoader = getFxmlLoader(dialog, "herostatsdialog.fxml", true, false);
-        if (fxmlLoader == null) return;
-        HeroStatsDialogController controller = fxmlLoader.getController();
+        NewWindow newDialog = new NewWindow();
+        Dialog<ButtonType> dialog = newDialog.showDialog(gameBorderPane, "Change statistics", "", "herostatsdialog.fxml", true, false);
+        HeroStatsDialogController controller = newDialog.getFxmlLoader().getController();
         Hero hero = world.getHero();
         controller.setHero(hero);
         controller.setHealthLabel("" + hero.getMaxHealth());
@@ -455,12 +438,9 @@ public class GameInterfaceController implements ChangePane {
     }
 
     public int showFightDialog(Enemy enemy) {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.initOwner(gameBorderPane.getScene().getWindow());
-        dialog.setTitle("Fight");
-        FXMLLoader fxmlLoader = getFxmlLoader(dialog, "fightinterface.fxml", false, false);
-        if (fxmlLoader == null) return -1;
-        FightInterfaceController controller = fxmlLoader.getController();
+        NewWindow newDialog = new NewWindow();
+        Dialog<ButtonType> dialog = newDialog.showDialog(gameBorderPane, "Fight", "", "fightinterface.fxml", false, false);
+        FightInterfaceController controller = newDialog.getFxmlLoader().getController();
         Hero hero = world.getHero();
         controller.setHero(hero);
         controller.setEnemy(enemy);
@@ -472,45 +452,20 @@ public class GameInterfaceController implements ChangePane {
         controller.setEnemyHealthLabel("" + enemy.getStatistics().getHealthValue());
         controller.setEnemyPowerLabel("" + enemy.getStatistics().getPower());
         controller.setEnemyAgilityLabel("" + enemy.getStatistics().getAgility());
-        controller.setQuickAttackLabel("Aprox. Dmg: " + (int) (hero.getStatistics().getPower() * 0.6) +
+        controller.setQuickAttackLabel("Aprox. Dmg: " + (hero.getStatistics().getPower() * 0.6) +
                                 "\nHit Chance: " + (int) ((0.8 + (double) (hero.getStatistics().getAgility() - enemy.getStatistics().getAgility()) / 50.0) * 100) + "%");
         controller.setStrongAttackLabel("Aprox. Dmg: " + hero.getStatistics().getPower() +
                 "\nHit Chance: " + (int) ((0.5 + (double) (hero.getStatistics().getAgility() - enemy.getStatistics().getAgility()) / 50.0) * 100) + "%");
-        controller.setChargedAttackLabel("Aprox. Dmg: " + (int) (hero.getStatistics().getPower() * 2.2) +
+        controller.setChargedAttackLabel("Aprox. Dmg: " + (hero.getStatistics().getPower() * 2.2) +
                 "\nHit Chance: " + (int) ((0.6 + (double) (hero.getStatistics().getAgility() - enemy.getStatistics().getAgility()) / 50.0) * 100) + "%");
         dialog.showAndWait();
         return controller.getExperience();
     }
 
-    public FXMLLoader getFxmlLoader(Dialog<ButtonType> dialog, String name, boolean okButton, boolean cancelButton) {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource(name));
-        try {
-            dialog.getDialogPane().setContent(fxmlLoader.load());
-        } catch (IOException e) {
-            System.out.println("Couldn't load the dialog");
-            e.printStackTrace();
-            return null;
-        }
-
-        if(okButton) {
-            dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-        }
-        if(cancelButton) {
-            dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
-        }
-        return fxmlLoader;
-    }
-
     @FXML
     public void mainMenu() {
-        changePane(gameBorderPane, "mainmenu.fxml");
+        NewWindow.changePane(gameBorderPane, "mainmenu.fxml");
         GameData.saveAll();
-    }
-
-    @Override
-    public FXMLLoader changePane(Node node, String name) {
-        return ChangePane.super.changePane(node, name);
     }
 
     public void setWorld(World world) {

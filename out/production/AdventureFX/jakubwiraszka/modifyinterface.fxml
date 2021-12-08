@@ -20,7 +20,7 @@
                 <Menu text="Create">
                     <MenuItem text="New Enemy" onAction="#showNewEnemyDialog"/>
                     <MenuItem text="New Treasure" onAction="#showNewTreasureDialog"/>
-                    <MenuItem text="New Location" onAction="#showNewLocationDialog"/>
+                    <MenuItem text="New Location" onAction="#addButtonGridPane"/>
                 </Menu>
             </MenuBar>
             <Label fx:id="locationNameLabel">
@@ -37,7 +37,7 @@
     </top>
     <center>
         <ScrollPane maxHeight="800.0" maxWidth="1600.0" pannable="true" BorderPane.alignment="CENTER">
-            <StackPane>
+            <StackPane fx:id="mapStackPane">
                 <GridPane fx:id="gameMapGridPane" alignment="CENTER" style="-fx-background-color: #30b832"/>
                 <GridPane fx:id="contentMapGridPane" alignment="CENTER"/>
                 <GridPane fx:id="playerMapGridPane" alignment="CENTER"/>

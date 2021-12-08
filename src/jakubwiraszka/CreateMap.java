@@ -2,29 +2,50 @@ package jakubwiraszka;
 
 import jakubwiraszka.gamefiles.Location;
 import jakubwiraszka.gamefiles.World;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
+
 public class CreateMap {
-    final static String ICONS_LOC = "D:\\Projekty\\Java\\AdventureFX\\icons\\";
+    final static String ICONS_LOC = "D:\\Projekty\\Java\\AdventureFX\\resources\\";
+
+    public static void createMapTemplate(World world, ArrayList<GridPane> gridPanes) {
+        for(int i = 0; i <= world.getWidth(); i++) {
+            for(int j = 0; j <= world.getHeight(); j++) {
+                for(GridPane gridPane: gridPanes) {
+                    ImageView imageView = new ImageView();
+                    imageView.setImage(new Image(ICONS_LOC + "Nothing.png"));
+                    imageView.setFitHeight(81);
+                    imageView.setPreserveRatio(true);
+                    gridPane.add(imageView, i, j);
+                }
+            }
+        }
+    }
+
+    public static ImageView getImageView(GridPane gridPane, int x, int y) {
+        ObservableList<Node> children = gridPane.getChildren();
+        for (Node node : children) {
+            if (GridPane.getColumnIndex(node) == x && GridPane.getRowIndex(node) == y) {
+                return (ImageView) node;
+            }
+        }
+        return null;
+    }
 
     public static void createMap(World world, GridPane gameMapGridPane, GridPane contentMapGridPane, GridPane playerMapGridPane, boolean readVisited) {
+        ArrayList<GridPane> gridPanes = new ArrayList<>();
+        gridPanes.add(gameMapGridPane);
+        gridPanes.add(contentMapGridPane);
+        gridPanes.add(playerMapGridPane);
+        createMapTemplate(world, gridPanes);
         for (Location location : world.getLocations()) {
-            ImageView imageViewMap = new ImageView();
-            modifyMapCell(location, imageViewMap, readVisited);
-            GridPane.setConstraints(imageViewMap, location.getPosition().getX(), location.getPosition().getY());
-            gameMapGridPane.getChildren().add(imageViewMap);
-
-            ImageView imageViewContent = new ImageView();
-            modifyContentCell(location, imageViewContent, readVisited);
-            GridPane.setConstraints(imageViewContent, location.getPosition().getX(), location.getPosition().getY());
-            contentMapGridPane.getChildren().add(imageViewContent);
-
-            ImageView imageViewPlayer = new ImageView();
-            imageViewPlayer.setImage(new Image(ICONS_LOC + "Nothing.png"));
-            GridPane.setConstraints(imageViewPlayer, location.getPosition().getX(), location.getPosition().getY());
-            playerMapGridPane.getChildren().add(imageViewPlayer);
+            modifyMapCell(location, getImageView(gameMapGridPane, location.getPosition().getX(), location.getPosition().getY()), readVisited);
+            modifyContentCell(location, getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()), readVisited);
         }
     }
 
@@ -107,6 +128,6 @@ public class CreateMap {
             }
         }
         imageView.setFitHeight(81);
-        imageView.setFitWidth(81);
+        imageView.setPreserveRatio(true);
     }
 }

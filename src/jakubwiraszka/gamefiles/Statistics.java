@@ -1,15 +1,14 @@
 package jakubwiraszka.gamefiles;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
 
 public class Statistics {
-    private final IntegerProperty health;
+    private final DoubleProperty health;
     private int power;
     private int agility;
 
-    public Statistics(int health, int power, int agility) {
-        this.health = new SimpleIntegerProperty(health);
+    public Statistics(double health, int power, int agility) {
+        this.health = new SimpleDoubleProperty(health);
         this.power = power;
         this.agility = agility;
     }
@@ -18,11 +17,11 @@ public class Statistics {
         return health.intValue();
     }
 
-    public SimpleIntegerProperty getHealth() {
-        return (SimpleIntegerProperty) health;
+    public SimpleDoubleProperty getHealth() {
+        return (SimpleDoubleProperty) health;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(double health) {
         this.health.set(health);
     }
 
