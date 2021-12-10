@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Slider?>
-<BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jakubwiraszka.CreateInterfaceController">
+<BorderPane maxHeight="900" maxWidth="1800" fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jakubwiraszka.CreateInterfaceController">
         <top>
             <VBox alignment="CENTER" spacing="10">
                 <HBox spacing="5.0">
@@ -68,7 +68,4 @@
            </StackPane>
        </ScrollPane>
    </center>
-    <bottom>
-        <Slider fx:id="zoomSlider" min="0.1" max="1.0" value="1.0" prefWidth="100"/>
-    </bottom>
 </BorderPane>

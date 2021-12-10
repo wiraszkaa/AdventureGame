@@ -1,5 +1,7 @@
 package jakubwiraszka;
 
+import jakubwiraszka.dialogs.DialogBuilder;
+import jakubwiraszka.dialogs.NewEnemyDialogController;
 import jakubwiraszka.gamefiles.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,8 +51,6 @@ public class CreateInterfaceController extends ModifyInterfaceController {
         this.locationDescription = GameData.getRandomLocationDescription();
         this.locationContent = GameData.getRandomLocationContent();
 
-        makeZoomable(gameMapGridPane, contentMapGridPane, playerMapGridPane, zoomSlider);
-
         nameTextField.setText("World");
         heightSpinner.getValueFactory().setValue(15);
         widthSpinner.getValueFactory().setValue(15);
@@ -90,11 +90,15 @@ public class CreateInterfaceController extends ModifyInterfaceController {
 
     @FXML
     public boolean showCreateHeroDialog() {
-        NewWindow newDialog = new NewWindow();
-        Dialog<ButtonType> dialog = newDialog.showDialog(mainBorderPane, "Create Hero", "Use this dialog to create hero", "newenemydialog.fxml", true, false);
+        DialogBuilder dialogBuilder = new DialogBuilder();
+        dialogBuilder.setOwner(mainBorderPane);
+        dialogBuilder.setTitle("Create Hero");
+        dialogBuilder.setSource("newenemydialog.fxml");
+        dialogBuilder.addOkButton();
+        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            NewEnemyDialogController controller = newDialog.getFxmlLoader().getController();
+            NewEnemyDialogController controller = dialogBuilder.getFxmlLoader().getController();
             controller.setHealthSpinnerValue(10);
             controller.setPowerSpinnerValue(5);
             controller.setAgilitySpinnerValue(4);
@@ -103,10 +107,5 @@ public class CreateInterfaceController extends ModifyInterfaceController {
         } else {
             return false;
         }
-    }
-
-    @Override
-    void makeZoomable(GridPane gameMapGridPane, GridPane contentMapGridPane, GridPane playerMapGridPane, Slider zoomSlider) {
-        super.makeZoomable(gameMapGridPane, contentMapGridPane, playerMapGridPane, zoomSlider);
     }
 }

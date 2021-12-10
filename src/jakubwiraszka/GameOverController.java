@@ -12,7 +12,7 @@ public class GameOverController {
     private ImageView imageView;
 
     public void initialize() {
-        imageView.setImage(new Image("D:\\Projekty\\Java\\AdventureFX\\icons\\GameOver.png"));
+        imageView.setImage(new Image("D:\\Projekty\\Java\\AdventureFX\\resources\\GameOver.png"));
     }
 
     public void restart() {

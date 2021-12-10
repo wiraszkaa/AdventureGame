@@ -126,8 +126,8 @@ public class World {
             Location location = locations.get(random.nextInt(locations.size()));
             if(location.getContent() == null) {
                 int health = Math.max(getHero().getStatistics().getHealthValue() - 5 + random.nextInt(9), 5);
-                int power = Math.max(getHero().getStatistics().getPower() - 5 + random.nextInt(6), 5);
-                int agility = Math.max(getHero().getStatistics().getAgility() - 5 + random.nextInt(9), 0);
+                int power = Math.max(getHero().getStatistics().getPowerValue() - 5 + random.nextInt(6), 5);
+                int agility = Math.max(getHero().getStatistics().getAgilityValue() - 5 + random.nextInt(9), 0);
                 Enemy enemy = createEnemy(new Enemy(locationContent.get(random.nextInt(locationContent.size() - 1) + 1), new Statistics(health, power, agility)));
                 addEnemy(enemy.getId(), location.getPosition());
             }
@@ -159,7 +159,7 @@ public class World {
     }
 
     public Enemy createEnemy(Enemy enemy) {
-        if (enemy.getStatistics().getHealthValue() <= 0 || enemy.getStatistics().getPower() < 0 || enemy.getStatistics().getAgility() < 0) {
+        if (enemy.getStatistics().getHealthValue() <= 0 || enemy.getStatistics().getPowerValue() < 0 || enemy.getStatistics().getAgilityValue() < 0) {
             System.out.println("Enemy not created. Try different statistics.");
         } else if (findEnemy(enemy.getId()) == null) {
             enemies.add(enemy);

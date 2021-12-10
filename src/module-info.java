@@ -5,4 +5,5 @@ module AdventureFX {
     opens jakubwiraszka;
     opens jakubwiraszka.gamefiles;
     opens jakubwiraszka.fight;
+    opens jakubwiraszka.dialogs;
 }

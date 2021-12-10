@@ -1,4 +1,4 @@
-package jakubwiraszka;
+package jakubwiraszka.fight;
 
 import java.util.Random;
 

@@ -1,6 +1,10 @@
 package jakubwiraszka;
 
+import jakubwiraszka.dialogs.DialogBuilder;
+import jakubwiraszka.dialogs.FightInterfaceController;
+import jakubwiraszka.dialogs.HeroStatsDialogController;
 import jakubwiraszka.gamefiles.*;
+import jakubwiraszka.visuals.ApproxDamageGUI;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -14,8 +18,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+import jakubwiraszka.visuals.StatsGUI;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Random;
 
 public class GameInterfaceController {
@@ -24,8 +28,11 @@ public class GameInterfaceController {
     private Location currentLocation;
     private boolean endlessMode;
     private Difficulty difficulty;
+    private final DialogBuilder dialogBuilder = new DialogBuilder();
     @FXML
     private BorderPane gameBorderPane;
+    @FXML
+    private ScrollPane gameScrollPane;
     @FXML
     private GridPane gameMapGridPane;
     @FXML
@@ -33,11 +40,9 @@ public class GameInterfaceController {
     @FXML
     private GridPane playerMapGridPane;
     @FXML
-    private Label statisticsLabel;
-    @FXML
     private Label levelLabel;
     @FXML
-    private HBox statsHBox;
+    private HBox infoHBox;
     @FXML
     private Button spendPointsButton;
     @FXML
@@ -63,7 +68,7 @@ public class GameInterfaceController {
     @FXML
     private VBox actionVBox;
     @FXML
-    private Slider zoomSlider;
+    private HBox statsHBox;
 
     public void initialize() {
         spendPointsButton  = new Button();
@@ -96,7 +101,6 @@ public class GameInterfaceController {
         world.handleVisited();
         currentLocation = world.findLocation(world.getHero().getPosition().getX(), world.getHero().getPosition().getY(), world.getLocations());
 
-        statisticsLabel.setText(world.getHero().statsToString());
         locationNameLabel.setText(currentLocation.getName());
         locationDescriptionLabel.setText(currentLocation.getDescription());
         actionSpaceLabel.setText("\t\t\t\t\t\t\t\t\t\t\t\t");
@@ -125,14 +129,17 @@ public class GameInterfaceController {
             if(bossLocation != null) {
                 Enemy enemy = world.getBoss();
                 enemy.getStatistics().setHealth(world.getHero().getMaxHealth() * 2);
-                enemy.getStatistics().setPower(world.getHero().getStatistics().getPower());
-                enemy.getStatistics().setAgility(world.getHero().getStatistics().getAgility());
+                enemy.getStatistics().setPower(world.getHero().getStatistics().getPowerValue());
+                enemy.getStatistics().setAgility(world.getHero().getStatistics().getAgilityValue());
                 bossLocation.setContent(enemy);
                 System.out.println("Added " + enemy + " to " + bossLocation.getPosition());
             }
         }
 
         CreateMap.createMap(world, gameMapGridPane, contentMapGridPane, playerMapGridPane, true);
+
+        gameScrollPane.setMaxWidth((world.getWidth() + 1) * 81);
+        gameScrollPane.setMaxHeight((world.getHeight() + 1) * 81);
 
         CreateMap.getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
 
@@ -141,16 +148,14 @@ public class GameInterfaceController {
             if(newNumber.intValue() == 1) {
                 spendPointsButton.setText("Spend Points");
                 spendPointsButton.setOnAction(event -> showHeroStatsDialog());
-                statsHBox.getChildren().add(spendPointsButton);
+                infoHBox.getChildren().add(spendPointsButton);
                 world.getHero().getStatistics().setHealth(world.getHero().getMaxHealth());
-            } else if(newNumber.intValue() == 0 && spendPointsButton.getParent().equals(statsHBox)) {
-                statsHBox.getChildren().remove(spendPointsButton);
+            } else if(newNumber.intValue() == 0 && spendPointsButton.getParent().equals(infoHBox)) {
+                infoHBox.getChildren().remove(spendPointsButton);
             }
         });
 
         world.getHero().getLevel().getCurrentExperience().addListener((observableValue, number, t1) -> levelLabel.setText(world.getHero().getLevel().toString()));
-
-        world.getHero().getStatistics().getHealth().addListener((observableValue, number, t1) -> statisticsLabel.setText(world.getHero().statsToString()));
 
         lockButtons();
         if (world.getHero().isAlive()) {
@@ -159,16 +164,15 @@ public class GameInterfaceController {
             messageLabel.setText("GAME OVER");
         }
 
-        makeZoomable(gameMapGridPane, contentMapGridPane, playerMapGridPane, zoomSlider);
+        StatsGUI statsGUI = new StatsGUI(world.getHero());
+        statsHBox.getChildren().add(statsGUI.getStatsGUI());
     }
 
-    void makeZoomable(GridPane gameMapGridPane, GridPane contentMapGridPane, GridPane playerMapGridPane, Slider zoomSlider) {
-        gameMapGridPane.scaleXProperty().bind(zoomSlider.valueProperty());
-        gameMapGridPane.scaleYProperty().bind(zoomSlider.valueProperty());
-        contentMapGridPane.scaleXProperty().bind(zoomSlider.valueProperty());
-        contentMapGridPane.scaleYProperty().bind(zoomSlider.valueProperty());
-        playerMapGridPane.scaleXProperty().bind(zoomSlider.valueProperty());
-        playerMapGridPane.scaleYProperty().bind(zoomSlider.valueProperty());
+    void scrollGameScrollPane(Position position, ScrollPane scrollPane, World world) {
+        scrollPane.setHmax(world.getWidth());
+        scrollPane.setVmax(world.getHeight());
+        scrollPane.setHvalue(position.getX());
+        scrollPane.setVvalue(position.getY());
     }
 
     private void lockButtons() {
@@ -209,6 +213,9 @@ public class GameInterfaceController {
         }
 
         Position position = currentLocation.getExits().get(direction);
+
+        scrollGameScrollPane(position, gameScrollPane, world);
+
         if(position != null) {
             world.getHero().setPosition(position);
 
@@ -223,7 +230,6 @@ public class GameInterfaceController {
             }
 
             currentLocation = world.findLocation(position.getX(), position.getY(), world.getLocations());
-
             CreateMap.getImageView(playerMapGridPane, currentLocation.getPosition().getX(), currentLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
 
             if (world.allEnemiesDead()) {
@@ -240,7 +246,6 @@ public class GameInterfaceController {
                 CreateMap.modifyContentCell(currentLocation, contentImageView, true);
 
                 world.getHero().getLevel().addExperience(10);
-                levelLabel.setText(world.getHero().getLevel().toString());
             }
 
             locationNameLabel.setText(currentLocation.getName());
@@ -261,9 +266,7 @@ public class GameInterfaceController {
                     firstActionButton.setText("Attack");
                     secondActionButton.setText("Run");
                     Enemy enemy = (Enemy) currentLocation.getContent();
-                    Label statsLabel = new Label(enemy.getStatistics().toString());
-                    statsLabel.setFont(new Font("Arial italic", 17));
-                    actionVBox.getChildren().add(statsLabel);
+                    actionVBox.getChildren().add(new StatsGUI(enemy).getStatsGUI());
                 } else if (currentLocation.getContent().isTreasure()) {
                     System.out.println("Treasure found at " + currentLocation.getPosition().toString());
                     firstActionButton.setText("Take");
@@ -297,7 +300,7 @@ public class GameInterfaceController {
 
             Enemy enemy = (Enemy) currentLocation.getContent();
 
-            int value = Math.max(world.getHero().getStatistics().getAgility() - enemy.getStatistics().getAgility(), 0);
+            int value = Math.max(world.getHero().getStatistics().getAgilityValue() - enemy.getStatistics().getAgilityValue(), 0);
 
             if (e.getSource().equals(secondActionButton)) {
                 if ((random.nextInt(11) + value) >= 5 || currentLocation.getContent().equals(world.getBoss())) {
@@ -325,7 +328,6 @@ public class GameInterfaceController {
                 lockButtons();
                 System.out.println("Fight initialized");
                 int experience = showFightDialog(enemy);
-                statisticsLabel.setText(world.getHero().statsToString());
                 if(!world.getHero().isAlive()) {
                     gameOver(gameBorderPane);
                 } else {
@@ -360,18 +362,6 @@ public class GameInterfaceController {
         }
     }
 
-    public void newEndlessWorld(ActionEvent event, Difficulty difficulty, String name, Hero hero) {
-        World newWorld = new World(name, 15, 15, hero);
-        newWorld.createRandom(GameData.getRandomLocationName(), GameData.getRandomLocationDescription(), GameData.getRandomLocationContent(), difficulty);
-        GameData.getWorlds().add(newWorld);
-        Node node = (Node) event.getSource();
-        GameInterfaceController gameInterfaceController = NewWindow.changePane(node, "gameinterface.fxml").getController();
-        gameInterfaceController.setWorld(newWorld);
-        gameInterfaceController.setEndlessMode(true);
-        gameInterfaceController.setDifficulty(difficulty);
-        gameInterfaceController.start();
-    }
-
     private void take() {
         Hero hero = world.getHero();
         Treasure treasure = (Treasure) currentLocation.getContent();
@@ -389,7 +379,6 @@ public class GameInterfaceController {
         Label contentLabel = new Label("You take " + treasure.getName() + " and get " + treasure.getContent().getValue() + " " + statistic);
         contentLabel.setFont(new Font("Arial bold", 20));
         actionVBox.getChildren().add(contentLabel);
-        statisticsLabel.setText(world.getHero().statsToString());
 
         if (hero.getStatistics().getHealthValue() <= 0) {
             hero.setAlive(false);
@@ -420,44 +409,41 @@ public class GameInterfaceController {
     }
 
     public void showHeroStatsDialog() {
-        NewWindow newDialog = new NewWindow();
-        Dialog<ButtonType> dialog = newDialog.showDialog(gameBorderPane, "Change statistics", "", "herostatsdialog.fxml", true, false);
-        HeroStatsDialogController controller = newDialog.getFxmlLoader().getController();
+        dialogBuilder.reset();
+        dialogBuilder.setOwner(gameBorderPane);
+        dialogBuilder.setTitle("Change Statistics");
+        dialogBuilder.setSource("herostatsdialog.fxml");
+        dialogBuilder.addOkButton();
+        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
+        HeroStatsDialogController controller = dialogBuilder.getFxmlLoader().getController();
         Hero hero = world.getHero();
         controller.setHero(hero);
         controller.setHealthLabel("" + hero.getMaxHealth());
-        controller.setPowerLabel("" + hero.getStatistics().getPower());
-        controller.setAgilityLabel("" + hero.getStatistics().getAgility());
+        controller.setPowerLabel("" + hero.getStatistics().getPowerValue());
+        controller.setAgilityLabel("" + hero.getStatistics().getAgilityValue());
         controller.setSubtraction(true);
-        Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            statisticsLabel.setText(hero.statsToString());
-        } else {
-            System.out.println("Cancel Pressed");
-        }
+        dialog.showAndWait();
     }
 
     public int showFightDialog(Enemy enemy) {
-        NewWindow newDialog = new NewWindow();
-        Dialog<ButtonType> dialog = newDialog.showDialog(gameBorderPane, "Fight", "", "fightinterface.fxml", false, false);
-        FightInterfaceController controller = newDialog.getFxmlLoader().getController();
+        dialogBuilder.reset();
+        dialogBuilder.setOwner(gameBorderPane);
+        dialogBuilder.setTitle("Fight");
+        dialogBuilder.setSource("fightinterface.fxml");
+        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
+        FightInterfaceController controller = dialogBuilder.getFxmlLoader().getController();
         Hero hero = world.getHero();
         controller.setHero(hero);
         controller.setEnemy(enemy);
         controller.setHeroNameLabel(hero.getName());
-        controller.setHeroHealthLabel("" + hero.getStatistics().getHealthValue());
-        controller.setHeroPowerLabel("" + hero.getStatistics().getPower());
-        controller.setHeroAgilityLabel("" + hero.getStatistics().getAgility());
+        controller.getHeroVBox().getChildren().add(new StatsGUI(hero).getStatsGUI());
         controller.setEnemyNameLabel(enemy.getName());
-        controller.setEnemyHealthLabel("" + enemy.getStatistics().getHealthValue());
-        controller.setEnemyPowerLabel("" + enemy.getStatistics().getPower());
-        controller.setEnemyAgilityLabel("" + enemy.getStatistics().getAgility());
-        controller.setQuickAttackLabel("Aprox. Dmg: " + (hero.getStatistics().getPower() * 0.6) +
-                                "\nHit Chance: " + (int) ((0.8 + (double) (hero.getStatistics().getAgility() - enemy.getStatistics().getAgility()) / 50.0) * 100) + "%");
-        controller.setStrongAttackLabel("Aprox. Dmg: " + hero.getStatistics().getPower() +
-                "\nHit Chance: " + (int) ((0.5 + (double) (hero.getStatistics().getAgility() - enemy.getStatistics().getAgility()) / 50.0) * 100) + "%");
-        controller.setChargedAttackLabel("Aprox. Dmg: " + (hero.getStatistics().getPower() * 2.2) +
-                "\nHit Chance: " + (int) ((0.6 + (double) (hero.getStatistics().getAgility() - enemy.getStatistics().getAgility()) / 50.0) * 100) + "%");
+        controller.getEnemyVBox().getChildren().add(new StatsGUI(enemy).getStatsGUI());
+        GridPane attackGridPane = controller.getAttackGridPane();
+        ApproxDamageGUI approxDamageGUI = new ApproxDamageGUI(hero, enemy);
+        attackGridPane.add(approxDamageGUI.getQuickAttackGridPane(), 0, 1);
+        attackGridPane.add(approxDamageGUI.getStrongAttackGridPane(), 1, 1);
+        attackGridPane.add(approxDamageGUI.getChargedAttackGridPane(), 2, 1);
         dialog.showAndWait();
         return controller.getExperience();
     }
@@ -466,6 +452,18 @@ public class GameInterfaceController {
     public void mainMenu() {
         NewWindow.changePane(gameBorderPane, "mainmenu.fxml");
         GameData.saveAll();
+    }
+
+    public void newEndlessWorld(ActionEvent event, Difficulty difficulty, String name, Hero hero) {
+        World newWorld = new World(name, 15, 15, hero);
+        newWorld.createRandom(GameData.getRandomLocationName(), GameData.getRandomLocationDescription(), GameData.getRandomLocationContent(), difficulty);
+        GameData.getWorlds().add(newWorld);
+        Node node = (Node) event.getSource();
+        GameInterfaceController gameInterfaceController = NewWindow.changePane(node, "gameinterface.fxml").getController();
+        gameInterfaceController.setWorld(newWorld);
+        gameInterfaceController.setEndlessMode(true);
+        gameInterfaceController.setDifficulty(difficulty);
+        gameInterfaceController.start();
     }
 
     public void setWorld(World world) {

@@ -1,5 +1,8 @@
 package jakubwiraszka;
 
+import jakubwiraszka.dialogs.DialogBuilder;
+import jakubwiraszka.dialogs.DifficultyDialogController;
+import jakubwiraszka.dialogs.HeroStatsDialogController;
 import jakubwiraszka.gamefiles.*;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -10,7 +13,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Callback;
-
 import java.util.Objects;
 import java.util.Optional;
 
@@ -81,15 +83,19 @@ public class MainMenuController extends CreateInterfaceController {
 
     @FXML
     public void startNew(ActionEvent event) {
-        NewWindow newDialog = new NewWindow();
-        Dialog<ButtonType> dialog = newDialog.showDialog(mainBorderPane, "Create Hero", "", "herostatsdialog.fxml", true, false);
+        DialogBuilder dialogBuilder = new DialogBuilder();
+        dialogBuilder.setOwner(mainBorderPane);
+        dialogBuilder.setTitle("Create Hero");
+        dialogBuilder.setSource("herostatsdialog.fxml");
+        dialogBuilder.addOkButton();
+        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
         Hero hero = new Hero("Hero", new Statistics(4, 2, 0));
         hero.getLevel().setPointsToSpend(10);
-        HeroStatsDialogController heroStatsDialogController = newDialog.getFxmlLoader().getController();
+        HeroStatsDialogController heroStatsDialogController = dialogBuilder.getFxmlLoader().getController();
         heroStatsDialogController.setHero(hero);
         heroStatsDialogController.setHealthLabel("" + hero.getMaxHealth());
-        heroStatsDialogController.setPowerLabel("" + hero.getStatistics().getPower());
-        heroStatsDialogController.setAgilityLabel("" + hero.getStatistics().getAgility());
+        heroStatsDialogController.setPowerLabel("" + hero.getStatistics().getPowerValue());
+        heroStatsDialogController.setAgilityLabel("" + hero.getStatistics().getAgilityValue());
         GridPane gridPane = heroStatsDialogController.getMainGridPane();
         TextField nameTextField = new TextField();
         GridPane.setConstraints(nameTextField, 0, 0);
@@ -98,8 +104,12 @@ public class MainMenuController extends CreateInterfaceController {
         Optional<ButtonType> heroDialogResult = dialog.showAndWait();
         hero.setName(nameTextField.getText());
         if(heroDialogResult.isPresent() && heroDialogResult.get() == ButtonType.OK) {
-            dialog = newDialog.showDialog(mainBorderPane, "Choose Difficulty", "", "difficultydialog.fxml", true, false);
-            DifficultyDialogController controller = newDialog.getFxmlLoader().getController();
+            dialogBuilder.reset();
+            dialogBuilder.setTitle("Choose Difficulty");
+            dialogBuilder.setSource("difficultydialog.fxml");
+            dialogBuilder.addOkButton();
+            dialog = dialogBuilder.getDialog();
+            DifficultyDialogController controller = dialogBuilder.getFxmlLoader().getController();
             Optional<ButtonType> result = dialog.showAndWait();
             Difficulty difficulty = null;
             String name = "";

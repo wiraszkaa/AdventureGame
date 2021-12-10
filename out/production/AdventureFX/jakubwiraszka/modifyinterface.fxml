@@ -12,7 +12,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 
-<BorderPane fx:id="mainBorderPane" fx:controller="jakubwiraszka.ModifyInterfaceController"
+<BorderPane maxHeight="900" maxWidth="1800" fx:id="mainBorderPane" fx:controller="jakubwiraszka.ModifyInterfaceController"
             xmlns:fx="http://javafx.com/fxml">
     <top>
         <VBox alignment="CENTER" spacing="10">
@@ -36,7 +36,7 @@
         </VBox>
     </top>
     <center>
-        <ScrollPane maxHeight="800.0" maxWidth="1600.0" pannable="true" BorderPane.alignment="CENTER">
+        <ScrollPane fx:id="gameScrollPane" maxHeight="800.0" maxWidth="1600.0" pannable="true" BorderPane.alignment="CENTER">
             <StackPane fx:id="mapStackPane">
                 <GridPane fx:id="gameMapGridPane" alignment="CENTER" style="-fx-background-color: #30b832"/>
                 <GridPane fx:id="contentMapGridPane" alignment="CENTER"/>
@@ -51,7 +51,4 @@
             <ListView fx:id="treasuresListView"/>
         </HBox>
     </right>
-    <bottom>
-        <Slider fx:id="zoomSlider" min="0.1" max="1.0" value="1.0" prefWidth="100"/>
-    </bottom>
 </BorderPane>

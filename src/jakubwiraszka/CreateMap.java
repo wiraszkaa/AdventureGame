@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 import java.util.ArrayList;
 
 public class CreateMap {
-    final static String ICONS_LOC = "D:\\Projekty\\Java\\AdventureFX\\resources\\";
+    public final static String ICONS_LOC = "D:\\Projekty\\Java\\AdventureFX\\resources\\";
 
     public static void createMapTemplate(World world, ArrayList<GridPane> gridPanes) {
         for(int i = 0; i <= world.getWidth(); i++) {

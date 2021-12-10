@@ -1,6 +1,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<DialogPane fx:controller="jakubwiraszka.NewTreasureDialogController"
+<DialogPane fx:controller="jakubwiraszka.dialogs.NewTreasureDialogController"
             xmlns:fx="http://javafx.com/fxml">
     <content>
         <GridPane vgap="10" hgap="10">

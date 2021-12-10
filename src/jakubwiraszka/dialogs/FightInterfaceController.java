@@ -1,4 +1,4 @@
-package jakubwiraszka;
+package jakubwiraszka.dialogs;
 
 import jakubwiraszka.fight.Attack;
 import jakubwiraszka.fight.ChargedAttack;
@@ -13,6 +13,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -22,7 +26,6 @@ import java.util.Random;
 public class FightInterfaceController {
     private Hero hero;
     private Enemy enemy;
-    private Attack attack;
     private int charge;
     private int experience;
     private Random random;
@@ -30,19 +33,11 @@ public class FightInterfaceController {
     @FXML
     private Label heroNameLabel;
     @FXML
-    private Label heroHealthLabel;
-    @FXML
-    private Label heroPowerLabel;
-    @FXML
-    private Label heroAgilityLabel;
+    private VBox heroVBox;
     @FXML
     private Label enemyNameLabel;
     @FXML
-    private Label enemyHealthLabel;
-    @FXML
-    private Label enemyPowerLabel;
-    @FXML
-    private Label enemyAgilityLabel;
+    private VBox enemyVBox;
     @FXML
     private VBox actionVBox;
     @FXML
@@ -52,36 +47,33 @@ public class FightInterfaceController {
     @FXML
     private Button chargedAttackButton;
     @FXML
-    private Label quickAttackLabel;
-    @FXML
-    private Label strongAttackLabel;
-    @FXML
-    private Label chargedAttackLabel;
+    private GridPane attackGridPane;
 
     public void initialize() {
         random = new Random();
         experience = random.nextInt(31) + 30;
         charge = 1;
         chargedAttackButton.setText("Charge");
+        heroVBox.getChildren().add((new ImageView(new Image("D:\\Projekty\\Java\\AdventureFX\\resources\\Hero.png"))));
+        enemyVBox.getChildren().add(new ImageView(new Image("D:\\Projekty\\Java\\AdventureFX\\resources\\Monster.png")));
     }
 
     @FXML
     public void attack(ActionEvent actionEvent) {
         setDisableButtons(true);
         if(actionEvent.getSource().equals(quickAttackButton)) {
-            attack = new QuickAttack();
+            hero.setAttack(new QuickAttack());
         } else if(actionEvent.getSource().equals(strongAttackButton)) {
-            attack = new StrongAttack();
+            hero.setAttack(new StrongAttack());
         } else if(actionEvent.getSource().equals(chargedAttackButton)) {
-            attack = new ChargedAttack();
+            hero.setAttack(new ChargedAttack());
         }
 
-        if(charge >= attack.getCharge()) {
-            double damage = attack.attack(hero, enemy);
+        if(charge >= hero.getAttack().getCharge()) {
+            double damage = hero.attack(enemy);
             if (damage != -1) {
-                Label heroAttack = new Label("You attack " + enemy.getName() + " for " + damage + " with " + attack.toString());
+                Label heroAttack = new Label("You attack " + enemy.getName() + " for " + damage + " with " + hero.getAttack());
                 actionVBox.getChildren().add(heroAttack);
-                enemyHealthLabel.setText("" + enemy.getStatistics().getHealthValue());
             } else {
                 Label heroMiss = new Label("Unfortunately you miss");
                 actionVBox.getChildren().add(heroMiss);
@@ -97,7 +89,6 @@ public class FightInterfaceController {
 
         if(enemy.getStatistics().getHealthValue() <= 0) {
             enemy.getStatistics().setHealth(0);
-            enemyHealthLabel.setText("" + enemy.getStatistics().getHealthValue());
             enemy.setAlive(false);
             Label win = new Label("\nYou have won and gained " + experience + " experience");
             createDelay(1, event -> actionVBox.getChildren().add(win));
@@ -107,20 +98,14 @@ public class FightInterfaceController {
             });
         } else {
 
-            Attack enemyAttackType;
             if(random.nextBoolean()) {
-                enemyAttackType = new QuickAttack();
-            } else {
-                enemyAttackType = new StrongAttack();
+                enemy.setAttack(new QuickAttack());
             }
 
-            double enemyDamage = attack.attack(enemy, hero);
+            double enemyDamage = enemy.attack(hero);
             if(enemyDamage != -1) {
-                Label enemyAttack = new Label(enemy.getName() + " attacks You for " + enemyDamage + " with " + enemyAttackType);
-                createDelay(1, event -> {
-                    actionVBox.getChildren().add(enemyAttack);
-                    heroHealthLabel.setText("" + hero.getStatistics().getHealthValue());
-                });
+                Label enemyAttack = new Label(enemy.getName() + " attacks You for " + enemyDamage + " with " + enemy.getAttack());
+                createDelay(1, event -> actionVBox.getChildren().add(enemyAttack));
             } else {
                 Label enemyMiss = new Label(enemy.getName() + " misses");
                 createDelay(1, event -> actionVBox.getChildren().add(enemyMiss));
@@ -171,44 +156,12 @@ public class FightInterfaceController {
         charge++;
     }
 
-    public void setHeroHealthLabel(String health) {
-        heroHealthLabel.setText(health);
-    }
-
-    public void setHeroPowerLabel(String power) {
-        heroPowerLabel.setText(power);
-    }
-
-    public void setHeroAgilityLabel(String agility) {
-        heroAgilityLabel.setText(agility);
-    }
-
-    public void setEnemyHealthLabel(String health) {
-        enemyHealthLabel.setText(health);
-    }
-
-    public void setEnemyPowerLabel(String power) {
-        enemyPowerLabel.setText(power);
-    }
-
-    public void setEnemyAgilityLabel(String agility) {
-        enemyAgilityLabel.setText(agility);
-    }
-
     public int getExperience() {
         return experience;
     }
 
-    public void setQuickAttackLabel(String text) {
-        quickAttackLabel.setText(text);
-    }
-
-    public void setStrongAttackLabel(String text) {
-        strongAttackLabel.setText(text);
-    }
-
-    public void setChargedAttackLabel(String text) {
-        chargedAttackLabel.setText(text);
+    public GridPane getAttackGridPane() {
+        return attackGridPane;
     }
 
     public void setHeroNameLabel(String text) {
@@ -217,5 +170,13 @@ public class FightInterfaceController {
 
     public void setEnemyNameLabel(String text) {
         enemyNameLabel.setText(text);
+    }
+
+    public VBox getHeroVBox() {
+        return heroVBox;
+    }
+
+    public VBox getEnemyVBox() {
+        return enemyVBox;
     }
 }

@@ -1,10 +1,13 @@
-package jakubwiraszka;
+package jakubwiraszka.dialogs;
 
+import jakubwiraszka.CreateMap;
 import jakubwiraszka.gamefiles.Hero;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 public class HeroStatsDialogController {
@@ -33,6 +36,21 @@ public class HeroStatsDialogController {
     @FXML
     private Label pointsToSpendLabel;
 
+    public void initialize() {
+        ImageView healthIcon = new ImageView(new Image(CreateMap.ICONS_LOC + "Health.png"));
+        healthIcon.setFitHeight(40);
+        healthIcon.setPreserveRatio(true);
+        ImageView powerIcon = new ImageView(new Image(CreateMap.ICONS_LOC + "Power.png"));
+        powerIcon.setFitHeight(40);
+        powerIcon.setPreserveRatio(true);
+        ImageView agilityIcon = new ImageView(new Image(CreateMap.ICONS_LOC + "Agility.png"));
+        agilityIcon.setFitHeight(40);
+        agilityIcon.setPreserveRatio(true);
+        mainGridPane.add(healthIcon, 0, 1);
+        mainGridPane.add(powerIcon, 0, 2);
+        mainGridPane.add(agilityIcon, 0, 3);
+    }
+
     @FXML
     public void add(ActionEvent event) {
         if(hero.getLevel().getPointsToSpend().intValue() > 0) {
@@ -45,14 +63,14 @@ public class HeroStatsDialogController {
                 }
             } else if (event.getSource().equals(addPower)) {
                 hero.changePower(1);
-                powerLabel.setText("" + hero.getStatistics().getPower());
-                if(hero.getStatistics().getPower() == 1) {
+                powerLabel.setText("" + hero.getStatistics().getPowerValue());
+                if(hero.getStatistics().getPowerValue() == 1) {
                     subtractPower.setDisable(false);
                 }
             } else if (event.getSource().equals(addAgility)) {
                 hero.changeAgility(1);
-                agilityLabel.setText("" + hero.getStatistics().getAgility());
-                if(hero.getStatistics().getAgility() == 1) {
+                agilityLabel.setText("" + hero.getStatistics().getAgilityValue());
+                if(hero.getStatistics().getAgilityValue() == 1) {
                     subtractAgility.setDisable(false);
                 }
             }
@@ -72,15 +90,15 @@ public class HeroStatsDialogController {
             }
         } else if(event.getSource().equals(subtractPower)) {
             hero.changePower(-1);
-            powerLabel.setText("" + hero.getStatistics().getPower());
-            if(hero.getStatistics().getPower() == 0) {
+            powerLabel.setText("" + hero.getStatistics().getPowerValue());
+            if(hero.getStatistics().getPowerValue() == 0) {
                 subtractPower.setDisable(true);
                 addPower.setDisable(false);
             }
         } else if(event.getSource().equals(subtractAgility)) {
             hero.changeAgility(-1);
-            agilityLabel.setText("" + hero.getStatistics().getAgility());
-            if(hero.getStatistics().getAgility() == 0) {
+            agilityLabel.setText("" + hero.getStatistics().getAgilityValue());
+            if(hero.getStatistics().getAgilityValue() == 0) {
                 subtractAgility.setDisable(true);
                 addAgility.setDisable(false);
             }

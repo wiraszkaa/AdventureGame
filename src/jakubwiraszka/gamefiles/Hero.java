@@ -27,11 +27,11 @@ public class Hero extends Enemy {
     @Override
     public String toString() {
         return (getName() + ": \n"
-                + "Health: " + super.getStatistics().getHealthValue() + "/" + getMaxHealth() + " Power: " + getStatistics().getPower() + " Agility: " + getStatistics().getAgility());
+                + "Health: " + super.getStatistics().getHealthValue() + "/" + getMaxHealth() + " Power: " + getStatistics().getPowerValue() + " Agility: " + getStatistics().getAgilityValue());
     }
 
     public String statsToString() {
-        return ("Health: " + super.getStatistics().getHealthValue() + "/" + getMaxHealth() + " Power: " + getStatistics().getPower() + " Agility: " + getStatistics().getAgility());
+        return ("Health: " + super.getStatistics().getHealthValue() + "/" + getMaxHealth() + " Power: " + getStatistics().getPowerValue() + " Agility: " + getStatistics().getAgilityValue());
     }
 
     public int getMaxHealth() {

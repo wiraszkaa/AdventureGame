@@ -1,5 +1,9 @@
 package jakubwiraszka;
 
+import jakubwiraszka.dialogs.DialogBuilder;
+import jakubwiraszka.dialogs.NewEnemyDialogController;
+import jakubwiraszka.dialogs.NewLocationDialogController;
+import jakubwiraszka.dialogs.NewTreasureDialogController;
 import jakubwiraszka.gamefiles.*;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
@@ -11,20 +15,21 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
-
 import java.util.HashMap;
 import java.util.Optional;
 
 public class ModifyInterfaceController extends GameInterfaceController {
 
     private World world;
-    private final NewWindow newWindow = new NewWindow();
+    private final DialogBuilder dialogBuilder = new DialogBuilder();
     @FXML
     private BorderPane mainBorderPane;
     @FXML
     private Label locationDescriptionLabel;
     @FXML
     private Label locationNameLabel;
+    @FXML
+    private ScrollPane gameScrollPane;
     @FXML
     private StackPane mapStackPane;
     @FXML
@@ -43,6 +48,8 @@ public class ModifyInterfaceController extends GameInterfaceController {
     private ContextMenu locationContextMenu;
     @FXML
     private Slider zoomSlider;
+    @FXML
+    private GridPane buttonGridPane;
 
     public void initialize() {
     }
@@ -117,6 +124,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
                 CreateMap.getImageView(playerMapGridPane, newLocation.getPosition().getX(), newLocation.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Player.png"));
                 locationNameLabel.setText(newLocation.getName());
                 locationDescriptionLabel.setText(newLocation.getDescription());
+                scrollGameScrollPane(newLocation.getPosition(), gameScrollPane , world);
                 if (location != null) {
                     CreateMap.getImageView(playerMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(CreateMap.ICONS_LOC + "Nothing.png"));
                 }
@@ -144,16 +152,20 @@ public class ModifyInterfaceController extends GameInterfaceController {
                 }
             }
         });
-
-        makeZoomable(gameMapGridPane, contentMapGridPane, playerMapGridPane, zoomSlider);
     }
 
     @FXML
     public void showNewEnemyDialog() {
-        Dialog<ButtonType> dialog = newWindow.showDialog(mainBorderPane, "Add New Enemy", "Use this dialog to add new enemy", "newenemydialog.fxml", true, true);
+        dialogBuilder.reset();
+        dialogBuilder.setOwner(mainBorderPane);
+        dialogBuilder.setTitle("Add New Enemy");
+        dialogBuilder.setSource("newenemydialog.fxml");
+        dialogBuilder.addOkButton();
+        dialogBuilder.addCancelButton();
+        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            NewEnemyDialogController controller = newWindow.getFxmlLoader().getController();
+            NewEnemyDialogController controller = dialogBuilder.getFxmlLoader().getController();
             controller.setWorld(world);
             Enemy newEnemy = controller.newEnemy();
             enemiesListView.getSelectionModel().select(newEnemy);
@@ -164,10 +176,16 @@ public class ModifyInterfaceController extends GameInterfaceController {
 
     @FXML
     public void showNewTreasureDialog() {
-        Dialog<ButtonType> dialog = newWindow.showDialog(mainBorderPane, "Add New Treasure", "Use this dialog to create a new treasure", "newtreasuredialog.fxml", true, true);
+        dialogBuilder.reset();
+        dialogBuilder.setOwner(mainBorderPane);
+        dialogBuilder.setTitle("Add New Treasure");
+        dialogBuilder.setSource("newtreasuredialog.fxml");
+        dialogBuilder.addOkButton();
+        dialogBuilder.addCancelButton();
+        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            NewTreasureDialogController controller = newWindow.getFxmlLoader().getController();
+            NewTreasureDialogController controller = dialogBuilder.getFxmlLoader().getController();
             controller.setWorld(world);
             Treasure newTreasure = controller.newTreasure();
             treasuresListView.getSelectionModel().select(newTreasure);
@@ -180,6 +198,8 @@ public class ModifyInterfaceController extends GameInterfaceController {
     public void addButtonGridPane() {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
+        gridPane.scaleXProperty().bind(zoomSlider.valueProperty());
+        gridPane.scaleYProperty().bind(zoomSlider.valueProperty());
         for(Location i: world.getLocations()) {
             if(i.getExits().get("N") == null) {
                 if(i.getPosition().getY() - 1 >= 0) {
@@ -219,16 +239,24 @@ public class ModifyInterfaceController extends GameInterfaceController {
             }
         }
         mapStackPane.getChildren().add(gridPane);
+        buttonGridPane = gridPane;
     }
 
     @FXML
     private void showNewLocationDialog(Node node) {
         int x = GridPane.getColumnIndex(node);
         int y = GridPane.getRowIndex(node);
-        Dialog<ButtonType> dialog = newWindow.showDialog(mainBorderPane, "Add New Location", "Use this dialog to create a new location", "newlocationdialog.fxml", true, true);
+        dialogBuilder.reset();
+        dialogBuilder.setOwner(mainBorderPane);
+        dialogBuilder.setTitle("Add New Location");
+        dialogBuilder.setSource("newlocationdialog.fxml");
+        dialogBuilder.addOkButton();
+        dialogBuilder.addCancelButton();
+        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
         Optional<ButtonType> result = dialog.showAndWait();
+        mapStackPane.getChildren().remove(buttonGridPane);
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            NewLocationDialogController controller = newWindow.getFxmlLoader().getController();
+            NewLocationDialogController controller = dialogBuilder.getFxmlLoader().getController();
             controller.setPosition(new Position(x, y));
             controller.setWorld(world);
             Location newLocation = controller.newLocation();
@@ -239,13 +267,19 @@ public class ModifyInterfaceController extends GameInterfaceController {
     }
 
     public void showEditEnemyDialog(Enemy enemy) {
-        Dialog<ButtonType> dialog = newWindow.showDialog(mainBorderPane, "Edit Enemy", "Use this dialog to edit enemy", "newenemydialog.fxml", true, true);
-        NewEnemyDialogController controller = newWindow.getFxmlLoader().getController();
+        dialogBuilder.reset();
+        dialogBuilder.setOwner(mainBorderPane);
+        dialogBuilder.setTitle("Edit Enemy");
+        dialogBuilder.setSource("newenemyialog.fxml");
+        dialogBuilder.addOkButton();
+        dialogBuilder.addCancelButton();
+        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
+        NewEnemyDialogController controller = dialogBuilder.getFxmlLoader().getController();
         controller.setWorld(world);
         controller.setNameTextField(enemy.getName());
         controller.setHealthSpinnerValue(enemy.getStatistics().getHealthValue());
-        controller.setPowerSpinnerValue(enemy.getStatistics().getPower());
-        controller.setAgilitySpinnerValue(enemy.getStatistics().getAgility());
+        controller.setPowerSpinnerValue(enemy.getStatistics().getPowerValue());
+        controller.setAgilitySpinnerValue(enemy.getStatistics().getAgilityValue());
         controller.blockNameTextField();
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -257,8 +291,14 @@ public class ModifyInterfaceController extends GameInterfaceController {
     }
 
     public void showEditTreasureDialog(Treasure treasure) {
-        Dialog<ButtonType> dialog = newWindow.showDialog(mainBorderPane, "Edit Treasure", "Use this dialog to edit Treasure", "newtreasuredialog.fxml", true, true);
-        NewTreasureDialogController controller = newWindow.getFxmlLoader().getController();
+        dialogBuilder.reset();
+        dialogBuilder.setOwner(mainBorderPane);
+        dialogBuilder.setTitle("Edit Treasure");
+        dialogBuilder.setSource("newtreasuredialog.fxml");
+        dialogBuilder.addOkButton();
+        dialogBuilder.addCancelButton();
+        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
+        NewTreasureDialogController controller = dialogBuilder.getFxmlLoader().getController();
         controller.setWorld(world);
         controller.setNameTextField(treasure.getName());
         controller.setRadioButton(treasure.getContent().getStatistic());
@@ -274,8 +314,14 @@ public class ModifyInterfaceController extends GameInterfaceController {
     }
 
     public void showEditLocationDialog(Location location) {
-        Dialog<ButtonType> dialog = newWindow.showDialog(mainBorderPane, "Edit location", "Use this dialog to edit location", "newlocationdialog.fxml", true, true);
-        NewLocationDialogController controller = newWindow.getFxmlLoader().getController();
+        dialogBuilder.reset();
+        dialogBuilder.setOwner(mainBorderPane);
+        dialogBuilder.setTitle("Edit Location");
+        dialogBuilder.setSource("newlocationdialog.fxml");
+        dialogBuilder.addOkButton();
+        dialogBuilder.addCancelButton();
+        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
+        NewLocationDialogController controller = dialogBuilder.getFxmlLoader().getController();
         controller.setWorld(world);
         controller.setNameTextField(location.getName());
         controller.setDescriptionTextArea(location.getDescription());
@@ -410,7 +456,7 @@ public class ModifyInterfaceController extends GameInterfaceController {
     }
 
     @Override
-    void makeZoomable(GridPane gameMapGridPane, GridPane contentMapGridPane, GridPane playerMapGridPane, Slider zoomSlider) {
-        super.makeZoomable(gameMapGridPane, contentMapGridPane, playerMapGridPane, zoomSlider);
+    void scrollGameScrollPane(Position position, ScrollPane scrollPane, World world) {
+        super.scrollGameScrollPane(position, scrollPane, world);
     }
 }

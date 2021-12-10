@@ -4,7 +4,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:controller="jakubwiraszka.GameOverController"
+<BorderPane maxHeight="900" maxWidth="1800" fx:controller="jakubwiraszka.GameOverController"
             xmlns:fx="http://javafx.com/fxml">
     <top>
     <MenuBar>

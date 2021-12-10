@@ -1,4 +1,4 @@
-package jakubwiraszka;
+package jakubwiraszka.dialogs;
 
 import jakubwiraszka.gamefiles.*;
 import javafx.fxml.FXML;

@@ -6,20 +6,29 @@
 <?import javafx.scene.text.Font?>
 <DialogPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="jakubwiraszka.HeroStatsDialogController">
+            fx:controller="jakubwiraszka.dialogs.HeroStatsDialogController">
     <content>
         <GridPane fx:id="mainGridPane">
-            <Label text="Health:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <Label fx:id="healthLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label fx:id="healthLabel" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                <font>
+                    <Font name="Arial italic" size="40"/>
+                </font>
+            </Label>
             <Button fx:id="addHealth" onAction="#add" text="+" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
             <Button fx:id="subtractHealth" onAction="#subtract" text="-" GridPane.rowIndex="1"
                     GridPane.columnIndex="3"/>
-            <Label text="Power:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <Label fx:id="powerLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label fx:id="powerLabel" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                <font>
+                    <Font name="Arial italic" size="40"/>
+                </font>
+            </Label>
             <Button fx:id="addPower" onAction="#add" text="+" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
             <Button fx:id="subtractPower" onAction="#subtract" text="-" GridPane.rowIndex="2" GridPane.columnIndex="3"/>
-            <Label text="Agility:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-            <Label fx:id="agilityLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            <Label fx:id="agilityLabel" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                <font>
+                    <Font name="Arial italic" size="40"/>
+                </font>
+            </Label>
             <Button fx:id="addAgility" onAction="#add" text="+" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
             <Button fx:id="subtractAgility" onAction="#subtract" text="-" GridPane.rowIndex="3"
                     GridPane.columnIndex="3"/>

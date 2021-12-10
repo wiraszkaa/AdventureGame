@@ -1,5 +1,11 @@
 package jakubwiraszka.gamefiles;
 
+import jakubwiraszka.fight.Attack;
+import jakubwiraszka.fight.Randomize;
+import jakubwiraszka.fight.StrongAttack;
+
+import java.util.Random;
+
 public class Enemy implements LocationContent {
     private String id;
 
@@ -7,12 +13,33 @@ public class Enemy implements LocationContent {
     private final Statistics statistics;
     private boolean alive;
     private Position position;
+    private Attack attack;
 
     public Enemy(String name, Statistics statistics) {
         this.name = name;
         this.statistics = statistics;
         this.alive = true;
         this.setPosition(new Position(-1, -1));
+        this.attack = new StrongAttack();
+    }
+
+    public double attack(Enemy enemy) {
+        Random random = new Random();
+        double hitChance = attack.getHitChance() + (double) (getStatistics().getAgilityValue() - enemy.getStatistics().getAgilityValue()) / 50.0;
+        boolean hit = Randomize.randomize(hitChance, 100);
+        if(hit) {
+            int attackValue = (int) (getStatistics().getPowerValue() * attack.getPower());
+            System.out.println(getStatistics().getPowerValue());
+            System.out.println(attack.getPower());
+            System.out.println(attackValue);
+            int heroDeviation = Math.max((attackValue / 5), 1);
+            System.out.println(heroDeviation);
+            attackValue += random.nextInt(heroDeviation * 2) - heroDeviation;
+            enemy.changeHealth(-attackValue);
+            return attackValue;
+        } else {
+            return -1;
+        }
     }
 
     public void changeHealth(double value) {
@@ -20,11 +47,11 @@ public class Enemy implements LocationContent {
     }
 
     public void changePower(int value) {
-        statistics.setPower(statistics.getPower() + value);
+        statistics.setPower(statistics.getPowerValue() + value);
     }
 
     public void changeAgility(int value) {
-        statistics.setAgility(statistics.getAgility() + value);
+        statistics.setAgility(statistics.getAgilityValue() + value);
     }
 
     public String getName() {
@@ -51,6 +78,14 @@ public class Enemy implements LocationContent {
         this.position = position;
     }
 
+    public void setAttack(Attack attack) {
+        this.attack = attack;
+    }
+
+    public Attack getAttack() {
+        return attack;
+    }
+
     public String getId() {
         return id;
     }
@@ -61,7 +96,7 @@ public class Enemy implements LocationContent {
 
     public String save() {
         return (getName() + "\n"
-                + statistics.getHealthValue() + " " + statistics.getPower() + " " + statistics.getAgility()) +"\n" +
+                + statistics.getHealthValue() + " " + statistics.getPowerValue() + " " + statistics.getAgilityValue()) +"\n" +
                 isAlive() + "\n" +
                 position.getX() + " " + position.getY() + "\n";
     }
@@ -69,7 +104,7 @@ public class Enemy implements LocationContent {
     @Override
     public String toString() {
         return (getId() + ": \n"
-                + "Health: " + getStatistics().getHealthValue() + " Power: " + getStatistics().getPower() + " Agility: " + getStatistics().getAgility());
+                + "Health: " + getStatistics().getHealthValue() + " Power: " + getStatistics().getPowerValue() + " Agility: " + getStatistics().getAgilityValue());
     }
 
     @Override

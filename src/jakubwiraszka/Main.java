@@ -16,7 +16,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("mainmenu.fxml")));
 
         primaryStage.setTitle("Adventure");
-        primaryStage.setScene(new Scene(root, 1920, 1000));
+        primaryStage.setScene(new Scene(root, 1800, 900));
         primaryStage.show();
     }
 

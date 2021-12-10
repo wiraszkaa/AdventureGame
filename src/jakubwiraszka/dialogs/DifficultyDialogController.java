@@ -1,4 +1,4 @@
-package jakubwiraszka;
+package jakubwiraszka.dialogs;
 
 import jakubwiraszka.gamefiles.Difficulty;
 import javafx.fxml.FXML;

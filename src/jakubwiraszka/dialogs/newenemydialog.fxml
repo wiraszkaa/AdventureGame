@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Spinner?>
 
-<DialogPane fx:controller="jakubwiraszka.NewEnemyDialogController"
+<DialogPane fx:controller="jakubwiraszka.dialogs.NewEnemyDialogController"
             xmlns:fx="http://javafx.com/fxml">
     <content>
         <GridPane vgap="10" hgap="10">
