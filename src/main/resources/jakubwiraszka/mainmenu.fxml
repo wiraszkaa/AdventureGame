@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.*?>
+<BorderPane maxHeight="900" maxWidth="1800" fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jakubwiraszka.MainMenuController">
+    <top>
+        <Label fx:id="messageLabel">
+            <font>
+                <Font name="Arial bold" size="20" />
+            </font>
+        </Label>
+    </top>
+    <center>
+        <ListView fx:id="worldsListView">
+
+        </ListView>
+    </center>
+    <bottom>
+        <HBox>
+            <Button minWidth="100.0" onAction="#play" prefWidth="480" text="Play">
+                <font>
+                    <Font name="Arial bold" size="50" />
+                </font>
+            </Button>
+            <Button minWidth="100.0" onAction="#startNew" prefWidth="480" text="New Game">
+                <font>
+                    <Font name="Arial bold" size="50" />
+                </font>
+            </Button>
+            <Button minWidth="100.0" onAction="#modify" prefWidth="480" text="Modify">
+                <font>
+                    <Font name="Arial bold" size="50" />
+                </font>
+            </Button>
+            <Button minWidth="100.0" onAction="#create" prefWidth="480" text="Create">
+                <font>
+                    <Font name="Arial bold" size="50" />
+                </font>
+            </Button>
+        </HBox>
+    </bottom>
+</BorderPane>

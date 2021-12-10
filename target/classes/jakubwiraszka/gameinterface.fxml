@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<BorderPane prefHeight="900" prefWidth="1800" maxHeight="900" maxWidth="1800" fx:id="gameBorderPane" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/11.0.2" fx:controller="jakubwiraszka.GameInterfaceController"
+            stylesheets="@styles.css">
+    <top>
+        <VBox alignment="CENTER" spacing="10">
+            <MenuBar>
+                <Menu text="Exit">
+                    <MenuItem onAction="#mainMenu" text="Main Menu"/>
+                </Menu>
+            </MenuBar>
+            <Label fx:id="locationNameLabel">
+                <font>
+                    <Font name="Arial italic" size="25"/>
+                </font>
+            </Label>
+            <Label fx:id="locationDescriptionLabel">
+                <font>
+                    <Font name="Arial italic" size="20"/>
+                </font>
+            </Label>
+            <Label fx:id="messageLabel">
+                <font>
+                    <Font name="Arial italic" size="30"/>
+                </font>
+            </Label>
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane fx:id="gameScrollPane" maxHeight="800.0" maxWidth="1600.0" pannable="true"
+                    BorderPane.alignment="CENTER" style="-fx-background-color: #30b832">
+            <StackPane fx:id="gameMapStackPane" style="-fx-background-color: #30b832"/>
+        </ScrollPane>
+    </center>
+    <right>
+        <VBox>
+            <GridPane>
+                <Button fx:id="upButton" onAction="#move" prefWidth="120" text="Up" GridPane.columnIndex="1"
+                        GridPane.rowIndex="0">
+                    <font>
+                        <Font name="Arial bold" size="27"/>
+                    </font>
+                </Button>
+                <Button fx:id="downButton" onAction="#move" prefWidth="120" text="Down" GridPane.columnIndex="1"
+                        GridPane.rowIndex="1">
+                    <font>
+                        <Font name="Arial bold" size="27"/>
+                    </font>
+                </Button>
+                <Button fx:id="rightButton" onAction="#move" prefWidth="120" text="Right" GridPane.columnIndex="2"
+                        GridPane.rowIndex="1">
+                    <font>
+                        <Font name="Arial bold" size="27"/>
+                    </font>
+                </Button>
+                <Button fx:id="leftButton" onAction="#move" prefWidth="120" text="Left" GridPane.columnIndex="0"
+                        GridPane.rowIndex="1">
+                    <font>
+                        <Font name="Arial bold" size="27"/>
+                    </font>
+                </Button>
+                <Button fx:id="firstActionButton" onAction="#contentAppears" prefWidth="120" GridPane.columnIndex="0"
+                        GridPane.rowIndex="0">
+                    <font>
+                        <Font name="Arial bold" size="27"/>
+                    </font>
+                </Button>
+                <Button fx:id="secondActionButton" onAction="#contentAppears" prefWidth="120" GridPane.columnIndex="2"
+                        GridPane.rowIndex="0">
+                    <font>
+                        <Font name="Arial bold" size="27"/>
+                    </font>
+                </Button>
+                <columnConstraints>
+                    <ColumnConstraints/>
+                    <ColumnConstraints/>
+                    <ColumnConstraints/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints/>
+                    <RowConstraints/>
+                </rowConstraints>
+            </GridPane>
+            <Label fx:id="actionSpaceLabel"/>
+            <SplitPane orientation="VERTICAL"/>
+            <VBox fx:id="actionVBox"/>
+        </VBox>
+    </right>
+
+    <bottom>
+        <VBox>
+        <HBox fx:id="infoHBox" spacing="50" alignment="CENTER_LEFT"/>
+        <Label text="WSAD - move    Q - attack/take  E - run/leave  I - inventory and statistics"/>
+        </VBox>
+    </bottom>
+</BorderPane>

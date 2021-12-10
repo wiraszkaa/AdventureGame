@@ -1,0 +1,3282 @@
+[
+  {
+    "name": "ghghg",
+    "visitedLocations": [
+      {
+        "x": 7,
+        "y": 7
+      },
+      {
+        "x": 7,
+        "y": 6
+      },
+      {
+        "x": 6,
+        "y": 7
+      },
+      {
+        "x": 8,
+        "y": 7
+      },
+      {
+        "x": 6,
+        "y": 6
+      },
+      {
+        "x": 7,
+        "y": 8
+      },
+      {
+        "x": 8,
+        "y": 8
+      }
+    ],
+    "locations": [
+      {
+        "name": "Start",
+        "description": "You are at the start of Your-ney. Have fun playing! Creator: Jakub Wiraszka",
+        "position": {
+          "x": 7,
+          "y": 7
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 8
+          },
+          "E": {
+            "x": 8,
+            "y": 7
+          },
+          "W": {
+            "x": 6,
+            "y": 7
+          },
+          "N": {
+            "x": 7,
+            "y": 6
+          }
+        },
+        "visited": true
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 8,
+          "y": 7
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 8,
+            "y": 8
+          },
+          "E": {
+            "x": 9,
+            "y": 7
+          },
+          "W": {
+            "x": 7,
+            "y": 7
+          }
+        },
+        "visited": true
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 6,
+          "y": 7
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 7,
+            "y": 7
+          },
+          "N": {
+            "x": 6,
+            "y": 6
+          }
+        },
+        "visited": true
+      },
+      {
+        "name": "Old Castle",
+        "description": "Some voices can still be heard.",
+        "position": {
+          "x": 9,
+          "y": 7
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 10,
+            "y": 7
+          },
+          "W": {
+            "x": 8,
+            "y": 7
+          },
+          "N": {
+            "x": 9,
+            "y": 6
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Old Castle",
+        "description": "Some voices can still be heard.",
+        "position": {
+          "x": 6,
+          "y": 9
+        },
+        "content": {
+          "id": "Thief6"
+        },
+        "exits": {
+          "S": {
+            "x": 6,
+            "y": 10
+          },
+          "E": {
+            "x": 7,
+            "y": 9
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 8,
+          "y": 8
+        },
+        "content": null,
+        "exits": {
+          "W": {
+            "x": 7,
+            "y": 8
+          },
+          "N": {
+            "x": 8,
+            "y": 7
+          }
+        },
+        "visited": true
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 4,
+          "y": 8
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 4,
+            "y": 9
+          },
+          "W": {
+            "x": 3,
+            "y": 8
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Old Castle",
+        "description": "Some voices can still be heard.",
+        "position": {
+          "x": 7,
+          "y": 8
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 9
+          },
+          "E": {
+            "x": 8,
+            "y": 8
+          },
+          "N": {
+            "x": 7,
+            "y": 7
+          }
+        },
+        "visited": true
+      },
+      {
+        "name": "Small Canyon",
+        "description": "Looks like a good place for an ambush.",
+        "position": {
+          "x": 9,
+          "y": 9
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 9,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Just a road",
+        "description": "Simple road. Nothing to see here.",
+        "position": {
+          "x": 6,
+          "y": 6
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 6,
+            "y": 7
+          },
+          "E": {
+            "x": 7,
+            "y": 6
+          },
+          "W": {
+            "x": 5,
+            "y": 6
+          },
+          "N": {
+            "x": 6,
+            "y": 5
+          }
+        },
+        "visited": true
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 7,
+          "y": 9
+        },
+        "content": {
+          "id": "Chest4"
+        },
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 10
+          },
+          "W": {
+            "x": 6,
+            "y": 9
+          },
+          "N": {
+            "x": 7,
+            "y": 8
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 6,
+          "y": 10
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 7,
+            "y": 10
+          },
+          "W": {
+            "x": 5,
+            "y": 10
+          },
+          "N": {
+            "x": 6,
+            "y": 9
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 7,
+          "y": 10
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 11
+          },
+          "W": {
+            "x": 6,
+            "y": 10
+          },
+          "N": {
+            "x": 7,
+            "y": 9
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 7,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 12
+          },
+          "E": {
+            "x": 8,
+            "y": 11
+          },
+          "N": {
+            "x": 7,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 3,
+          "y": 8
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 3,
+            "y": 9
+          },
+          "E": {
+            "x": 4,
+            "y": 8
+          },
+          "W": {
+            "x": 2,
+            "y": 8
+          },
+          "N": {
+            "x": 3,
+            "y": 7
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 9,
+          "y": 6
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 9,
+            "y": 7
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Old Castle",
+        "description": "Some voices can still be heard.",
+        "position": {
+          "x": 10,
+          "y": 8
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 11,
+            "y": 8
+          },
+          "N": {
+            "x": 10,
+            "y": 7
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 7,
+          "y": 6
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 7
+          },
+          "W": {
+            "x": 6,
+            "y": 6
+          },
+          "N": {
+            "x": 7,
+            "y": 5
+          }
+        },
+        "visited": true
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 4,
+          "y": 9
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 4,
+            "y": 10
+          },
+          "W": {
+            "x": 3,
+            "y": 9
+          },
+          "N": {
+            "x": 4,
+            "y": 8
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 6,
+          "y": 5
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 6,
+            "y": 6
+          },
+          "E": {
+            "x": 7,
+            "y": 5
+          },
+          "W": {
+            "x": 5,
+            "y": 5
+          },
+          "N": {
+            "x": 6,
+            "y": 4
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruined Building",
+        "description": "Something macabric happened here.",
+        "position": {
+          "x": 8,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 8,
+            "y": 12
+          },
+          "E": {
+            "x": 9,
+            "y": 11
+          },
+          "W": {
+            "x": 7,
+            "y": 11
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 3,
+          "y": 7
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 3,
+            "y": 8
+          },
+          "W": {
+            "x": 2,
+            "y": 7
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 3,
+          "y": 9
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 3,
+            "y": 10
+          },
+          "E": {
+            "x": 4,
+            "y": 9
+          },
+          "W": {
+            "x": 2,
+            "y": 9
+          },
+          "N": {
+            "x": 3,
+            "y": 8
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 10,
+          "y": 7
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 10,
+            "y": 8
+          },
+          "E": {
+            "x": 11,
+            "y": 7
+          },
+          "W": {
+            "x": 9,
+            "y": 7
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 2,
+          "y": 8
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 2,
+            "y": 9
+          },
+          "E": {
+            "x": 3,
+            "y": 8
+          },
+          "N": {
+            "x": 2,
+            "y": 7
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Old Castle",
+        "description": "Some voices can still be heard.",
+        "position": {
+          "x": 2,
+          "y": 7
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 2,
+            "y": 8
+          },
+          "E": {
+            "x": 3,
+            "y": 7
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 7,
+          "y": 5
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 6
+          },
+          "W": {
+            "x": 6,
+            "y": 5
+          },
+          "N": {
+            "x": 7,
+            "y": 4
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 5,
+          "y": 5
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 5,
+            "y": 6
+          },
+          "E": {
+            "x": 6,
+            "y": 5
+          },
+          "W": {
+            "x": 4,
+            "y": 5
+          },
+          "N": {
+            "x": 5,
+            "y": 4
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 9,
+          "y": 10
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 9,
+            "y": 11
+          },
+          "E": {
+            "x": 10,
+            "y": 10
+          },
+          "N": {
+            "x": 9,
+            "y": 9
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 10,
+          "y": 5
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 11,
+            "y": 5
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Just a road",
+        "description": "Simple road. Nothing to see here.",
+        "position": {
+          "x": 10,
+          "y": 10
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 10,
+            "y": 11
+          },
+          "E": {
+            "x": 11,
+            "y": 10
+          },
+          "W": {
+            "x": 9,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 7,
+          "y": 12
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 13
+          },
+          "E": {
+            "x": 8,
+            "y": 12
+          },
+          "W": {
+            "x": 6,
+            "y": 12
+          },
+          "N": {
+            "x": 7,
+            "y": 11
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 5,
+          "y": 10
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 5,
+            "y": 11
+          },
+          "E": {
+            "x": 6,
+            "y": 10
+          },
+          "W": {
+            "x": 4,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Small Canyon",
+        "description": "Looks like a good place for an ambush.",
+        "position": {
+          "x": 2,
+          "y": 9
+        },
+        "content": {
+          "id": "Chest0"
+        },
+        "exits": {
+          "S": {
+            "x": 2,
+            "y": 10
+          },
+          "E": {
+            "x": 3,
+            "y": 9
+          },
+          "N": {
+            "x": 2,
+            "y": 8
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 4,
+          "y": 10
+        },
+        "content": {
+          "id": "Zombie10"
+        },
+        "exits": {
+          "S": {
+            "x": 4,
+            "y": 11
+          },
+          "E": {
+            "x": 5,
+            "y": 10
+          },
+          "W": {
+            "x": 3,
+            "y": 10
+          },
+          "N": {
+            "x": 4,
+            "y": 9
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 9,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 9,
+            "y": 12
+          },
+          "E": {
+            "x": 10,
+            "y": 11
+          },
+          "W": {
+            "x": 8,
+            "y": 11
+          },
+          "N": {
+            "x": 9,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 7,
+          "y": 13
+        },
+        "content": {
+          "id": "Rat3"
+        },
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 14
+          },
+          "N": {
+            "x": 7,
+            "y": 12
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Just a road",
+        "description": "Simple road. Nothing to see here.",
+        "position": {
+          "x": 8,
+          "y": 4
+        },
+        "content": null,
+        "exits": {
+          "W": {
+            "x": 7,
+            "y": 4
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruined Building",
+        "description": "Something macabric happened here.",
+        "position": {
+          "x": 4,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 5,
+            "y": 11
+          },
+          "W": {
+            "x": 3,
+            "y": 11
+          },
+          "N": {
+            "x": 4,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 7,
+          "y": 4
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 5
+          },
+          "E": {
+            "x": 8,
+            "y": 4
+          },
+          "W": {
+            "x": 6,
+            "y": 4
+          },
+          "N": {
+            "x": 7,
+            "y": 3
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Small Canyon",
+        "description": "Looks like a good place for an ambush.",
+        "position": {
+          "x": 10,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 10,
+            "y": 12
+          },
+          "E": {
+            "x": 11,
+            "y": 11
+          },
+          "W": {
+            "x": 9,
+            "y": 11
+          },
+          "N": {
+            "x": 10,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Old Castle",
+        "description": "Some voices can still be heard.",
+        "position": {
+          "x": 11,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 12,
+            "y": 11
+          },
+          "W": {
+            "x": 10,
+            "y": 11
+          },
+          "N": {
+            "x": 11,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Just a road",
+        "description": "Simple road. Nothing to see here.",
+        "position": {
+          "x": 5,
+          "y": 6
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 6,
+            "y": 6
+          },
+          "N": {
+            "x": 5,
+            "y": 5
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 3,
+          "y": 10
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 3,
+            "y": 11
+          },
+          "E": {
+            "x": 4,
+            "y": 10
+          },
+          "W": {
+            "x": 2,
+            "y": 10
+          },
+          "N": {
+            "x": 3,
+            "y": 9
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 11,
+          "y": 10
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 11,
+            "y": 11
+          },
+          "E": {
+            "x": 12,
+            "y": 10
+          },
+          "W": {
+            "x": 10,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 2,
+          "y": 10
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 2,
+            "y": 11
+          },
+          "E": {
+            "x": 3,
+            "y": 10
+          },
+          "W": {
+            "x": 1,
+            "y": 10
+          },
+          "N": {
+            "x": 2,
+            "y": 9
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Old Castle",
+        "description": "Some voices can still be heard.",
+        "position": {
+          "x": 6,
+          "y": 4
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 6,
+            "y": 5
+          },
+          "E": {
+            "x": 7,
+            "y": 4
+          },
+          "W": {
+            "x": 5,
+            "y": 4
+          },
+          "N": {
+            "x": 6,
+            "y": 3
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 11,
+          "y": 6
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 11,
+            "y": 7
+          },
+          "N": {
+            "x": 11,
+            "y": 5
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 8,
+          "y": 2
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 9,
+            "y": 2
+          },
+          "W": {
+            "x": 7,
+            "y": 2
+          },
+          "N": {
+            "x": 8,
+            "y": 1
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 2,
+          "y": 5
+        },
+        "content": null,
+        "exits": {
+          "N": {
+            "x": 2,
+            "y": 4
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 8,
+          "y": 12
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 9,
+            "y": 12
+          },
+          "W": {
+            "x": 7,
+            "y": 12
+          },
+          "N": {
+            "x": 8,
+            "y": 11
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 0,
+          "y": 7
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 0,
+            "y": 8
+          },
+          "N": {
+            "x": 0,
+            "y": 6
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 11,
+          "y": 7
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 11,
+            "y": 8
+          },
+          "E": {
+            "x": 12,
+            "y": 7
+          },
+          "W": {
+            "x": 10,
+            "y": 7
+          },
+          "N": {
+            "x": 11,
+            "y": 6
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Small Canyon",
+        "description": "Looks like a good place for an ambush.",
+        "position": {
+          "x": 9,
+          "y": 12
+        },
+        "content": {
+          "id": "Thief4"
+        },
+        "exits": {
+          "E": {
+            "x": 10,
+            "y": 12
+          },
+          "W": {
+            "x": 8,
+            "y": 12
+          },
+          "N": {
+            "x": 9,
+            "y": 11
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruined Building",
+        "description": "Something macabric happened here.",
+        "position": {
+          "x": 0,
+          "y": 8
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 0,
+            "y": 9
+          },
+          "N": {
+            "x": 0,
+            "y": 7
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Just a road",
+        "description": "Simple road. Nothing to see here.",
+        "position": {
+          "x": 7,
+          "y": 14
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 15
+          },
+          "E": {
+            "x": 8,
+            "y": 14
+          },
+          "N": {
+            "x": 7,
+            "y": 13
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Old Castle",
+        "description": "Some voices can still be heard.",
+        "position": {
+          "x": 3,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 4,
+            "y": 11
+          },
+          "W": {
+            "x": 2,
+            "y": 11
+          },
+          "N": {
+            "x": 3,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 1,
+          "y": 10
+        },
+        "content": {
+          "id": "Chest3"
+        },
+        "exits": {
+          "S": {
+            "x": 1,
+            "y": 11
+          },
+          "E": {
+            "x": 2,
+            "y": 10
+          },
+          "W": {
+            "x": 0,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 5,
+          "y": 4
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 5,
+            "y": 5
+          },
+          "E": {
+            "x": 6,
+            "y": 4
+          },
+          "W": {
+            "x": 4,
+            "y": 4
+          },
+          "N": {
+            "x": 5,
+            "y": 3
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 2,
+          "y": 4
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 2,
+            "y": 5
+          },
+          "E": {
+            "x": 3,
+            "y": 4
+          },
+          "W": {
+            "x": 1,
+            "y": 4
+          },
+          "N": {
+            "x": 2,
+            "y": 3
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruined Building",
+        "description": "Something macabric happened here.",
+        "position": {
+          "x": 5,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "W": {
+            "x": 4,
+            "y": 11
+          },
+          "N": {
+            "x": 5,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 0,
+          "y": 6
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 0,
+            "y": 7
+          },
+          "E": {
+            "x": 1,
+            "y": 6
+          },
+          "N": {
+            "x": 0,
+            "y": 5
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 11,
+          "y": 8
+        },
+        "content": null,
+        "exits": {
+          "W": {
+            "x": 10,
+            "y": 8
+          },
+          "N": {
+            "x": 11,
+            "y": 7
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 9,
+          "y": 3
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 10,
+            "y": 3
+          },
+          "N": {
+            "x": 9,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 12,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 12,
+            "y": 12
+          },
+          "E": {
+            "x": 13,
+            "y": 11
+          },
+          "W": {
+            "x": 11,
+            "y": 11
+          },
+          "N": {
+            "x": 12,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Old Castle",
+        "description": "Some voices can still be heard.",
+        "position": {
+          "x": 10,
+          "y": 3
+        },
+        "content": null,
+        "exits": {
+          "W": {
+            "x": 9,
+            "y": 3
+          },
+          "N": {
+            "x": 10,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Old Castle",
+        "description": "Some voices can still be heard.",
+        "position": {
+          "x": 0,
+          "y": 9
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 0,
+            "y": 10
+          },
+          "N": {
+            "x": 0,
+            "y": 8
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 2,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 2,
+            "y": 12
+          },
+          "E": {
+            "x": 3,
+            "y": 11
+          },
+          "W": {
+            "x": 1,
+            "y": 11
+          },
+          "N": {
+            "x": 2,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 3,
+          "y": 4
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 4,
+            "y": 4
+          },
+          "W": {
+            "x": 2,
+            "y": 4
+          },
+          "N": {
+            "x": 3,
+            "y": 3
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 0,
+          "y": 5
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 0,
+            "y": 6
+          },
+          "N": {
+            "x": 0,
+            "y": 4
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 10,
+          "y": 2
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 10,
+            "y": 3
+          },
+          "E": {
+            "x": 11,
+            "y": 2
+          },
+          "W": {
+            "x": 9,
+            "y": 2
+          },
+          "N": {
+            "x": 10,
+            "y": 1
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Old Castle",
+        "description": "Some voices can still be heard.",
+        "position": {
+          "x": 9,
+          "y": 2
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 9,
+            "y": 3
+          },
+          "E": {
+            "x": 10,
+            "y": 2
+          },
+          "W": {
+            "x": 8,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 1,
+          "y": 6
+        },
+        "content": null,
+        "exits": {
+          "W": {
+            "x": 0,
+            "y": 6
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 2,
+          "y": 3
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 2,
+            "y": 4
+          },
+          "E": {
+            "x": 3,
+            "y": 3
+          },
+          "W": {
+            "x": 1,
+            "y": 3
+          },
+          "N": {
+            "x": 2,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 1,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 1,
+            "y": 12
+          },
+          "E": {
+            "x": 2,
+            "y": 11
+          },
+          "W": {
+            "x": 0,
+            "y": 11
+          },
+          "N": {
+            "x": 1,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Small Canyon",
+        "description": "Looks like a good place for an ambush.",
+        "position": {
+          "x": 0,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 1,
+            "y": 11
+          },
+          "N": {
+            "x": 0,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruined Building",
+        "description": "Something macabric happened here.",
+        "position": {
+          "x": 12,
+          "y": 9
+        },
+        "content": {
+          "id": "Rat0"
+        },
+        "exits": {
+          "S": {
+            "x": 12,
+            "y": 10
+          },
+          "E": {
+            "x": 13,
+            "y": 9
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 4,
+          "y": 5
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 5,
+            "y": 5
+          },
+          "N": {
+            "x": 4,
+            "y": 4
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 8,
+          "y": 1
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 8,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 13,
+          "y": 11
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 13,
+            "y": 12
+          },
+          "E": {
+            "x": 14,
+            "y": 11
+          },
+          "W": {
+            "x": 12,
+            "y": 11
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 14,
+          "y": 11
+        },
+        "content": {
+          "id": "Chest1"
+        },
+        "exits": {
+          "S": {
+            "x": 14,
+            "y": 12
+          },
+          "W": {
+            "x": 13,
+            "y": 11
+          },
+          "N": {
+            "x": 14,
+            "y": 10
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 13,
+          "y": 9
+        },
+        "content": null,
+        "exits": {
+          "W": {
+            "x": 12,
+            "y": 9
+          },
+          "N": {
+            "x": 13,
+            "y": 8
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 5,
+          "y": 3
+        },
+        "content": {
+          "id": "Skeleton7"
+        },
+        "exits": {
+          "S": {
+            "x": 5,
+            "y": 4
+          },
+          "E": {
+            "x": 6,
+            "y": 3
+          },
+          "W": {
+            "x": 4,
+            "y": 3
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 7,
+          "y": 3
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 4
+          },
+          "W": {
+            "x": 6,
+            "y": 3
+          },
+          "N": {
+            "x": 7,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 2,
+          "y": 2
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 2,
+            "y": 3
+          },
+          "E": {
+            "x": 3,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 6,
+          "y": 12
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 7,
+            "y": 12
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 6,
+          "y": 3
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 6,
+            "y": 4
+          },
+          "E": {
+            "x": 7,
+            "y": 3
+          },
+          "W": {
+            "x": 5,
+            "y": 3
+          },
+          "N": {
+            "x": 6,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 10,
+          "y": 1
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 10,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 0,
+          "y": 10
+        },
+        "content": {
+          "id": "Awoken King9"
+        },
+        "exits": {
+          "S": {
+            "x": 0,
+            "y": 11
+          },
+          "E": {
+            "x": 1,
+            "y": 10
+          },
+          "N": {
+            "x": 0,
+            "y": 9
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Just a road",
+        "description": "Simple road. Nothing to see here.",
+        "position": {
+          "x": 12,
+          "y": 12
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 13,
+            "y": 12
+          },
+          "N": {
+            "x": 12,
+            "y": 11
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Small Canyon",
+        "description": "Looks like a good place for an ambush.",
+        "position": {
+          "x": 11,
+          "y": 5
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 11,
+            "y": 6
+          },
+          "W": {
+            "x": 10,
+            "y": 5
+          },
+          "N": {
+            "x": 11,
+            "y": 4
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 10,
+          "y": 12
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 10,
+            "y": 13
+          },
+          "W": {
+            "x": 9,
+            "y": 12
+          },
+          "N": {
+            "x": 10,
+            "y": 11
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 11,
+          "y": 4
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 11,
+            "y": 5
+          },
+          "E": {
+            "x": 12,
+            "y": 4
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruined Building",
+        "description": "Something macabric happened here.",
+        "position": {
+          "x": 12,
+          "y": 10
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 12,
+            "y": 11
+          },
+          "W": {
+            "x": 11,
+            "y": 10
+          },
+          "N": {
+            "x": 12,
+            "y": 9
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 3,
+          "y": 2
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 3,
+            "y": 3
+          },
+          "E": {
+            "x": 4,
+            "y": 2
+          },
+          "W": {
+            "x": 2,
+            "y": 2
+          },
+          "N": {
+            "x": 3,
+            "y": 1
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 12,
+          "y": 7
+        },
+        "content": null,
+        "exits": {
+          "W": {
+            "x": 11,
+            "y": 7
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 0,
+          "y": 4
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 0,
+            "y": 5
+          },
+          "E": {
+            "x": 1,
+            "y": 4
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Small Canyon",
+        "description": "Looks like a good place for an ambush.",
+        "position": {
+          "x": 6,
+          "y": 2
+        },
+        "content": {
+          "id": "Witch8"
+        },
+        "exits": {
+          "S": {
+            "x": 6,
+            "y": 3
+          },
+          "E": {
+            "x": 7,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 10,
+          "y": 13
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 10,
+            "y": 14
+          },
+          "E": {
+            "x": 11,
+            "y": 13
+          },
+          "N": {
+            "x": 10,
+            "y": 12
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruined Building",
+        "description": "Something macabric happened here.",
+        "position": {
+          "x": 12,
+          "y": 4
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 13,
+            "y": 4
+          },
+          "W": {
+            "x": 11,
+            "y": 4
+          },
+          "N": {
+            "x": 12,
+            "y": 3
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 13,
+          "y": 12
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 14,
+            "y": 12
+          },
+          "W": {
+            "x": 12,
+            "y": 12
+          },
+          "N": {
+            "x": 13,
+            "y": 11
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruined Building",
+        "description": "Something macabric happened here.",
+        "position": {
+          "x": 7,
+          "y": 2
+        },
+        "content": {
+          "id": "Rat1"
+        },
+        "exits": {
+          "S": {
+            "x": 7,
+            "y": 3
+          },
+          "E": {
+            "x": 8,
+            "y": 2
+          },
+          "W": {
+            "x": 6,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 13,
+          "y": 4
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 14,
+            "y": 4
+          },
+          "W": {
+            "x": 12,
+            "y": 4
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 1,
+          "y": 4
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 2,
+            "y": 4
+          },
+          "W": {
+            "x": 0,
+            "y": 4
+          },
+          "N": {
+            "x": 1,
+            "y": 3
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruined Building",
+        "description": "Something macabric happened here.",
+        "position": {
+          "x": 3,
+          "y": 3
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 3,
+            "y": 4
+          },
+          "E": {
+            "x": 4,
+            "y": 3
+          },
+          "W": {
+            "x": 2,
+            "y": 3
+          },
+          "N": {
+            "x": 3,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 12,
+          "y": 3
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 12,
+            "y": 4
+          },
+          "N": {
+            "x": 12,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruined Building",
+        "description": "Something macabric happened here.",
+        "position": {
+          "x": 4,
+          "y": 3
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 4,
+            "y": 4
+          },
+          "E": {
+            "x": 5,
+            "y": 3
+          },
+          "W": {
+            "x": 3,
+            "y": 3
+          },
+          "N": {
+            "x": 4,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 13,
+          "y": 8
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 13,
+            "y": 9
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 10,
+          "y": 14
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 10,
+            "y": 15
+          },
+          "E": {
+            "x": 11,
+            "y": 14
+          },
+          "N": {
+            "x": 10,
+            "y": 13
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 3,
+          "y": 1
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 3,
+            "y": 2
+          },
+          "N": {
+            "x": 3,
+            "y": 0
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Just a road",
+        "description": "Simple road. Nothing to see here.",
+        "position": {
+          "x": 2,
+          "y": 12
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 2,
+            "y": 13
+          },
+          "W": {
+            "x": 1,
+            "y": 12
+          },
+          "N": {
+            "x": 2,
+            "y": 11
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruined Building",
+        "description": "Something macabric happened here.",
+        "position": {
+          "x": 14,
+          "y": 12
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 14,
+            "y": 13
+          },
+          "W": {
+            "x": 13,
+            "y": 12
+          },
+          "N": {
+            "x": 14,
+            "y": 11
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 8,
+          "y": 14
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 8,
+            "y": 15
+          },
+          "W": {
+            "x": 7,
+            "y": 14
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Just a road",
+        "description": "Simple road. Nothing to see here.",
+        "position": {
+          "x": 12,
+          "y": 2
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 12,
+            "y": 3
+          },
+          "W": {
+            "x": 11,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 10,
+          "y": 15
+        },
+        "content": {
+          "id": "Thief2"
+        },
+        "exits": {
+          "N": {
+            "x": 10,
+            "y": 14
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 11,
+          "y": 2
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 12,
+            "y": 2
+          },
+          "W": {
+            "x": 10,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 14,
+          "y": 4
+        },
+        "content": null,
+        "exits": {
+          "W": {
+            "x": 13,
+            "y": 4
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 7,
+          "y": 15
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 8,
+            "y": 15
+          },
+          "N": {
+            "x": 7,
+            "y": 14
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 1,
+          "y": 12
+        },
+        "content": null,
+        "exits": {
+          "E": {
+            "x": 2,
+            "y": 12
+          },
+          "N": {
+            "x": 1,
+            "y": 11
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Strange Pond",
+        "description": "Seems very deep but somehow invites to swim in it.",
+        "position": {
+          "x": 14,
+          "y": 10
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 14,
+            "y": 11
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Old Castle",
+        "description": "Some voices can still be heard.",
+        "position": {
+          "x": 1,
+          "y": 3
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 1,
+            "y": 4
+          },
+          "E": {
+            "x": 2,
+            "y": 3
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Haunted Forest",
+        "description": "It\u0027s really moist and dark in here.",
+        "position": {
+          "x": 11,
+          "y": 13
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 11,
+            "y": 14
+          },
+          "W": {
+            "x": 10,
+            "y": 13
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 3,
+          "y": 0
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 3,
+            "y": 1
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Weird Stone",
+        "description": "It\u0027s monumental and covered with glowing carvings.",
+        "position": {
+          "x": 4,
+          "y": 4
+        },
+        "content": {
+          "id": "Bear5"
+        },
+        "exits": {
+          "S": {
+            "x": 4,
+            "y": 5
+          },
+          "E": {
+            "x": 5,
+            "y": 4
+          },
+          "W": {
+            "x": 3,
+            "y": 4
+          },
+          "N": {
+            "x": 4,
+            "y": 3
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Cave",
+        "description": "All dark but there\u0027s light at the end.",
+        "position": {
+          "x": 8,
+          "y": 15
+        },
+        "content": null,
+        "exits": {
+          "W": {
+            "x": 7,
+            "y": 15
+          },
+          "N": {
+            "x": 8,
+            "y": 14
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Pavement",
+        "description": "Old as great Rome.",
+        "position": {
+          "x": 2,
+          "y": 13
+        },
+        "content": null,
+        "exits": {
+          "N": {
+            "x": 2,
+            "y": 12
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Ruins",
+        "description": "Long time ago it was someones home.",
+        "position": {
+          "x": 4,
+          "y": 2
+        },
+        "content": null,
+        "exits": {
+          "S": {
+            "x": 4,
+            "y": 3
+          },
+          "W": {
+            "x": 3,
+            "y": 2
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Just a road",
+        "description": "Simple road. Nothing to see here.",
+        "position": {
+          "x": 11,
+          "y": 14
+        },
+        "content": null,
+        "exits": {
+          "W": {
+            "x": 10,
+            "y": 14
+          },
+          "N": {
+            "x": 11,
+            "y": 13
+          }
+        },
+        "visited": false
+      },
+      {
+        "name": "Small Canyon",
+        "description": "Looks like a good place for an ambush.",
+        "position": {
+          "x": 14,
+          "y": 13
+        },
+        "content": null,
+        "exits": {
+          "N": {
+            "x": 14,
+            "y": 12
+          }
+        },
+        "visited": false
+      }
+    ],
+    "enemies": [
+      {
+        "id": "Rat0",
+        "name": "Rat",
+        "statistics": {
+          "health": 7.0,
+          "power": 5,
+          "agility": 4
+        },
+        "alive": true,
+        "position": {
+          "x": 12,
+          "y": 9
+        },
+        "equippedWeapon": "HANDS",
+        "equippedArmor": "CLOTHES"
+      },
+      {
+        "id": "Rat1",
+        "name": "Rat",
+        "statistics": {
+          "health": 5.0,
+          "power": 5,
+          "agility": 3
+        },
+        "alive": true,
+        "position": {
+          "x": 7,
+          "y": 2
+        },
+        "equippedWeapon": "HANDS",
+        "equippedArmor": "CLOTHES"
+      },
+      {
+        "id": "Thief2",
+        "name": "Thief",
+        "statistics": {
+          "health": 10.0,
+          "power": 5,
+          "agility": 2
+        },
+        "alive": true,
+        "position": {
+          "x": 10,
+          "y": 15
+        },
+        "equippedWeapon": "HANDS",
+        "equippedArmor": "CLOTHES"
+      },
+      {
+        "id": "Rat3",
+        "name": "Rat",
+        "statistics": {
+          "health": 12.0,
+          "power": 5,
+          "agility": 0
+        },
+        "alive": true,
+        "position": {
+          "x": 7,
+          "y": 13
+        },
+        "equippedWeapon": "HANDS",
+        "equippedArmor": "CLOTHES"
+      },
+      {
+        "id": "Thief4",
+        "name": "Thief",
+        "statistics": {
+          "health": 5.0,
+          "power": 5,
+          "agility": 0
+        },
+        "alive": true,
+        "position": {
+          "x": 9,
+          "y": 12
+        },
+        "equippedWeapon": "HANDS",
+        "equippedArmor": "CLOTHES"
+      },
+      {
+        "id": "Bear5",
+        "name": "Bear",
+        "statistics": {
+          "health": 5.0,
+          "power": 5,
+          "agility": 6
+        },
+        "alive": true,
+        "position": {
+          "x": 4,
+          "y": 4
+        },
+        "equippedWeapon": "HANDS",
+        "equippedArmor": "CLOTHES"
+      },
+      {
+        "id": "Thief6",
+        "name": "Thief",
+        "statistics": {
+          "health": 10.0,
+          "power": 5,
+          "agility": 3
+        },
+        "alive": true,
+        "position": {
+          "x": 6,
+          "y": 9
+        },
+        "equippedWeapon": "HANDS",
+        "equippedArmor": "CLOTHES"
+      },
+      {
+        "id": "Skeleton7",
+        "name": "Skeleton",
+        "statistics": {
+          "health": 7.0,
+          "power": 5,
+          "agility": 5
+        },
+        "alive": true,
+        "position": {
+          "x": 5,
+          "y": 3
+        },
+        "equippedWeapon": "HANDS",
+        "equippedArmor": "CLOTHES"
+      },
+      {
+        "id": "Witch8",
+        "name": "Witch",
+        "statistics": {
+          "health": 9.0,
+          "power": 5,
+          "agility": 0
+        },
+        "alive": true,
+        "position": {
+          "x": 6,
+          "y": 2
+        },
+        "equippedWeapon": "HANDS",
+        "equippedArmor": "CLOTHES"
+      },
+      {
+        "id": "Awoken King9",
+        "name": "Awoken King",
+        "statistics": {
+          "health": 5.0,
+          "power": 5,
+          "agility": 4
+        },
+        "alive": true,
+        "position": {
+          "x": 0,
+          "y": 10
+        },
+        "equippedWeapon": "HANDS",
+        "equippedArmor": "CLOTHES"
+      },
+      {
+        "id": "Zombie10",
+        "name": "Zombie",
+        "statistics": {
+          "health": 9.0,
+          "power": 5,
+          "agility": 3
+        },
+        "alive": true,
+        "position": {
+          "x": 4,
+          "y": 10
+        },
+        "equippedWeapon": "HANDS",
+        "equippedArmor": "CLOTHES"
+      }
+    ],
+    "enemyNumber": 11,
+    "treasures": [
+      {
+        "id": "Chest0",
+        "name": "Chest",
+        "content": {
+          "statistic": "Power",
+          "value": 1
+        },
+        "position": {
+          "x": 2,
+          "y": 9
+        }
+      },
+      {
+        "id": "Chest1",
+        "name": "Chest",
+        "content": {
+          "statistic": "Agility",
+          "value": 1
+        },
+        "position": {
+          "x": 14,
+          "y": 11
+        }
+      },
+      {
+        "id": "Chest3",
+        "name": "Chest",
+        "content": {
+          "statistic": "Health",
+          "value": 2
+        },
+        "position": {
+          "x": 1,
+          "y": 10
+        }
+      },
+      {
+        "id": "Chest4",
+        "name": "Chest",
+        "content": {
+          "statistic": "Health",
+          "value": 2
+        },
+        "position": {
+          "x": 7,
+          "y": 9
+        }
+      }
+    ],
+    "treasureNumber": 5,
+    "height": 15,
+    "width": 15,
+    "start": false,
+    "hero": {
+      "maxHealth": 12,
+      "level": {
+        "currentLevel": 1,
+        "experienceForLevelUp": 100,
+        "currentExperience": 60,
+        "pointsToSpend": 0
+      },
+      "inventory": [],
+      "id": null,
+      "name": "hgh",
+      "statistics": {
+        "health": 12.0,
+        "power": 5,
+        "agility": 4
+      },
+      "alive": true,
+      "position": {
+        "x": 8,
+        "y": 8
+      },
+      "equippedWeapon": "HANDS",
+      "equippedArmor": "CLOTHES"
+    },
+    "startLocation": {
+      "name": "Start",
+      "description": "You are at the start of Your-ney. Have fun playing! Creator: Jakub Wiraszka",
+      "position": {
+        "x": 7,
+        "y": 7
+      },
+      "content": null,
+      "exits": {
+        "S": {
+          "x": 7,
+          "y": 8
+        },
+        "E": {
+          "x": 8,
+          "y": 7
+        },
+        "W": {
+          "x": 6,
+          "y": 7
+        },
+        "N": {
+          "x": 7,
+          "y": 6
+        }
+      },
+      "visited": true
+    },
+    "portal": {
+      "name": "Portal",
+      "id": "Portal",
+      "isActive": false,
+      "position": null
+    },
+    "boss": {
+      "id": "Boss",
+      "name": "Boss",
+      "statistics": {
+        "health": 20.0,
+        "power": 5,
+        "agility": 4
+      },
+      "alive": true,
+      "position": {
+        "x": -1,
+        "y": -1
+      },
+      "equippedWeapon": "HANDS",
+      "equippedArmor": "CLOTHES"
+    }
+  }
+]

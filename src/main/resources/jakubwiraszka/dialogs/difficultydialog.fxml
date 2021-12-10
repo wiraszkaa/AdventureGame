@@ -1,0 +1,24 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<DialogPane fx:controller="jakubwiraszka.dialogs.DifficultyDialogController"
+            xmlns:fx="http://javafx.com/fxml">
+    <content>
+        <VBox spacing="20">
+            <HBox spacing="20">
+                <Label text="Choose name:"/>
+                <TextField fx:id="nameTextField"/>
+            </HBox>
+            <HBox spacing="20">
+                <Label text="Choose Difficulty:"/>
+                <fx:define>
+                    <ToggleGroup fx:id="difficultyToggleGroup"/>
+                </fx:define>
+                <RadioButton fx:id="easyRadioButton" text="Easy" toggleGroup="$difficultyToggleGroup"/>
+                <RadioButton text="Medium" toggleGroup="$difficultyToggleGroup"
+                             selected="true"/>
+                <RadioButton fx:id="hardRadioButton" text="Hard" toggleGroup="$difficultyToggleGroup"/>
+            </HBox>
+        </VBox>
+    </content>
+</DialogPane>

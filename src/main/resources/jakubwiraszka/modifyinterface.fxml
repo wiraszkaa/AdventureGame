@@ -1,0 +1,43 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<BorderPane maxHeight="900" maxWidth="1800" fx:id="mainBorderPane" fx:controller="jakubwiraszka.ModifyInterfaceController"
+            xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <VBox alignment="CENTER" spacing="10">
+            <MenuBar>
+                <Menu text="Exit">
+                    <MenuItem text="Main Menu" onAction="#exit"/>
+
+                </Menu>
+                <Menu text="Create">
+                    <MenuItem text="New Enemy" onAction="#showNewEnemyDialog"/>
+                    <MenuItem text="New Treasure" onAction="#showNewTreasureDialog"/>
+                    <MenuItem text="New Location" onAction="#addButtonGridPane"/>
+                </Menu>
+            </MenuBar>
+            <Label fx:id="locationNameLabel">
+                <font>
+                    <Font name="Arial italic" size="25"/>
+                </font>
+            </Label>
+            <Label fx:id="locationDescriptionLabel">
+                <font>
+                    <Font name="Arial italic" size="20"/>
+                </font>
+            </Label>
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane fx:id="gameScrollPane" maxHeight="800.0" maxWidth="1600.0" pannable="true" BorderPane.alignment="CENTER">
+            <StackPane fx:id="mapStackPane" style="-fx-background-color: #30b832"/>
+        </ScrollPane>
+    </center>
+    <right>
+        <HBox>
+            <ListView fx:id="locationsListView"/>
+            <ListView fx:id="enemiesListView"/>
+            <ListView fx:id="treasuresListView"/>
+        </HBox>
+    </right>
+</BorderPane>

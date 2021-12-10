@@ -1,0 +1,22 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<DialogPane fx:controller="jakubwiraszka.dialogs.NewTreasureDialogController"
+            xmlns:fx="http://javafx.com/fxml">
+    <content>
+        <GridPane vgap="10" hgap="10">
+            <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="nameTextField" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="3"/>
+
+            <Label text="Statistic:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <fx:define>
+                <ToggleGroup fx:id="colorToggleGroup"/>
+            </fx:define>
+            <RadioButton GridPane.rowIndex="1" GridPane.columnIndex="1" text="Health" toggleGroup="$colorToggleGroup" selected="true"/>
+            <RadioButton fx:id="powerRadioButton" GridPane.rowIndex="1" GridPane.columnIndex="2" text="Power" toggleGroup="$colorToggleGroup"/>
+            <RadioButton fx:id="agilityRadioButton" GridPane.rowIndex="1" GridPane.columnIndex="3" text="Agility" toggleGroup="$colorToggleGroup"/>
+
+            <Label text="Value:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <Spinner fx:id="valueSpinner" min="-10" max="10" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="3" editable="true"/>
+        </GridPane>
+    </content>
+</DialogPane>
