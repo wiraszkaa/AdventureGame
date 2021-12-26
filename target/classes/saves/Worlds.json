@@ -17,6 +17,18 @@
       {
         "x": 8,
         "y": 7
+      },
+      {
+        "x": 6,
+        "y": 6
+      },
+      {
+        "x": 7,
+        "y": 8
+      },
+      {
+        "x": 8,
+        "y": 8
       }
     ],
     "locations": [
@@ -156,7 +168,7 @@
             "y": 7
           }
         },
-        "visited": false
+        "visited": true
       },
       {
         "name": "Pavement",
@@ -200,7 +212,7 @@
             "y": 7
           }
         },
-        "visited": false
+        "visited": true
       },
       {
         "name": "Small Canyon",
@@ -244,7 +256,7 @@
             "y": 5
           }
         },
-        "visited": false
+        "visited": true
       },
       {
         "name": "Cave",
@@ -2613,9 +2625,7 @@
           "x": 14,
           "y": 12
         },
-        "content": {
-          "id": "Boss"
-        },
+        "content": null,
         "exits": {
           "S": {
             "x": 14,
@@ -2951,9 +2961,7 @@
           "x": 14,
           "y": 13
         },
-        "content": {
-          "id": "Portal"
-        },
+        "content": null,
         "exits": {
           "N": {
             "x": 14,
@@ -3201,7 +3209,7 @@
       "level": {
         "currentLevel": 1,
         "experienceForLevelUp": 100,
-        "currentExperience": 30,
+        "currentExperience": 60,
         "pointsToSpend": 0
       },
       "inventory": [],
@@ -3214,8 +3222,8 @@
       },
       "alive": true,
       "position": {
-        "x": 6,
-        "y": 7
+        "x": 8,
+        "y": 8
       },
       "equippedWeapon": "HANDS",
       "equippedArmor": "CLOTHES"
