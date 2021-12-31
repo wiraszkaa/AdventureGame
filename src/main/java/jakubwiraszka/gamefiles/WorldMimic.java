@@ -42,21 +42,19 @@ public class WorldMimic {
     }
 
     public void setEnemies(ObservableList<Enemy> enemies) {
-        for(LocationContent enemy: enemies) {
-            this.enemies.add((Enemy) enemy);
-        }
+        this.enemies.addAll(enemies);
     }
 
     public void setTreasures(ObservableList<Treasure> treasures) {
-        for(LocationContent treasure: treasures) {
-            this.treasures.add((Treasure) treasure);
-        }
+        this.treasures.addAll(treasures);
     }
 
     public World toWorld() {
         World world = new World(name, height, width, hero);
         world.getHero().getLevel().setLevelListeners(new ArrayList<>());
+        world.getHero().setEnemyListeners(new ArrayList<>());
         world.setBoss(boss);
+        world.getBoss().setEnemyListeners(new ArrayList<>());
         world.setPortal(portal);
         world.setStart(start);
         world.setStartLocation(startLocation);
@@ -64,8 +62,12 @@ public class WorldMimic {
         world.setEnemyNumber(enemyNumber);
         world.setVisitedLocations(visitedLocations);
         world.setEnemies(enemies);
+        for(Enemy i: enemies) {
+            i.setEnemyListeners(new ArrayList<>());
+        }
         world.setTreasures(treasures);
         for(Location i: locations) {
+            i.setLocationContentListeners(new ArrayList<>());
             if(i.getContent() != null) {
                 i.setContent(world.findLocationContent(i.getContent().getId()));
             }

@@ -58,25 +58,13 @@ public class GameMapCell {
             clear();
         } else {
             GameMapBuilder.getImageView(cellGridPane, 1, 1).setImage(new Image(GameMapBuilder.getImageUrl("Path.png")));
-            boolean isPath = false;
-            if (exits.get("N") != null) {
-                isPath = true;
-            }
+            boolean isPath = exits.get("N") != null;
             changeNorth(isPath);
-            isPath = false;
-            if (exits.get("E") != null) {
-                isPath = true;
-            }
+            isPath = exits.get("E") != null;
             changeEast(isPath);
-            isPath = false;
-            if (exits.get("W") != null) {
-                isPath = true;
-            }
+            isPath = exits.get("W") != null;
             changeWest(isPath);
-            isPath = false;
-            if (exits.get("S") != null) {
-                isPath = true;
-            }
+            isPath = exits.get("S") != null;
             changeSouth(isPath);
         }
     }

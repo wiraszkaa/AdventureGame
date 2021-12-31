@@ -6,6 +6,12 @@
 }
 
 .label {
-    -fx-font-family: TwinkleStar;
+    -fx-font-family: Limelight;
+    -fx-font-size: 20;
+}
+
+.button {
+    -fx-font-family: Limelight;
+    -fx-font-size: 20;
 }
 

@@ -26,4 +26,52 @@ public enum Usable implements Item {
             case AGILITY_POTION -> "AgilityPotion.png";
         };
     }
+
+
+    @Override
+    public String getId() {
+        return getName();
+    }
+
+    @Override
+    public String getName() {
+        return switch (this) {
+            case HEALTH_POTION -> "Health Potion";
+            case DAMAGE_POTION -> "Damage Potion";
+            case POWER_POTION -> "Power Potion";
+            case AGILITY_POTION -> "Agility Potion";
+        };
+    }
+
+    @Override
+    public boolean isEnemy() {
+        return false;
+    }
+
+    @Override
+    public boolean isTreasure() {
+        return false;
+    }
+
+    @Override
+    public boolean isItem() {
+        return true;
+    }
+
+    @Override
+    public boolean isArmor() {
+        return false;
+    }
+
+    @Override
+    public boolean isWeapon() {
+        return false;
+    }
+
+    @Override
+    public boolean isUsable() {
+        return true;
+    }
+
+
 }

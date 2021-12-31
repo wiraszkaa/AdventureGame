@@ -20,4 +20,51 @@ public enum Armor implements Item {
             case HEAVY_ARMOR -> "HeavyArmor.png";
         };
     }
+
+
+    @Override
+    public String getId() {
+        return getName();
+    }
+
+    @Override
+    public String getName() {
+        return switch (this) {
+            case CLOTHES -> "Clothes";
+            case LIGHT_ARMOR -> "Light Armor";
+            case HEAVY_ARMOR -> "Heavy Armor";
+        };
+    }
+
+    @Override
+    public boolean isEnemy() {
+        return false;
+    }
+
+    @Override
+    public boolean isTreasure() {
+        return false;
+    }
+
+    @Override
+    public boolean isItem() {
+        return true;
+    }
+
+    @Override
+    public boolean isArmor() {
+        return true;
+    }
+
+    @Override
+    public boolean isWeapon() {
+        return false;
+    }
+
+    @Override
+    public boolean isUsable() {
+        return false;
+    }
+
+
 }

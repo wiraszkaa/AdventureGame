@@ -28,12 +28,7 @@ public class LocationContentID implements LocationContent {
     }
 
     @Override
-    public Position getPosition() {
-        return null;
-    }
-
-    @Override
-    public void setPosition(Position position) {
-
+    public boolean isItem() {
+        return false;
     }
 }

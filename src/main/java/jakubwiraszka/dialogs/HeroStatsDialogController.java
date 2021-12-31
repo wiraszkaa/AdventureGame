@@ -69,14 +69,14 @@ public class HeroStatsDialogController implements LevelListener {
                 }
             } else if (event.getSource().equals(addPower)) {
                 hero.changePower(1);
-                powerLabel.setText("" + hero.getStatistics().getPowerValue());
-                if(hero.getStatistics().getPowerValue() == 1) {
+                powerLabel.setText("" + hero.getStatistics().getPower());
+                if(hero.getStatistics().getPower() == 1) {
                     subtractPower.setDisable(false);
                 }
             } else if (event.getSource().equals(addAgility)) {
                 hero.changeAgility(1);
-                agilityLabel.setText("" + hero.getStatistics().getAgilityValue());
-                if(hero.getStatistics().getAgilityValue() == 1) {
+                agilityLabel.setText("" + hero.getStatistics().getAgility());
+                if(hero.getStatistics().getAgility() == 1) {
                     subtractAgility.setDisable(false);
                 }
             }
@@ -96,15 +96,15 @@ public class HeroStatsDialogController implements LevelListener {
             }
         } else if(event.getSource().equals(subtractPower)) {
             hero.changePower(-1);
-            powerLabel.setText("" + hero.getStatistics().getPowerValue());
-            if(hero.getStatistics().getPowerValue() == 0) {
+            powerLabel.setText("" + hero.getStatistics().getPower());
+            if(hero.getStatistics().getPower() == 0) {
                 subtractPower.setDisable(true);
                 addPower.setDisable(false);
             }
         } else if(event.getSource().equals(subtractAgility)) {
             hero.changeAgility(-1);
-            agilityLabel.setText("" + hero.getStatistics().getAgilityValue());
-            if(hero.getStatistics().getAgilityValue() == 0) {
+            agilityLabel.setText("" + hero.getStatistics().getAgility());
+            if(hero.getStatistics().getAgility() == 0) {
                 subtractAgility.setDisable(true);
                 addAgility.setDisable(false);
             }

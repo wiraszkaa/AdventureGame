@@ -4,33 +4,37 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jakubwiraszka.InventoryController">
+<BorderPane fx:id="inventoryBorderPane" prefHeight="450.0" prefWidth="600.0" stylesheets="@styles.css"
+            xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jakubwiraszka.InventoryController">
     <right>
         <GridPane fx:id="statsGridPane">
-            <TextField fx:id="nameTextField" prefWidth="70.0" GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.rowIndex="0" />
+            <TextField fx:id="nameTextField" prefWidth="40.0" GridPane.columnIndex="0" GridPane.columnSpan="4" GridPane.rowIndex="0">
+            <GridPane.margin>
+               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </GridPane.margin></TextField>
             <Button fx:id="addHealth" onAction="#add" prefHeight="50" prefWidth="30.0" text="+" GridPane.columnIndex="2" GridPane.rowIndex="1">
             <GridPane.margin>
-               <Insets left="10.0" />
+               <Insets left="10.0" right="20.0" />
             </GridPane.margin></Button>
             <Button fx:id="addPower" onAction="#add" prefHeight="50" prefWidth="30.0" text="+" GridPane.columnIndex="2" GridPane.rowIndex="2">
             <GridPane.margin>
-               <Insets left="10.0" top="10.0" />
+               <Insets left="10.0" right="20.0" top="10.0" />
             </GridPane.margin></Button>
             <Button fx:id="addAgility" onAction="#add" prefHeight="50" prefWidth="30.0" text="+" GridPane.columnIndex="2" GridPane.rowIndex="3">
             <GridPane.margin>
-               <Insets left="10.0" top="10.0" />
+               <Insets bottom="20.0" left="10.0" right="20.0" top="10.0" />
             </GridPane.margin></Button>
             <Button fx:id="subtractHealth" onAction="#subtract" prefHeight="50" prefWidth="30.0" text="-" GridPane.columnIndex="0" GridPane.rowIndex="1">
             <GridPane.margin>
-               <Insets right="10.0" />
+               <Insets left="10.0" right="10.0" />
             </GridPane.margin></Button>
             <Button fx:id="subtractPower" onAction="#subtract" prefHeight="50" prefWidth="30.0" text="-" GridPane.columnIndex="0" GridPane.rowIndex="2">
             <GridPane.margin>
-               <Insets right="10.0" top="10.0" />
+               <Insets left="10.0" right="10.0" top="10.0" />
             </GridPane.margin></Button>
             <Button fx:id="subtractAgility" onAction="#subtract" prefHeight="50" prefWidth="30.0" text="-" GridPane.columnIndex="0" GridPane.rowIndex="3">
             <GridPane.margin>
-               <Insets right="10.0" top="10.0" />
+               <Insets bottom="20.0" left="10.0" right="10.0" top="10.0" />
             </GridPane.margin></Button>
          <columnConstraints>
             <ColumnConstraints />
@@ -48,6 +52,15 @@
     </right>
 
     <left>
-        <ListView fx:id="itemsListView" />
+        <VBox>
+            <ListView fx:id="itemsListView"/>
+            <ToolBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
+                <items>
+                    <Button alignment="CENTER" disable="true" text="Equip" textAlignment="CENTER"/>
+                    <Button alignment="CENTER" disable="true" text="Use" textAlignment="CENTER"/>
+                    <Button alignment="CENTER" disable="true" text="Throw" textAlignment="CENTER"/>
+                </items>
+            </ToolBar>
+        </VBox>
     </left>
 </BorderPane>

@@ -71,7 +71,7 @@ public class FightInterfaceController {
         if(charge >= hero.getAttack().getCharge()) {
             double damage = hero.attack(enemy);
             if (damage != -1) {
-                Label heroAttack = new Label("You attack " + enemy.getName() + " for " + damage + " with " + hero.getAttack());
+                Label heroAttack = new Label("You attack for " + damage + " with " + hero.getEquippedWeapon().getName());
                 actionVBox.getChildren().add(heroAttack);
             } else {
                 Label heroMiss = new Label("Unfortunately you miss");
@@ -86,8 +86,8 @@ public class FightInterfaceController {
             chargedAttackButton.setText("Charged Attack");
         }
 
-        if(enemy.getStatistics().getHealthValue() <= 0) {
-            enemy.getStatistics().setHealth(0);
+        if(enemy.getStatistics().getHealth() <= 0) {
+            enemy.setHealth(0);
             enemy.setAlive(false);
             Label win = new Label("\nYou have won and gained " + experience + " experience");
             createDelay(1, event -> actionVBox.getChildren().add(win));
@@ -105,14 +105,14 @@ public class FightInterfaceController {
 
             double enemyDamage = enemy.attack(hero);
             if(enemyDamage != -1) {
-                Label enemyAttack = new Label(enemy.getName() + " attacks You for " + enemyDamage + " with " + enemy.getAttack());
+                Label enemyAttack = new Label(enemy.getName() + " attacks for " + enemyDamage + " with " + enemy.getEquippedWeapon().getName());
                 createDelay(1, event -> actionVBox.getChildren().add(enemyAttack));
             } else {
                 Label enemyMiss = new Label(enemy.getName() + " misses");
                 createDelay(1, event -> actionVBox.getChildren().add(enemyMiss));
             }
-            if(hero.getStatistics().getHealthValue() <= 0) {
-                hero.getStatistics().setHealth(0);
+            if(hero.getStatistics().getHealth() <= 0) {
+                hero.setHealth(0);
                 Label loseLabel = new Label("\nYou died!");
                 createDelay(2, event -> {
                     actionVBox.getChildren().add(loseLabel);

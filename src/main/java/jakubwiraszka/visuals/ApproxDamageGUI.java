@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
 
 public class ApproxDamageGUI {
     private final GridPane quickAttackGridPane;
@@ -34,10 +33,10 @@ public class ApproxDamageGUI {
         ImageView chanceImageView = new ImageView(new Image(GameMapBuilder.getImageUrl("HitChance.png")));
         chanceImageView.setFitHeight(30);
         chanceImageView.setPreserveRatio(true);
-        Label dmgLabel = new Label("" + (int) (hero.getStatistics().getPowerValue() * attack.getPower()));
+        Label dmgLabel = new Label("" + (int) (hero.getStatistics().getPower() * attack.getPower()));
         dmgLabel.setStyle("-fx-font-family: 'Limelight', cursive; -fx-font-size: 20");
-        double agilityChance = ((double) (hero.getStatistics().getAgilityValue() - enemy.getStatistics().getAgilityValue()) / 50);
-        Label chanceLabel = new Label(((attack.getHitChance() + agilityChance) * 100) + "%");
+        double agilityChance = ((double) (hero.getStatistics().getAgility() - enemy.getStatistics().getAgility()) / 50);
+        Label chanceLabel = new Label((int) ((attack.getHitChance() + agilityChance) * 100) + "%");
         chanceLabel.setStyle("-fx-font-family: 'Limelight', cursive; -fx-font-size: 20");
         gridPane.add(dmgImageView, 0, 0);
         gridPane.add(dmgLabel, 1, 0);

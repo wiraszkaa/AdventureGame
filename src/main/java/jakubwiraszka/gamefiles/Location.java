@@ -1,7 +1,8 @@
 package jakubwiraszka.gamefiles;
 
+import jakubwiraszka.observable.LocationContentListener;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Location {
     private String name;
@@ -11,11 +12,31 @@ public class Location {
     private HashMap<String, Position> exits;
     private boolean visited = false;
 
+    private transient ArrayList<LocationContentListener> locationContentListeners;
+
     public Location(String name, String description, Position position) {
         this.name = name;
         this.description = description;
         this.position = position;
         this.exits = new HashMap<>();
+
+        this.locationContentListeners = new ArrayList<>();
+    }
+
+    private void notifyListeners() {
+        if (!locationContentListeners.isEmpty()) {
+            for (LocationContentListener i : locationContentListeners) {
+                i.update(this);
+            }
+        }
+    }
+
+    public void addListener(LocationContentListener locationContentListener) {
+        locationContentListeners.add(locationContentListener);
+    }
+
+    public void setLocationContentListeners(ArrayList<LocationContentListener> locationContentListeners) {
+        this.locationContentListeners = locationContentListeners;
     }
 
     public void addExit(String direction, Position position) {
@@ -52,7 +73,7 @@ public class Location {
 
     public void setContent(LocationContent content) {
         this.content = content;
-
+        notifyListeners();
     }
 
     public HashMap<String, Position> getExits() {
@@ -61,28 +82,6 @@ public class Location {
 
     public void setExits(HashMap<String, Position> exits) {
         this.exits = exits;
-    }
-
-    public String save() {
-        String locationContent = "empty";
-        if(getContent() != null) {
-            locationContent = getContent().getId();
-        }
-        StringBuilder content = new StringBuilder(getName() + "\n★\n"
-                + getDescription() + "\n★\n"
-                + position.getX() + " " + position.getY() + "\n★\n"
-                + locationContent + "\n★\n");
-        for (String key : exits.keySet()) {
-            content.append(key)
-                    .append(" ")
-                    .append(exits.get(key).getX())
-                    .append(" ")
-                    .append(exits.get(key).getY()).append("\n");
-        }
-        content.append("★\n")
-                .append(isVisited())
-                .append("\n");
-        return content.toString();
     }
 
     public boolean isVisited() {

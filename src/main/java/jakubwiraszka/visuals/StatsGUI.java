@@ -2,6 +2,7 @@ package jakubwiraszka.visuals;
 
 import jakubwiraszka.gamefiles.Enemy;
 import jakubwiraszka.map.GameMapBuilder;
+import jakubwiraszka.observable.EnemyListener;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -12,7 +13,7 @@ import javafx.scene.layout.VBox;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class StatsGUI {
+public class StatsGUI implements EnemyListener {
     private final Label healthValue;
     private final Label powerValue;
     private final Label agilityValue;
@@ -21,26 +22,16 @@ public class StatsGUI {
     private final HBox agilityHBox;
 
     public StatsGUI(Enemy enemy) {
-        healthValue = new Label("" + enemy.getStatistics().getHealthValue());
+        healthValue = new Label("" + enemy.getStatistics().getHealth());
         healthValue.setStyle("-fx-font-family: 'Limelight', regular; -fx-font-size: 40");
-        powerValue = new Label("" + enemy.getStatistics().getPowerValue());
+        powerValue = new Label("" + enemy.getStatistics().getPower());
         powerValue.setStyle("-fx-font-family: 'Limelight', regular; -fx-font-size: 40");
-        agilityValue = new Label("" + enemy.getStatistics().getAgilityValue());
+        agilityValue = new Label("" + enemy.getStatistics().getAgility());
         agilityValue.setStyle("-fx-font-family: 'Limelight', regular; -fx-font-size: 40");
 
         healthHBox = createStatHBox("Health.png", healthValue);
         powerHBox = createStatHBox("Power.png", powerValue);
         agilityHBox = createStatHBox("Agility2.png", agilityValue);
-
-        enemy.getStatistics().getHealth().addListener((observableValue, number, t1) -> {
-            if(t1.intValue() <= 0) {
-                healthValue.setText("0");
-            } else {
-                healthValue.setText("" + enemy.getStatistics().getHealthValue());
-            }
-        });
-        enemy.getStatistics().getPower().addListener(observable -> powerValue.setText("" + enemy.getStatistics().getPowerValue()));
-        enemy.getStatistics().getAgility().addListener(observable -> agilityValue.setText("" + enemy.getStatistics().getAgilityValue()));
     }
 
     private HBox createStatHBox(String source, Label statValue) {
@@ -70,5 +61,16 @@ public class StatsGUI {
         hBox.setAlignment(Pos.CENTER);
         hBox.getChildren().addAll(Stream.of(healthHBox, powerHBox, agilityHBox).collect(Collectors.toList()));
         return hBox;
+    }
+
+    HBox getHealthHBox() {
+        return healthHBox;
+    }
+
+    @Override
+    public void update(double health, double maxHealth, int power, int agility) {
+        healthValue.setText("" + health);
+        powerValue.setText("" + power);
+        agilityValue.setText("" + agility);
     }
 }

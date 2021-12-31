@@ -78,6 +78,11 @@ public class Treasure implements LocationContent {
     }
 
     @Override
+    public boolean isItem() {
+        return false;
+    }
+
+    @Override
     public String toString() {
         return (getId() + ": " + getContent().getStatistic() + " " + getContent().getValue());
     }

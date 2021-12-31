@@ -2,13 +2,11 @@ package jakubwiraszka;
 
 import jakubwiraszka.dialogs.DialogBuilder;
 import jakubwiraszka.dialogs.FightInterfaceController;
-import jakubwiraszka.dialogs.HeroStatsDialogController;
+import jakubwiraszka.fight.Randomize;
 import jakubwiraszka.gamefiles.*;
+import jakubwiraszka.items.Item;
 import jakubwiraszka.map.GameMapBuilder;
-import jakubwiraszka.visuals.ApproxDamageGUI;
-import jakubwiraszka.visuals.LevelGUI;
-import jakubwiraszka.visuals.PointsToSpendGUI;
-import jakubwiraszka.visuals.StatsGUI;
+import jakubwiraszka.visuals.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -20,7 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
@@ -28,8 +26,7 @@ public class GameInterfaceController {
 
     private World world;
     private Location currentLocation;
-    private boolean endlessMode;
-    private Difficulty difficulty;
+    private int moves;
     private GameMapBuilder gameMapBuilder;
     private final DialogBuilder dialogBuilder = new DialogBuilder();
     @FXML
@@ -109,7 +106,7 @@ public class GameInterfaceController {
         locationDescriptionLabel.setText(currentLocation.getDescription());
         actionSpaceLabel.setText("\t\t\t\t\t\t\t\t\t\t\t\t");
 
-        if(endlessMode) {
+        if(world.isEndlessMode() && !world.isStart()) {
             Position startPosition = world.getLocations().get(0).getPosition();
             Position furthestPosition = new Position(-1, -1);
             Position secondFurthestPosition = new Position(-1, -1);
@@ -132,9 +129,9 @@ public class GameInterfaceController {
             Location bossLocation = world.findLocation(secondFurthestPosition, world.getLocations());
             if(bossLocation != null) {
                 Enemy enemy = world.getBoss();
-                enemy.getStatistics().setHealth(hero.getMaxHealth() * 2);
-                enemy.getStatistics().setPower(hero.getStatistics().getPowerValue());
-                enemy.getStatistics().setAgility(hero.getStatistics().getAgilityValue());
+                enemy.setHealth(hero.getMaxHealth() * 2);
+                enemy.setPower(hero.getStatistics().getPower());
+                enemy.setAgility(hero.getStatistics().getAgility());
                 bossLocation.setContent(enemy);
                 System.out.println("Added " + enemy + " to " + bossLocation.getPosition());
             }
@@ -142,6 +139,9 @@ public class GameInterfaceController {
 
         gameMapBuilder = new GameMapBuilder(world);
         gameMapStackPane.getChildren().addAll(gameMapBuilder.createGameMap(true));
+        for(Location i: world.getLocations()) {
+            i.addListener(gameMapBuilder);
+        }
 
         gameScrollPane.setMaxWidth((world.getWidth() + 1) * 81);
         gameScrollPane.setMaxHeight((world.getHeight() + 1) * 81);
@@ -149,12 +149,16 @@ public class GameInterfaceController {
 
         gameMapBuilder.setPlayerPosition(hero.getPosition());
 
-        StatsGUI statsGUI = new StatsGUI(hero);
-        LevelGUI levelGUI = new LevelGUI(hero.getLevel());
+        HeroStatsGUI heroStatsGUI = new HeroStatsGUI(hero);
+        hero.addEnemyListener(heroStatsGUI);
+
+        LevelGUI levelGUI = new LevelGUI(hero);
         hero.getLevel().addLevelListener(levelGUI);
+
         PointsToSpendGUI pointsToSpendGUI = new PointsToSpendGUI(hero);
         hero.getLevel().addLevelListener(pointsToSpendGUI);
-        infoHBox.getChildren().add(statsGUI.getStatsHBox());
+
+        infoHBox.getChildren().add(heroStatsGUI.getStatsHBox());
         infoHBox.getChildren().add(levelGUI.getLevelGUI());
         infoHBox.getChildren().add(pointsToSpendGUI.getPointsToSpendGUI());
 
@@ -163,6 +167,32 @@ public class GameInterfaceController {
             unlockButtons();
         } else {
             messageLabel.setText("GAME OVER");
+        }
+    }
+
+    private void addRandomContent(Location location) {
+        Random random = new Random();
+        double level = switch (world.getDifficulty()) {
+            case EASY -> 0.35;
+            case HARD -> 0.5;
+            default -> 0.4;
+        };
+        ArrayList<Location> nearLocations = world.getNearLocations(location);
+        Difficulty difficulty = world.getDifficulty();
+        for(Location i: nearLocations) {
+            if(!i.isVisited() && Randomize.randomize(level, 100)) {
+                String name = GameData.getRandomLocationContent().get(random.nextInt(GameData.getRandomLocationContent().size()));
+                Enemy enemy = world.createEnemy(Randomize.randomEnemy(world.getHero(), difficulty, name));
+                world.addEnemy(enemy.getId(), i.getPosition());
+            } else if(!i.isVisited() && Randomize.randomize((1 - level), 100)) {
+                if(Randomize.randomize(0.3, 100)) {
+                    Treasure treasure = world.createTreasure(Randomize.randomTreasure(difficulty));
+                    world.addTreasure(treasure.getId(), i.getPosition());
+                } else {
+                    Item item = Randomize.randomItem(difficulty);
+                    i.setContent(item);
+                }
+            }
         }
     }
 
@@ -219,6 +249,11 @@ public class GameInterfaceController {
 
         currentLocation = world.findLocation(position.getX(), position.getY(), world.getLocations());
 
+        if(moves > 1) {
+            addRandomContent(currentLocation);
+            moves = 0;
+        }
+
         if (world.allEnemiesDead()) {
             world.getPortal().setActive(true);
         }
@@ -226,6 +261,7 @@ public class GameInterfaceController {
         if (world.findVisitedLocation(currentLocation.getPosition()) == null) {
             world.addVisited(currentLocation.getPosition());
             world.getHero().getLevel().addExperience(10);
+            moves++;
         }
 
         locationNameLabel.setText(currentLocation.getName());
@@ -249,6 +285,10 @@ public class GameInterfaceController {
                 actionVBox.getChildren().add(new StatsGUI(enemy).getStatsHBox());
             } else if (currentLocation.getContent().isTreasure()) {
                 System.out.println("Treasure found at " + currentLocation.getPosition().toString());
+                firstActionButton.setText("Take");
+                secondActionButton.setText("Leave");
+            } else if (currentLocation.getContent().isItem()) {
+                System.out.println("Item found at " + currentLocation.getPosition().toString());
                 firstActionButton.setText("Take");
                 secondActionButton.setText("Leave");
             } else {
@@ -277,7 +317,7 @@ public class GameInterfaceController {
 
             Enemy enemy = (Enemy) currentLocation.getContent();
 
-            int value = Math.max(world.getHero().getStatistics().getAgilityValue() - enemy.getStatistics().getAgilityValue(), 0);
+            int value = Math.max(world.getHero().getStatistics().getAgility() - enemy.getStatistics().getAgility(), 0);
 
             if (e.getSource().equals(secondActionButton)) {
                 if ((random.nextInt(11) + value) >= 5 || currentLocation.getContent().equals(world.getBoss())) {
@@ -291,73 +331,77 @@ public class GameInterfaceController {
                     Label negativeEscapeLabel = new Label("\nBetter luck next time!");
                     negativeEscapeLabel.setFont(new Font("Arial italic", 20));
                     actionVBox.getChildren().add(negativeEscapeLabel);
-                    lockButtons();
-                    System.out.println("Fight initialized");
-                    int experience = showFightDialog(enemy);
-                    if(!world.getHero().isAlive()) {
-                        gameOver(gameBorderPane);
-                    } else {
-                        world.getHero().getLevel().addExperience(experience);
-                        clearContent();
-                    }
+                    fightInitialize(enemy);
                 }
             } else if (e.getSource().equals(firstActionButton)) {
-                lockButtons();
-                System.out.println("Fight initialized");
-                int experience = showFightDialog(enemy);
-                if(!world.getHero().isAlive()) {
-                    gameOver(gameBorderPane);
-                } else {
-                    world.getHero().getLevel().addExperience(experience);
-                    clearContent();
-                }
+                fightInitialize(enemy);
             }
-        } else if(currentLocation.getContent().isTreasure()) {
+        } else if(currentLocation.getContent().isTreasure() || currentLocation.getContent().isItem()) {
             if (e.getSource().equals(firstActionButton)) {
                 lockButtons();
-                take();
+                take(currentLocation.getContent().isTreasure());
             } else if (e.getSource().equals(secondActionButton)) {
-                Label leaveLabel = new Label("\nYou leave it!");
-                leaveLabel.setFont(new Font("Arial italic", 20));
-                actionVBox.getChildren().add(leaveLabel);
-                unlockButtons();
-                firstActionButton.setDisable(true);
-                secondActionButton.setDisable(true);
+                leave("\nYou leave it!", "Arial italic");
             }
         } else {
             if(e.getSource().equals(firstActionButton)) {
                 GameData.getWorlds().remove(world);
-                newEndlessWorld(e, getDifficulty(), world.getName(), world.getHero());
+                newEndlessWorld(e, world.getDifficulty(), world.getName(), world.getHero());
             } else if (e.getSource().equals(secondActionButton)) {
-                Label leaveLabel = new Label("\nYou leave portal alone");
-                leaveLabel.setFont(new Font("Arial bold", 20));
-                actionVBox.getChildren().add(leaveLabel);
-                unlockButtons();
-                firstActionButton.setDisable(true);
-                secondActionButton.setDisable(true);
+                leave("\nYou leave portal alone", "Arial bold");
             }
         }
     }
 
-    private void take() {
-        Hero hero = world.getHero();
-        Treasure treasure = (Treasure) currentLocation.getContent();
+    private void leave(String text, String font) {
+        Label leaveLabel = new Label(text);
+        leaveLabel.setFont(new Font(font, 20));
+        actionVBox.getChildren().add(leaveLabel);
+        unlockButtons();
+        firstActionButton.setDisable(true);
+        secondActionButton.setDisable(true);
+    }
 
-        String statistic = treasure.getContent().getStatistic();
-        if (Objects.equals(statistic, "Health")) {
-            hero.changeHealth(treasure.getContent().getValue());
-            hero.addMaxHealth(treasure.getContent().getValue());
-        } else if (Objects.equals(statistic, "Power")) {
-            hero.changePower(treasure.getContent().getValue());
-        } else if (Objects.equals(statistic, "Agility")) {
-            hero.changeAgility(treasure.getContent().getValue());
+    private void fightInitialize(Enemy enemy) {
+        lockButtons();
+        System.out.println("Fight initialized");
+        int experience = showFightDialog(enemy);
+        if(!world.getHero().isAlive()) {
+            gameOver(gameBorderPane);
+        } else {
+            world.getHero().getLevel().addExperience(experience);
+            clearContent();
+            actionVBox.getChildren().clear();
+        }
+    }
+
+    private void take(boolean isTreasure) {
+        Hero hero = world.getHero();
+        Label contentLabel = new Label();
+        contentLabel.setFont(new Font("Arial bold", 20));
+        if(isTreasure) {
+            Treasure treasure = (Treasure) currentLocation.getContent();
+
+            String statistic = treasure.getContent().getStatistic();
+            if (Objects.equals(statistic, "Health")) {
+                hero.changeHealth(treasure.getContent().getValue());
+                hero.addMaxHealth(treasure.getContent().getValue());
+            } else if (Objects.equals(statistic, "Power")) {
+                hero.changePower(treasure.getContent().getValue());
+            } else if (Objects.equals(statistic, "Agility")) {
+                hero.changeAgility(treasure.getContent().getValue());
+            }
+
+            contentLabel.setText("You take " + treasure.getName() + " and get " + treasure.getContent().getValue() + " " + statistic);
+        } else {
+            Item item = (Item) currentLocation.getContent();
+            hero.getInventory().add(item);
+            contentLabel.setText("You take " + item.getName());
         }
 
-        Label contentLabel = new Label("You take " + treasure.getName() + " and get " + treasure.getContent().getValue() + " " + statistic);
-        contentLabel.setFont(new Font("Arial bold", 20));
         actionVBox.getChildren().add(contentLabel);
 
-        if (hero.getStatistics().getHealthValue() <= 0) {
+        if (hero.getStatistics().getHealth() <= 0) {
             hero.setAlive(false);
             lockButtons();
 
@@ -385,25 +429,6 @@ public class GameInterfaceController {
         NewWindow.changePane(node, "gameover.fxml");
     }
 
-    public void showHeroStatsDialog() {
-        dialogBuilder.reset();
-        dialogBuilder.setOwner(gameBorderPane);
-        dialogBuilder.setTitle("Change Statistics");
-        dialogBuilder.setSource("herostatsdialog.fxml");
-        dialogBuilder.addOkButton();
-        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
-        HeroStatsDialogController controller = dialogBuilder.getFxmlLoader().getController();
-        Hero hero = world.getHero();
-        controller.setHero(hero);
-        hero.getLevel().addLevelListener(controller);
-        hero.getLevel().addLevelListener(controller.getPointsToSpendGUI());
-        controller.setHealthLabel("" + hero.getMaxHealth());
-        controller.setPowerLabel("" + hero.getStatistics().getPowerValue());
-        controller.setAgilityLabel("" + hero.getStatistics().getAgilityValue());
-        controller.setSubtraction(true);
-        dialog.showAndWait();
-    }
-
     public int showFightDialog(Enemy enemy) {
         dialogBuilder.reset();
         dialogBuilder.setOwner(gameBorderPane);
@@ -415,9 +440,16 @@ public class GameInterfaceController {
         controller.setHero(hero);
         controller.setEnemy(enemy);
         controller.setHeroNameLabel(hero.getName());
-        controller.getHeroVBox().getChildren().add(new StatsGUI(hero).getStatsHBox());
         controller.setEnemyNameLabel(enemy.getName());
-        controller.getEnemyVBox().getChildren().add(new StatsGUI(enemy).getStatsHBox());
+
+        HeroStatsGUI heroStatsGUI = new HeroStatsGUI(hero);
+        hero.addEnemyListener(heroStatsGUI);
+        controller.getHeroVBox().getChildren().add(heroStatsGUI.getStatsHBox());
+
+        StatsGUI statsGUI = new StatsGUI(enemy);
+        enemy.addEnemyListener(statsGUI);
+        controller.getEnemyVBox().getChildren().add(statsGUI.getStatsHBox());
+
         GridPane attackGridPane = controller.getAttackGridPane();
         ApproxDamageGUI approxDamageGUI = new ApproxDamageGUI(hero, enemy);
         attackGridPane.add(approxDamageGUI.getQuickAttackGridPane(), 0, 1);
@@ -437,28 +469,16 @@ public class GameInterfaceController {
         World newWorld = new World(name, 15, 15, hero);
         newWorld.createStart();
         newWorld.createRandom(GameData.getRandomLocationName(), GameData.getRandomLocationDescription(), GameData.getRandomLocationContent(), difficulty);
+        newWorld.setEndlessMode(true);
+        newWorld.setDifficulty(difficulty);
         GameData.getWorlds().add(newWorld);
         Node node = (Node) event.getSource();
         GameInterfaceController gameInterfaceController = NewWindow.changePane(node, "gameinterface.fxml").getController();
         gameInterfaceController.setWorld(newWorld);
-        gameInterfaceController.setEndlessMode(true);
-        gameInterfaceController.setDifficulty(difficulty);
         gameInterfaceController.start();
     }
 
     public void setWorld(World world) {
         this.world = world;
-    }
-
-    public void setEndlessMode(boolean endlessMode) {
-        this.endlessMode = endlessMode;
-    }
-
-    public Difficulty getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
     }
 }

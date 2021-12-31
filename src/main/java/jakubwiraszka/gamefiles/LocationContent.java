@@ -7,7 +7,5 @@ public interface LocationContent {
 
     boolean isEnemy();
     boolean isTreasure();
-
-    Position getPosition();
-    void setPosition(Position position);
+    boolean isItem();
 }

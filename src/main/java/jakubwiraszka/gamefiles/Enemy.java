@@ -4,8 +4,8 @@ import jakubwiraszka.fight.Attack;
 import jakubwiraszka.fight.Randomize;
 import jakubwiraszka.fight.StrongAttack;
 import jakubwiraszka.items.Armor;
-import jakubwiraszka.items.Item;
 import jakubwiraszka.items.Weapon;
+import jakubwiraszka.observable.EnemyListener;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -21,6 +21,8 @@ public class Enemy implements LocationContent {
     private Armor equippedArmor;
     private transient Attack attack;
 
+    transient ArrayList<EnemyListener> enemyListeners;
+
     public Enemy(String name, Statistics statistics) {
         this.name = name;
         this.statistics = statistics;
@@ -29,14 +31,16 @@ public class Enemy implements LocationContent {
         this.equippedWeapon = Weapon.HANDS;
         this.equippedArmor = Armor.CLOTHES;
         this.attack = new StrongAttack();
+
+        this.enemyListeners = new ArrayList<>();
     }
 
     public double attack(Enemy enemy) {
         Random random = new Random();
-        double hitChance = attack.getHitChance() + (double) (getStatistics().getAgilityValue() - enemy.getStatistics().getAgilityValue()) / 50.0;
+        double hitChance = (attack.getHitChance() * equippedWeapon.getHitChance()) + (double) (getStatistics().getAgility() - enemy.getStatistics().getAgility()) / 50.0;
         boolean hit = Randomize.randomize(hitChance, 100);
         if(hit) {
-            int attackValue = (int) (getStatistics().getPowerValue() * attack.getPower());
+            int attackValue = (int) (getStatistics().getPower() * attack.getPower() * equippedWeapon.getDamageMultiplier() * enemy.getEquippedArmor().getDamageMultiplier());
             int heroDeviation = Math.max((attackValue / 5), 1);
             attackValue += random.nextInt(heroDeviation * 2) - heroDeviation;
             enemy.changeHealth(-attackValue);
@@ -46,16 +50,50 @@ public class Enemy implements LocationContent {
         }
     }
 
+    void notifyListeners() {
+        if (!enemyListeners.isEmpty()) {
+            for (EnemyListener i : enemyListeners) {
+                i.update(statistics.getHealth(), statistics.getHealth(), statistics.getPower(), statistics.getAgility());
+            }
+        }
+    }
+
+    public void addEnemyListener(EnemyListener enemyListener) {
+        enemyListeners.add(enemyListener);
+    }
+
+    public void setEnemyListeners(ArrayList<EnemyListener> enemyListeners) {
+        this.enemyListeners = enemyListeners;
+    }
+
     public void changeHealth(double value) {
-        statistics.setHealth(statistics.getHealthValue() + value);
+        statistics.setHealth(statistics.getHealth() + value);
+        notifyListeners();
+    }
+
+    public void setHealth(double value) {
+        statistics.setHealth(value);
+        notifyListeners();
     }
 
     public void changePower(int value) {
-        statistics.setPower(statistics.getPowerValue() + value);
+        statistics.setPower(statistics.getPower() + value);
+        notifyListeners();
+    }
+
+    public void setPower(int value) {
+        statistics.setPower(value);
+        notifyListeners();
     }
 
     public void changeAgility(int value) {
-        statistics.setAgility(statistics.getAgilityValue() + value);
+        statistics.setAgility(statistics.getAgility() + value);
+        notifyListeners();
+    }
+
+    public void setAgility(int value) {
+        statistics.setAgility(value);
+        notifyListeners();
     }
 
     public String getName() {
@@ -118,17 +156,10 @@ public class Enemy implements LocationContent {
         this.id = id;
     }
 
-    public String save() {
-        return (getName() + "\n"
-                + statistics.getHealthValue() + " " + statistics.getPowerValue() + " " + statistics.getAgilityValue()) +"\n" +
-                isAlive() + "\n" +
-                position.getX() + " " + position.getY() + "\n";
-    }
-
     @Override
     public String toString() {
         return (getId() + ": \n"
-                + "Health: " + getStatistics().getHealthValue() + " Power: " + getStatistics().getPowerValue() + " Agility: " + getStatistics().getAgilityValue());
+                + "Health: " + getStatistics().getHealth() + " Power: " + getStatistics().getPower() + " Agility: " + getStatistics().getAgility());
     }
 
     @Override
@@ -138,6 +169,11 @@ public class Enemy implements LocationContent {
 
     @Override
     public boolean isTreasure() {
+        return false;
+    }
+
+    @Override
+    public boolean isItem() {
         return false;
     }
 }

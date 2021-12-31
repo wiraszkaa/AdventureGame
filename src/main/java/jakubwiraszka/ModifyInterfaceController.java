@@ -53,8 +53,10 @@ public class ModifyInterfaceController extends GameInterfaceController {
         treasuresListView.setItems(world.getTreasures());
 
         GameMapBuilder gameMapBuilder = new GameMapBuilder(world);
-
         mapStackPane.getChildren().addAll(gameMapBuilder.createGameMap(false));
+        for(Location i: world.getLocations()) {
+            i.addListener(gameMapBuilder);
+        }
 
         ContextMenu enemiesContextMenu = createContextMenu(enemiesListView);
         ContextMenu treasuresContextMenu = createContextMenu(treasuresListView);
@@ -280,9 +282,9 @@ public class ModifyInterfaceController extends GameInterfaceController {
         NewEnemyDialogController controller = dialogBuilder.getFxmlLoader().getController();
         controller.setWorld(world);
         controller.setNameTextField(enemy.getName());
-        controller.setHealthSpinnerValue(enemy.getStatistics().getHealthValue());
-        controller.setPowerSpinnerValue(enemy.getStatistics().getPowerValue());
-        controller.setAgilitySpinnerValue(enemy.getStatistics().getAgilityValue());
+        controller.setHealthSpinnerValue((int) enemy.getStatistics().getHealth());
+        controller.setPowerSpinnerValue(enemy.getStatistics().getPower());
+        controller.setAgilitySpinnerValue(enemy.getStatistics().getAgility());
         controller.blockNameTextField();
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {

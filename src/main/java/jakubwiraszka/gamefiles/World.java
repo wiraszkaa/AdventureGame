@@ -21,6 +21,9 @@ public class World {
     private Portal portal;
     private Enemy boss;
 
+    private boolean endlessMode;
+    private Difficulty difficulty;
+
     public World(String name, int height, int width, Hero hero) {
         this.name = name;
         System.out.println("Set name to " + name);
@@ -36,6 +39,8 @@ public class World {
         this.portal = new Portal("Portal");
         this.boss = new Enemy("Boss", new Statistics(1, 0, 0));
         this.boss.setId("Boss");
+
+        this.difficulty = Difficulty.MEDIUM;
     }
 
     public void createStart() {
@@ -52,11 +57,6 @@ public class World {
 
         double value = (double) (random.nextInt(4) + 5) / 10 * (double) height * (double) width;
         int operations = (int) (value);
-        double level = switch (difficulty) {
-            case EASY -> 40;
-            case MEDIUM -> 20;
-            case HARD -> 10;
-        };
         System.out.println("=====================");
         System.out.println("Map randomization started...");
         System.out.println("I will create " + operations + " locations");
@@ -119,45 +119,10 @@ public class World {
             removeLocation(locationsToRemove.get(index));
             locationsToRemove.remove(locationsToRemove.get(index));
         }
-
-        addRandomContent(locationContent, random, level);
-    }
-
-    private void addRandomContent(List<String> locationContent, Random random, double level) {
-        int counter = 0;
-        double numberOfEnemies = (double) locations.size() / 20.0 + (double) locations.size() / level;
-        System.out.println("I will try to create " + (int) numberOfEnemies + " enemies");
-        while (counter < (int) numberOfEnemies) {
-            Location location = locations.get(random.nextInt(locations.size()));
-            if(location.getContent() == null && !location.equals(startLocation)) {
-                int health = Math.max(getHero().getStatistics().getHealthValue() - 5 + random.nextInt(9), 5);
-                int power = Math.max(getHero().getStatistics().getPowerValue() - 5 + random.nextInt(6), 5);
-                int agility = Math.max(getHero().getStatistics().getAgilityValue() - 5 + random.nextInt(9), 0);
-                Enemy enemy = createEnemy(new Enemy(locationContent.get(random.nextInt(locationContent.size() - 1) + 1), new Statistics(health, power, agility)));
-                addEnemy(enemy.getId(), location.getPosition());
-            }
-            counter++;
-        }
-        System.out.println("I will try to create " + (int) (numberOfEnemies / 2) + " treasures");
-        counter = 0;
-        while (counter < (int) (numberOfEnemies / 2)) {
-            Location location = locations.get(random.nextInt(locations.size()));
-            if(location.getContent() == null) {
-                String statistic = switch (random.nextInt(3)) {
-                    case 1 -> "Power";
-                    case 2 -> "Agility";
-                    default -> "Health";
-                };
-                int value = random.nextInt(2) + 1;
-                Treasure treasure = createTreasure(new Treasure("Chest", new Treasure.Content(statistic, value)));
-                addTreasure(treasure.getId(), location.getPosition());
-            }
-            counter++;
-        }
     }
 
     public Enemy createEnemy(Enemy enemy) {
-        if (enemy.getStatistics().getHealthValue() <= 0 || enemy.getStatistics().getPowerValue() < 0 || enemy.getStatistics().getAgilityValue() < 0) {
+        if (enemy.getStatistics().getHealth() <= 0 || enemy.getStatistics().getPower() < 0 || enemy.getStatistics().getAgility() < 0) {
             System.out.println("Enemy not created. Try different statistics.");
         } else if (findEnemy(enemy.getId()) == null) {
             enemies.add(enemy);
@@ -432,6 +397,10 @@ public class World {
         return portal;
     }
 
+    public Location getStartLocation() {
+        return startLocation;
+    }
+
     public Enemy findEnemy(String id) {
         for (LocationContent i : enemies) {
             if (Objects.equals(i.getId(), id)) {
@@ -627,6 +596,22 @@ public class World {
 
     public void setStartLocation(Location startLocation) {
         this.startLocation = startLocation;
+    }
+
+    public boolean isEndlessMode() {
+        return endlessMode;
+    }
+
+    public void setEndlessMode(boolean endlessMode) {
+        this.endlessMode = endlessMode;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 
     public WorldMimic toWorldMimic() {

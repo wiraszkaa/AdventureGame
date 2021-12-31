@@ -94,6 +94,7 @@ public class MainMenuController extends CreateInterfaceController {
         okButton.pressedProperty().addListener((observableValue, aBoolean, t1) -> {
             if(t1) {
                 hero.setName(inventoryController.getNameTextField().getText());
+                inventoryController.close();
                 DialogBuilder dialogBuilder = new DialogBuilder();
                 dialogBuilder.setOwner(mainBorderPane);
                 dialogBuilder.setTitle("Choose Difficulty");

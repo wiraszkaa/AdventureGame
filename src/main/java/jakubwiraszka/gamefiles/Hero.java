@@ -1,46 +1,55 @@
 package jakubwiraszka.gamefiles;
 
+import jakubwiraszka.items.Armor;
 import jakubwiraszka.items.Item;
+import jakubwiraszka.items.Weapon;
+import jakubwiraszka.observable.EnemyListener;
 
 import java.util.ArrayList;
 
 public class Hero extends Enemy {
-    private int maxHealth;
+    private double maxHealth;
     private final Level level;
     private ArrayList<Item> inventory;
 
     public Hero(String name, Statistics statistics) {
         super(name, statistics);
-        maxHealth = super.getStatistics().getHealthValue();
+        maxHealth = super.getStatistics().getHealth();
         level = new Level(1);
         inventory = new ArrayList<>();
     }
 
     public Hero(String name, Statistics statistics, int level) {
         super(name, statistics);
-        maxHealth = super.getStatistics().getHealthValue();
+        maxHealth = super.getStatistics().getHealth();
         this.level = new Level(level);
     }
 
+    public void equip(Item item) {
+        if(item.isWeapon()) {
+            setEquippedWeapon((Weapon) item);
+        } else if(item.isArmor()) {
+            setEquippedArmor((Armor) item);
+        }
+        System.out.println(item.getName() + " equipped");
+    }
+
     @Override
-    public String save() {
-        return (super.save() + getMaxHealth() + "\n" +
-                getLevel().getCurrentLevel() + "\n" +
-                getLevel().getCurrentExperience() + "\n" +
-                getLevel().getPointsToSpend().intValue());
+    void notifyListeners() {
+        if (!enemyListeners.isEmpty()) {
+            for (EnemyListener i : enemyListeners) {
+                i.update(getStatistics().getHealth(), getMaxHealth(), getStatistics().getPower(), getStatistics().getAgility());
+            }
+        }
     }
 
     @Override
     public String toString() {
         return (getName() + ": \n"
-                + "Health: " + super.getStatistics().getHealthValue() + "/" + getMaxHealth() + " Power: " + getStatistics().getPowerValue() + " Agility: " + getStatistics().getAgilityValue());
+                + "Health: " + super.getStatistics().getHealth() + "/" + getMaxHealth() + " Power: " + getStatistics().getPower() + " Agility: " + getStatistics().getAgility());
     }
 
-    public String statsToString() {
-        return ("Health: " + super.getStatistics().getHealthValue() + "/" + getMaxHealth() + " Power: " + getStatistics().getPowerValue() + " Agility: " + getStatistics().getAgilityValue());
-    }
-
-    public int getMaxHealth() {
+    public double getMaxHealth() {
         return maxHealth;
     }
 

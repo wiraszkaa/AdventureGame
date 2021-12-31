@@ -41,9 +41,9 @@ public class NewEnemyDialogController {
     }
 
     public void updateEnemy(Enemy enemy) {
-        enemy.getStatistics().setHealth(healthSpinner.getValue());
-        enemy.getStatistics().setPower(powerSpinner.getValue());
-        enemy.getStatistics().setAgility(agilitySpinner.getValue());
+        enemy.setHealth(healthSpinner.getValue());
+        enemy.setPower(powerSpinner.getValue());
+        enemy.setAgility(agilitySpinner.getValue());
     }
 
     public void setWorld(World world) {

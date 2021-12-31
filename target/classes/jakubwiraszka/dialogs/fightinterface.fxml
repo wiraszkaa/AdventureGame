@@ -4,7 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<DialogPane prefHeight="900" prefWidth="1800" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jakubwiraszka.dialogs.FightInterfaceController">
+<DialogPane prefHeight="900" prefWidth="1800" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jakubwiraszka.dialogs.FightInterfaceController"
+            stylesheets="@../styles.css">
     <content>
     <BorderPane>
     <left>

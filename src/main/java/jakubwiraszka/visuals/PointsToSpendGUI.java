@@ -9,7 +9,7 @@ public class PointsToSpendGUI implements LevelListener {
 
     public PointsToSpendGUI(Hero hero) {
         pointsToSpendLabel = new Label("Points to spend: " + hero.getLevel().getPointsToSpend().intValue());
-        pointsToSpendLabel.setStyle("-fx-font-family: 'Limelight', regular; -fx-font-size: 20");
+        pointsToSpendLabel.setStyle("-fx-font-family: 'Limelight', cursive; -fx-font-size: 20");
     }
 
     public Label getPointsToSpendGUI() {

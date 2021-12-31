@@ -5,7 +5,6 @@ public class Portal implements LocationContent {
     private final String name;
     private final String id;
     private boolean isActive;
-    private Position position;
 
     public Portal(String name) {
         this.name = name;
@@ -41,12 +40,7 @@ public class Portal implements LocationContent {
     }
 
     @Override
-    public Position getPosition() {
-        return position;
-    }
-
-    @Override
-    public void setPosition(Position position) {
-        this.position = position;
+    public boolean isItem() {
+        return false;
     }
 }

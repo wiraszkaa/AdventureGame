@@ -5,7 +5,8 @@ public enum Weapon implements Item {
     CROSSBOW,
     KATANA,
     SHORT_SWORD,
-    SWORD;
+    SWORD,
+    STICK;
 
     public double getHitChance() {
         return switch (this) {
@@ -33,6 +34,57 @@ public enum Weapon implements Item {
             case SWORD -> "Sword.png";
             case CROSSBOW -> "Crossbow.png";
             case KATANA -> "Katana.png";
+            case STICK -> "Stick.png";
         };
     }
+
+
+    @Override
+    public String getId() {
+        return getName();
+    }
+
+    @Override
+    public String getName() {
+        return switch (this) {
+            case HANDS -> "Hands";
+            case SHORT_SWORD -> "Short Sword";
+            case SWORD -> "Sword";
+            case CROSSBOW -> "Crossbow";
+            case KATANA -> "Katana";
+            case STICK -> "Stick";
+        };
+    }
+
+    @Override
+    public boolean isEnemy() {
+        return false;
+    }
+
+    @Override
+    public boolean isTreasure() {
+        return false;
+    }
+
+    @Override
+    public boolean isItem() {
+        return true;
+    }
+
+    @Override
+    public boolean isArmor() {
+        return false;
+    }
+
+    @Override
+    public boolean isWeapon() {
+        return true;
+    }
+
+    @Override
+    public boolean isUsable() {
+        return false;
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package jakubwiraszka.visuals;
 
+import jakubwiraszka.gamefiles.Hero;
 import jakubwiraszka.gamefiles.Level;
 import jakubwiraszka.map.GameMapBuilder;
 import jakubwiraszka.observable.LevelListener;
@@ -17,7 +18,13 @@ public class LevelGUI implements LevelListener {
     private final Label experienceForLevelUpLabel;
     private final Label levelLabel;
 
-    public LevelGUI(Level level) {
+    private final Hero hero;
+    private int currentLevel;
+
+    public LevelGUI(Hero hero) {
+        this.hero = hero;
+        Level level = hero.getLevel();
+        currentLevel = level.getCurrentLevel();
         currentExperienceLabel = new Label(level.getCurrentExperience() + " /");
         currentExperienceLabel.setStyle("-fx-font-family: 'Limelight', cursive; -fx-font-size: 30");
         experienceForLevelUpLabel = new Label("" + level.getExperienceForLevelUp());
@@ -53,5 +60,9 @@ public class LevelGUI implements LevelListener {
         currentExperienceLabel.setText("" + currentExperience + " /");
         experienceForLevelUpLabel.setText("" + experienceForLevelUp);
         levelLabel.setText("" + currentLevel);
+        if(currentLevel > this.currentLevel) {
+            hero.setHealth(hero.getMaxHealth());
+            this.currentLevel = currentLevel;
+        }
     }
 }

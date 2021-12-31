@@ -4,6 +4,7 @@ import jakubwiraszka.gamefiles.Location;
 import jakubwiraszka.gamefiles.LocationContent;
 import jakubwiraszka.gamefiles.Position;
 import jakubwiraszka.gamefiles.World;
+import jakubwiraszka.observable.LocationContentListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -16,7 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-public class GameMapBuilder {
+public class GameMapBuilder implements LocationContentListener {
     private final GridPane gameMapGridPane;
     private final GridPane contentMapGridPane;
     private final GridPane playerMapGridPane;
@@ -86,6 +87,8 @@ public class GameMapBuilder {
                     imageView.setImage(new Image(getImageUrl("Enemy.png")));
                 } else if (location.getContent().isTreasure()) {
                     imageView.setImage(new Image(getImageUrl("Chest.png")));
+                } else if (location.getContent().isItem()) {
+                    imageView.setImage(new Image(getImageUrl("Loot.png")));
                 } else {
                     imageView.setImage(new Image(getImageUrl("Portal.png")));
                 }
@@ -172,6 +175,15 @@ public class GameMapBuilder {
             getImageView(playerMapGridPane, this.playerPosition.getX(), this.playerPosition.getY()).setImage(new Image(getImageUrl("Player.png")));
         } catch (NullPointerException e) {
             System.out.println("New Position is not valid");
+        }
+    }
+
+    @Override
+    public void update(Location location) {
+        if(location.getContent() != null) {
+            getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(getImageUrl("Question.png")));
+        } else {
+            getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(getImageUrl("Nothing.png")));
         }
     }
 }
