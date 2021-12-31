@@ -1,12 +1,10 @@
 package jakubwiraszka.gamefiles;
 
 import jakubwiraszka.fight.Attack;
-import jakubwiraszka.fight.Randomize;
 import jakubwiraszka.fight.StrongAttack;
 import jakubwiraszka.items.Armor;
 import jakubwiraszka.items.Weapon;
 import jakubwiraszka.observable.EnemyListener;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -38,15 +36,25 @@ public class Enemy implements LocationContent {
     public double attack(Enemy enemy) {
         Random random = new Random();
         double hitChance = (attack.getHitChance() * equippedWeapon.getHitChance()) + (double) (getStatistics().getAgility() - enemy.getStatistics().getAgility()) / 50.0;
-        boolean hit = Randomize.randomize(hitChance, 100);
+        boolean hit = random.nextFloat() <= hitChance;
         if(hit) {
-            int attackValue = (int) (getStatistics().getPower() * attack.getPower() * equippedWeapon.getDamageMultiplier() * enemy.getEquippedArmor().getDamageMultiplier());
-            int heroDeviation = Math.max((attackValue / 5), 1);
-            attackValue += random.nextInt(heroDeviation * 2) - heroDeviation;
+            double attackValue = Math.round((getStatistics().getPower() * attack.getPower() * equippedWeapon.getDamageMultiplier() * enemy.getEquippedArmor().getDamageMultiplier()) * 10.0) / 10.0;
+            double heroDeviation = Math.max(Math.round((attackValue / 5) * 10.0) / 10.0, 1);
+            attackValue += random.nextInt(((int) (heroDeviation * 2))) - heroDeviation;
             enemy.changeHealth(-attackValue);
             return attackValue;
         } else {
             return -1;
+        }
+    }
+
+    public void use(ItemContent content) {
+        String statistic = content.getStatistic();
+        switch (statistic) {
+            case "Health" -> changeHealth(content.getValue());
+            case "Power" -> changePower(content.getValue());
+            case "Agility" -> changeAgility(content.getValue());
+            case "Damage" -> changeHealth(-content.getValue());
         }
     }
 

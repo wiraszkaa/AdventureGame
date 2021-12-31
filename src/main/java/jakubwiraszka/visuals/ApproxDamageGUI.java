@@ -33,10 +33,10 @@ public class ApproxDamageGUI {
         ImageView chanceImageView = new ImageView(new Image(GameMapBuilder.getImageUrl("HitChance.png")));
         chanceImageView.setFitHeight(30);
         chanceImageView.setPreserveRatio(true);
-        Label dmgLabel = new Label("" + (int) (hero.getStatistics().getPower() * attack.getPower()));
+        Label dmgLabel = new Label("" + (Math.round((hero.getStatistics().getPower() * attack.getPower() * hero.getEquippedWeapon().getDamageMultiplier() * enemy.getEquippedArmor().getDamageMultiplier()) * 10.0) / 10.0));
         dmgLabel.setStyle("-fx-font-family: 'Limelight', cursive; -fx-font-size: 20");
         double agilityChance = ((double) (hero.getStatistics().getAgility() - enemy.getStatistics().getAgility()) / 50);
-        Label chanceLabel = new Label((int) ((attack.getHitChance() + agilityChance) * 100) + "%");
+        Label chanceLabel = new Label((int) ((attack.getHitChance() * hero.getEquippedWeapon().getHitChance() + agilityChance) * 100) + "%");
         chanceLabel.setStyle("-fx-font-family: 'Limelight', cursive; -fx-font-size: 20");
         gridPane.add(dmgImageView, 0, 0);
         gridPane.add(dmgLabel, 1, 0);

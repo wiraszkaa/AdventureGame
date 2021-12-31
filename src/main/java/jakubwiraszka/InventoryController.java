@@ -1,8 +1,10 @@
 package jakubwiraszka;
 
+import jakubwiraszka.gamefiles.Enemy;
 import jakubwiraszka.gamefiles.Hero;
 import jakubwiraszka.items.Armor;
 import jakubwiraszka.items.Item;
+import jakubwiraszka.items.Usable;
 import jakubwiraszka.items.Weapon;
 import jakubwiraszka.observable.LevelListener;
 import jakubwiraszka.visuals.HeroStatsGUI;
@@ -51,6 +53,8 @@ public class InventoryController implements LevelListener {
 
     private Hero hero;
     private PointsToSpendGUI pointsToSpendGUI;
+    private boolean fightMode;
+    private Enemy enemy;
 
     public void initialize() {
         inventoryBorderPane.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
@@ -72,25 +76,30 @@ public class InventoryController implements LevelListener {
                         if (empty) {
                             setText(null);
                         } else {
-                            setText(item.getName());
+                            if(hero.getEquippedWeapon().equals(item) || hero.getEquippedArmor().equals(item)) {
+                                setText(item.getName() + ": Equipped");
+                            } else {
+                                setText(item.getName());
+                            }
                         }
                     }
                 };
             }
         });
 
-        itemsListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Item>() {
-            @Override
-            public void changed(ObservableValue<? extends Item> observableValue, Item item, Item t1) {
-                if(t1 != null) {
-                    throwButton.setDisable(false);
-                    if(t1.isArmor() || t1.isWeapon()) {
-                        equipButton.setDisable(false);
-                        useButton.setDisable(true);
-                    } else if(t1.isUsable()) {
-                        useButton.setDisable(false);
-                        equipButton.setDisable(true);
+        itemsListView.getSelectionModel().selectedItemProperty().addListener((observableValue, item, t1) -> {
+            if(t1 != null) {
+                useButton.setText("Use");
+                throwButton.setDisable(false);
+                if((t1.isArmor() || t1.isWeapon()) && (!hero.getEquippedArmor().equals(t1) && !hero.getEquippedWeapon().equals(t1)) && !fightMode) {
+                    equipButton.setDisable(false);
+                    useButton.setDisable(true);
+                } else if(t1.isUsable()) {
+                    if(fightMode && t1.equals(Usable.DAMAGE_POTION)) {
+                        useButton.setText("Attack");
                     }
+                    useButton.setDisable(false);
+                    equipButton.setDisable(true);
                 }
             }
         });
@@ -100,19 +109,28 @@ public class InventoryController implements LevelListener {
     public void equip() {
         Item item = itemsListView.getSelectionModel().getSelectedItem();
         hero.equip(item);
+        equipButton.setDisable(true);
     }
 
     @FXML
     public void use() {
-        Item item = itemsListView.getSelectionModel().getSelectedItem();
+        Usable usable = (Usable) itemsListView.getSelectionModel().getSelectedItem();
+        if(fightMode && usable.equals(Usable.DAMAGE_POTION) && enemy != null) {
+            enemy.use(usable.getContent());
+        }
+        hero.use(usable.getContent());
+        itemsListView.getItems().remove(usable);
+        hero.getInventory().remove(usable);
+        useButton.setDisable(true);
     }
 
     @FXML
     public void throwAway() {
         Item item = itemsListView.getSelectionModel().getSelectedItem();
-        hero.getInventory().remove(item);
+        hero.throwAway(item);
         itemsListView.getItems().remove(item);
         System.out.println(item.getName() + " thrown away");
+        itemsListView.getSelectionModel().selectFirst();
     }
 
     @FXML
@@ -218,5 +236,10 @@ public class InventoryController implements LevelListener {
         if(pointsToSpend == 1) {
             setAddition(false);
         }
+    }
+
+    public void setFightMode(Enemy enemy) {
+        this.fightMode = true;
+        this.enemy = enemy;
     }
 }

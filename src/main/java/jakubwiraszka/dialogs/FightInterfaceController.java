@@ -1,5 +1,6 @@
 package jakubwiraszka.dialogs;
 
+import jakubwiraszka.InventoryController;
 import jakubwiraszka.fight.ChargedAttack;
 import jakubwiraszka.fight.QuickAttack;
 import jakubwiraszka.fight.StrongAttack;
@@ -11,8 +12,7 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -29,6 +29,8 @@ public class FightInterfaceController {
     private int experience;
     private Random random;
 
+    @FXML
+    private DialogPane mainDialogPane;
     @FXML
     private Label heroNameLabel;
     @FXML
@@ -55,6 +57,9 @@ public class FightInterfaceController {
         chargedAttackButton.setText("Charge");
         heroVBox.getChildren().add((new ImageView(new Image(GameMapBuilder.getImageUrl("Hero.png")))));
         enemyVBox.getChildren().add(new ImageView(new Image(GameMapBuilder.getImageUrl("Monster.png"))));
+
+        heroNameLabel.setStyle("-fx-font-family: 'Arial Black'; -fx-font-size: 40");
+        enemyNameLabel.setStyle("-fx-font-family: 'Arial Black'; -fx-font-size: 40");
     }
 
     @FXML
@@ -126,6 +131,24 @@ public class FightInterfaceController {
                 createDelay(1, event -> setDisableButtons(false));
             }
         }
+    }
+
+    @FXML
+    public void openInventory() {
+        DialogBuilder dialogBuilder = new DialogBuilder();
+        dialogBuilder.setOwner(mainDialogPane);
+        dialogBuilder.setTitle("Inventory");
+        dialogBuilder.setSource("inventory.fxml");
+        dialogBuilder.addOkButton();
+        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
+        InventoryController inventoryController = dialogBuilder.getFxmlLoader().getController();
+        inventoryController.setHero(hero);
+        inventoryController.setSubtraction(true);
+        inventoryController.getNameTextField().setText(hero.getName());
+        inventoryController.getNameTextField().setEditable(false);
+        inventoryController.setFightMode(enemy);
+        hero.getLevel().addLevelListener(inventoryController.getPointsToSpendGUI());
+        dialog.showAndWait();
     }
 
     private void createDelay(int seconds, EventHandler<ActionEvent> eventHandler) {

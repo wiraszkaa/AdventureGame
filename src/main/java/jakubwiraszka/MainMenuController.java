@@ -86,37 +86,38 @@ public class MainMenuController extends CreateInterfaceController {
     public void startNew(ActionEvent event) {
         Hero hero = new Hero("Hero", new Statistics(4, 2, 0));
         hero.getLevel().setPointsToSpend(10);
-        InventoryController inventoryController = NewWindow.newWindow("inventory.fxml").getController();
+        DialogBuilder dialogBuilder = new DialogBuilder();
+        dialogBuilder.setOwner(mainBorderPane);
+        dialogBuilder.setTitle("Inventory");
+        dialogBuilder.setSource("inventory.fxml");
+        dialogBuilder.addOkButton();
+        InventoryController inventoryController = dialogBuilder.getFxmlLoader().getController();
         inventoryController.setHero(hero);
         hero.getLevel().addLevelListener(inventoryController);
         hero.getLevel().addLevelListener(inventoryController.getPointsToSpendGUI());
-        Button okButton = new Button("Okay");
-        okButton.pressedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if(t1) {
-                hero.setName(inventoryController.getNameTextField().getText());
-                inventoryController.close();
-                DialogBuilder dialogBuilder = new DialogBuilder();
-                dialogBuilder.setOwner(mainBorderPane);
-                dialogBuilder.setTitle("Choose Difficulty");
-                dialogBuilder.setSource("difficultydialog.fxml");
-                dialogBuilder.addOkButton();
-                Dialog<ButtonType> dialog = dialogBuilder.getDialog();
-                DifficultyDialogController controller = dialogBuilder.getFxmlLoader().getController();
-                Optional<ButtonType> result = dialog.showAndWait();
-                Difficulty difficulty = null;
-                String name = "";
-                if (result.isPresent() && result.get() == ButtonType.OK) {
-                    difficulty = controller.getDifficulty();
-                    name = controller.getName();
-                } else {
-                    System.out.println("Cancel Pressed");
-                }
-                if (difficulty != null && !name.equals("")) {
-                    newEndlessWorld(event, difficulty, name, hero);
-                }
+        Optional<ButtonType> result = dialogBuilder.getDialog().showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK) {
+            hero.setName(inventoryController.getNameTextField().getText());
+            dialogBuilder.reset();
+            dialogBuilder.setOwner(mainBorderPane);
+            dialogBuilder.setTitle("Choose Difficulty");
+            dialogBuilder.setSource("difficultydialog.fxml");
+            dialogBuilder.addOkButton();
+            Dialog<ButtonType> dialog = dialogBuilder.getDialog();
+            DifficultyDialogController controller = dialogBuilder.getFxmlLoader().getController();
+            Optional<ButtonType> difficultyResult = dialog.showAndWait();
+            Difficulty difficulty = null;
+            String name = "";
+            if (difficultyResult.isPresent() && difficultyResult.get() == ButtonType.OK) {
+                difficulty = controller.getDifficulty();
+                name = controller.getName();
+            } else {
+                System.out.println("Cancel Pressed");
             }
-        });
-        inventoryController.getStatsGridPane().add(okButton, 0, 5);
+            if (difficulty != null && !name.equals("")) {
+                newEndlessWorld(event, difficulty, name, hero);
+            }
+        }
     }
 
     @FXML

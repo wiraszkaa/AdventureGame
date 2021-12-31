@@ -1,7 +1,7 @@
 package jakubwiraszka.items;
 
-import java.util.HashMap;
-import java.util.Map;
+import jakubwiraszka.gamefiles.ItemContent;
+import jakubwiraszka.gamefiles.Treasure;
 
 public enum Usable implements Item {
     HEALTH_POTION,
@@ -9,12 +9,12 @@ public enum Usable implements Item {
     POWER_POTION,
     AGILITY_POTION;
 
-    public HashMap<String, Integer> getContent() {
+    public ItemContent getContent() {
         return switch (this) {
-            case HEALTH_POTION -> new HashMap<>(Map.of("Health", 5));
-            case DAMAGE_POTION -> new HashMap<>(Map.of("Damage", 5));
-            case POWER_POTION -> new HashMap<>(Map.of("Power", 2));
-            case AGILITY_POTION -> new HashMap<>(Map.of("Agility", 2));
+            case HEALTH_POTION -> new ItemContent("Health", 5);
+            case DAMAGE_POTION -> new ItemContent("Damage", 5);
+            case POWER_POTION -> new ItemContent("Power", 2);
+            case AGILITY_POTION -> new ItemContent("Agility", 2);
         };
     }
 

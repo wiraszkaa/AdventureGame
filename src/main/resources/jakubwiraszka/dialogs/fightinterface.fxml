@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<DialogPane prefHeight="900" prefWidth="1800" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jakubwiraszka.dialogs.FightInterfaceController"
-            stylesheets="@../styles.css">
+
+<DialogPane fx:id="mainDialogPane" prefHeight="900" prefWidth="1800" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jakubwiraszka.dialogs.FightInterfaceController">
     <content>
     <BorderPane>
     <left>
@@ -37,18 +37,25 @@
 
     <bottom>
         <GridPane fx:id="attackGridPane" alignment="CENTER">
-            <Button fx:id="quickAttackButton" onAction="#attack" prefHeight="40.0" prefWidth="150.0" text="Quick Attack" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Button fx:id="quickAttackButton" onAction="#attack" prefHeight="40.0" text="Quick Attack" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0">
                   <font>
                      <Font name="Arial" size="20.0" />
                   </font></Button>
-            <Button fx:id="strongAttackButton" defaultButton="true" onAction="#attack" prefHeight="40.0" prefWidth="150.0" text="Strong Attack" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <Button fx:id="strongAttackButton" defaultButton="true" onAction="#attack" prefHeight="40.0" text="Strong Attack" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="0">
                   <font>
                      <Font name="Arial" size="20.0" />
                   </font></Button>
-            <Button fx:id="chargedAttackButton" onAction="#attack" prefHeight="40.0" prefWidth="150.0" text="Charged Attack" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="0">
+            <Button fx:id="chargedAttackButton" onAction="#attack" prefHeight="40.0" text="Charged Attack" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="0">
                   <font>
                      <Font name="Arial" size="20.0" />
                   </font></Button>
+            <Button fx:id="inventoryButton" onAction="#openInventory" prefHeight="40.0" text="Inventory" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0">
+                <font>
+                    <Font name="Arial" size="20.0" />
+                </font>
+                  <GridPane.margin>
+                     <Insets left="30.0" />
+                  </GridPane.margin></Button>
                <columnConstraints>
                   <ColumnConstraints />
                   <ColumnConstraints />

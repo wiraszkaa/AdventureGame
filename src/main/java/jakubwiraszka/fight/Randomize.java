@@ -5,24 +5,74 @@ import jakubwiraszka.items.Armor;
 import jakubwiraszka.items.Item;
 import jakubwiraszka.items.Usable;
 import jakubwiraszka.items.Weapon;
-
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Randomize {
 
     private static final Random random = new Random();
+    private final World world;
+    private final Difficulty difficulty;
+    private final int maxEnemies;
+    private final int maxItems;
+    private int createdEnemies;
+    private int createdItems;
+    private int moves;
 
-    public static boolean randomize(double chance, int iterations) {
-        int counter = 0;
-        for (int i = 0; i < iterations; i++) {
-            if (random.nextDouble() <= chance) {
-                counter++;
-            }
-        }
-        return counter > (iterations / 2);
+    public Randomize(World world) {
+        this.world = world;
+        this.difficulty = world.getDifficulty();
+        double CONST_ENEMIES = world.getLocations().size() * 0.15;
+        this.maxEnemies = switch (difficulty) {
+            case EASY -> (int) (CONST_ENEMIES * 0.7);
+            case HARD -> (int) (CONST_ENEMIES * 1.3);
+            default -> (int) CONST_ENEMIES;
+        };
+        double CONST_ITEMS = (world.getLocations().size() - maxEnemies) * 0.15;
+        this.maxItems = switch (difficulty) {
+            case EASY -> (int) (CONST_ITEMS * 1.3);
+            case HARD -> (int) (CONST_ITEMS * 0.7);
+            default -> (int) CONST_ITEMS;
+         };
     }
 
-    public static Enemy randomEnemy(Hero hero, Difficulty difficulty, String name) {
+    public void addRandomContent(Location location) {
+        boolean stopEnemiesFlag = ((double) world.getVisitedLocations().size() / (double) world.getLocations().size()) > ((double) createdEnemies / (double) maxEnemies);
+        boolean stopItemsFlag = ((double) world.getVisitedLocations().size() / (double) world.getLocations().size()) > ((double) createdItems / (double) maxItems);
+        if(moves > 1 && (createdEnemies < maxEnemies)) {
+            moves = 0;
+            Random random = new Random();
+            double level = switch (world.getDifficulty()) {
+                case EASY -> 0.35;
+                case HARD -> 0.5;
+                default -> 0.4;
+            };
+            int createdCount = 0;
+            ArrayList<Location> nearLocations = world.getNearLocations(location);
+            for (Location i : nearLocations) {
+                if (!i.isVisited() && (random.nextFloat() < level) && createdCount < 1 && stopEnemiesFlag) {
+                    String name = GameData.getRandomLocationContent().get(random.nextInt(GameData.getRandomLocationContent().size()));
+                    Enemy enemy = world.createEnemy(randomEnemy(world.getHero(), name));
+                    world.addEnemy(enemy.getId(), i.getPosition());
+                    createdCount++;
+                    createdEnemies++;
+
+                } else if (!i.isVisited() && (random.nextFloat() < 1 - level) && createdCount < 1 && stopItemsFlag) {
+                    if (random.nextFloat() < 0.3) {
+                        Treasure treasure = world.createTreasure(randomTreasure());
+                        world.addTreasure(treasure.getId(), i.getPosition());
+                    } else {
+                        Item item = randomItem();
+                        i.setContent(item);
+                    }
+                    createdCount++;
+                    createdItems++;
+                }
+            }
+        }
+    }
+
+    public Enemy randomEnemy(Hero hero, String name) {
         double health = (int) (hero.getMaxHealth() * 0.7 + random.nextInt((int) (hero.getMaxHealth() * 0.6)) + 1);
         int power = (int) ((double) hero.getStatistics().getPower() * 0.7 + random.nextInt((int) (hero.getStatistics().getPower() * 0.6)));
         int agility = (int) ((double) hero.getStatistics().getAgility() * 0.7 + random.nextInt((int) (hero.getStatistics().getAgility() * 0.6)));
@@ -41,35 +91,35 @@ public class Randomize {
         return new Enemy(name, new Statistics(health, power, agility));
     }
 
-    public static Treasure randomTreasure(Difficulty difficulty) {
+    public Treasure randomTreasure() {
         String statistic = switch (random.nextInt(3)) {
             case 1 -> "Power";
             case 2 -> "Agility";
-            default -> "Health";
+            default -> "MaxHealth";
         };
         int value = switch (difficulty) {
             case EASY -> random.nextInt(2) + 1;
             case HARD -> random.nextInt(3) - 1;
             default -> 1;
         };
-        return new Treasure("Chest", new Treasure.Content(statistic, value));
+        return new Treasure("Chest", new ItemContent(statistic, value));
     }
 
-    public static Item randomItem(Difficulty difficulty) {
+    public Item randomItem() {
         switch (random.nextInt(6)) {
             case 0:
             case 1: {
-                return randomWeapon(difficulty);
+                return randomWeapon();
             }
             case 2: {
-                return randomArmor(difficulty);
+                return randomArmor();
             }
             default:
                 return randomUsable();
         }
     }
 
-    private static Armor randomArmor(Difficulty difficulty) {
+    private Armor randomArmor() {
         if(difficulty.equals(Difficulty.EASY)) {
             if (random.nextBoolean()) {
                 return Armor.LIGHT_ARMOR;
@@ -89,7 +139,7 @@ public class Randomize {
         }
     }
 
-    private static Weapon randomWeapon(Difficulty difficulty) {
+    private Weapon randomWeapon() {
         if(difficulty.equals(Difficulty.EASY)) {
             return switch (random.nextInt(4)) {
                 case 0 -> Weapon.KATANA;
@@ -115,12 +165,20 @@ public class Randomize {
         }
     }
 
-    private static Usable randomUsable() {
+    private Usable randomUsable() {
         return switch (random.nextInt(4)) {
             case 1 -> Usable.DAMAGE_POTION;
             case 2 -> Usable.POWER_POTION;
             case 3 -> Usable.AGILITY_POTION;
             default -> Usable.HEALTH_POTION;
         };
+    }
+
+    public void setMoves(int moves) {
+        this.moves = moves;
+    }
+
+    public void move() {
+        moves++;
     }
 }

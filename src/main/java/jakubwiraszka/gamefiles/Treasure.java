@@ -4,10 +4,10 @@ public class Treasure implements LocationContent {
     private String id;
 
     private final String name;
-    private final Content content;
+    private final ItemContent content;
     private Position position;
 
-    public Treasure(String name, Content content) {
+    public Treasure(String name, ItemContent content) {
         this.name = name;
         this.content = content;
     }
@@ -16,7 +16,7 @@ public class Treasure implements LocationContent {
         return name;
     }
 
-    public Content getContent() {
+    public ItemContent getContent() {
         return content;
     }
 
@@ -33,38 +33,6 @@ public class Treasure implements LocationContent {
     }
     public void setPosition(Position position) {
         this.position = position;
-    }
-
-    public String save() {
-        return (getName() + "\n"
-                + getContent().getStatistic() + "\n"
-                + getContent().getValue());
-    }
-
-    public static class Content {
-        private String statistic;
-        private int value;
-
-        public Content(String statistic, int value) {
-            this.statistic = statistic;
-            this.value = value;
-        }
-
-        public String getStatistic() {
-            return statistic;
-        }
-
-        public int getValue() {
-            return value;
-        }
-
-        public void setStatistic(String statistic) {
-            this.statistic = statistic;
-        }
-
-        public void setValue(int value) {
-            this.value = value;
-        }
     }
 
     @Override

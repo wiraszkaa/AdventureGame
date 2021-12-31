@@ -1,5 +1,6 @@
 package jakubwiraszka.dialogs;
 
+import jakubwiraszka.gamefiles.ItemContent;
 import jakubwiraszka.gamefiles.Treasure;
 import jakubwiraszka.gamefiles.World;
 import javafx.fxml.FXML;
@@ -31,7 +32,7 @@ public class NewTreasureDialogController {
 
         int value = valueSpinner.getValue();
 
-        Treasure newTreasure = new Treasure(name, new Treasure.Content(statistic, value));
+        Treasure newTreasure = new Treasure(name, new ItemContent(statistic, value));
         world.createTreasure(newTreasure);
         return newTreasure;
     }

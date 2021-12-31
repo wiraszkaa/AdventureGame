@@ -2,6 +2,7 @@ package jakubwiraszka.gamefiles;
 
 import jakubwiraszka.items.Armor;
 import jakubwiraszka.items.Item;
+import jakubwiraszka.items.Usable;
 import jakubwiraszka.items.Weapon;
 import jakubwiraszka.observable.EnemyListener;
 
@@ -17,6 +18,8 @@ public class Hero extends Enemy {
         maxHealth = super.getStatistics().getHealth();
         level = new Level(1);
         inventory = new ArrayList<>();
+
+        inventory.add(Usable.DAMAGE_POTION);
     }
 
     public Hero(String name, Statistics statistics, int level) {
@@ -32,6 +35,24 @@ public class Hero extends Enemy {
             setEquippedArmor((Armor) item);
         }
         System.out.println(item.getName() + " equipped");
+    }
+
+    public void throwAway(Item item) {
+        if(item.isArmor() && getEquippedArmor().equals(item)) {
+            setEquippedArmor(Armor.CLOTHES);
+        } else if(item.isWeapon() && getEquippedWeapon().equals(item)) {
+            setEquippedWeapon(Weapon.HANDS);
+        }
+        inventory.remove(item);
+    }
+
+    @Override
+    public void use(ItemContent content) {
+        super.use(content);
+        if(content.getStatistic().equals("MaxHealth")) {
+            changeHealth(content.getValue());
+            addMaxHealth(content.getValue());
+        }
     }
 
     @Override

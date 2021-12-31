@@ -18,16 +18,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 
 public class GameInterfaceController {
 
     private World world;
     private Location currentLocation;
-    private int moves;
     private GameMapBuilder gameMapBuilder;
+    private Randomize randomize;
     private final DialogBuilder dialogBuilder = new DialogBuilder();
     @FXML
     private BorderPane gameBorderPane;
@@ -88,12 +86,19 @@ public class GameInterfaceController {
     }
 
     private void showInventory() {
-        InventoryController inventoryController = NewWindow.newWindow("inventory.fxml").getController();
+        dialogBuilder.reset();
+        dialogBuilder.setOwner(gameBorderPane);
+        dialogBuilder.setTitle("Inventory");
+        dialogBuilder.setSource("inventory.fxml");
+        dialogBuilder.addOkButton();
+        Dialog<ButtonType> dialog = dialogBuilder.getDialog();
+        InventoryController inventoryController = dialogBuilder.getFxmlLoader().getController();
         inventoryController.setHero(world.getHero());
         inventoryController.setSubtraction(true);
         inventoryController.getNameTextField().setText(world.getHero().getName());
         inventoryController.getNameTextField().setEditable(false);
         world.getHero().getLevel().addLevelListener(inventoryController.getPointsToSpendGUI());
+        dialog.showAndWait();
     }
 
     public void start() {
@@ -143,6 +148,8 @@ public class GameInterfaceController {
             i.addListener(gameMapBuilder);
         }
 
+        randomize = new Randomize(world);
+
         gameScrollPane.setMaxWidth((world.getWidth() + 1) * 81);
         gameScrollPane.setMaxHeight((world.getHeight() + 1) * 81);
         scrollGameScrollPane(hero.getPosition(), gameScrollPane, world);
@@ -167,32 +174,6 @@ public class GameInterfaceController {
             unlockButtons();
         } else {
             messageLabel.setText("GAME OVER");
-        }
-    }
-
-    private void addRandomContent(Location location) {
-        Random random = new Random();
-        double level = switch (world.getDifficulty()) {
-            case EASY -> 0.35;
-            case HARD -> 0.5;
-            default -> 0.4;
-        };
-        ArrayList<Location> nearLocations = world.getNearLocations(location);
-        Difficulty difficulty = world.getDifficulty();
-        for(Location i: nearLocations) {
-            if(!i.isVisited() && Randomize.randomize(level, 100)) {
-                String name = GameData.getRandomLocationContent().get(random.nextInt(GameData.getRandomLocationContent().size()));
-                Enemy enemy = world.createEnemy(Randomize.randomEnemy(world.getHero(), difficulty, name));
-                world.addEnemy(enemy.getId(), i.getPosition());
-            } else if(!i.isVisited() && Randomize.randomize((1 - level), 100)) {
-                if(Randomize.randomize(0.3, 100)) {
-                    Treasure treasure = world.createTreasure(Randomize.randomTreasure(difficulty));
-                    world.addTreasure(treasure.getId(), i.getPosition());
-                } else {
-                    Item item = Randomize.randomItem(difficulty);
-                    i.setContent(item);
-                }
-            }
         }
     }
 
@@ -249,10 +230,7 @@ public class GameInterfaceController {
 
         currentLocation = world.findLocation(position.getX(), position.getY(), world.getLocations());
 
-        if(moves > 1) {
-            addRandomContent(currentLocation);
-            moves = 0;
-        }
+        randomize.addRandomContent(currentLocation);
 
         if (world.allEnemiesDead()) {
             world.getPortal().setActive(true);
@@ -261,7 +239,7 @@ public class GameInterfaceController {
         if (world.findVisitedLocation(currentLocation.getPosition()) == null) {
             world.addVisited(currentLocation.getPosition());
             world.getHero().getLevel().addExperience(10);
-            moves++;
+            randomize.move();
         }
 
         locationNameLabel.setText(currentLocation.getName());
@@ -382,17 +360,9 @@ public class GameInterfaceController {
         if(isTreasure) {
             Treasure treasure = (Treasure) currentLocation.getContent();
 
-            String statistic = treasure.getContent().getStatistic();
-            if (Objects.equals(statistic, "Health")) {
-                hero.changeHealth(treasure.getContent().getValue());
-                hero.addMaxHealth(treasure.getContent().getValue());
-            } else if (Objects.equals(statistic, "Power")) {
-                hero.changePower(treasure.getContent().getValue());
-            } else if (Objects.equals(statistic, "Agility")) {
-                hero.changeAgility(treasure.getContent().getValue());
-            }
+            hero.use(treasure.getContent());
 
-            contentLabel.setText("You take " + treasure.getName() + " and get " + treasure.getContent().getValue() + " " + statistic);
+            contentLabel.setText("You take " + treasure.getName() + " and get " + treasure.getContent().getValue() + " " + treasure.getContent().getStatistic());
         } else {
             Item item = (Item) currentLocation.getContent();
             hero.getInventory().add(item);
