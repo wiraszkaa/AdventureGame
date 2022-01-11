@@ -1,5 +1,7 @@
 package jakubwiraszka.items;
 
+import java.net.PortUnreachableException;
+
 public enum Weapon implements Item {
     HANDS,
     CROSSBOW,
@@ -38,6 +40,16 @@ public enum Weapon implements Item {
         };
     }
 
+    public static Weapon getByName(String name) {
+        return switch (name) {
+            case "Short Sword" -> SHORT_SWORD;
+            case "Sword" -> SWORD;
+            case "Crossbow"-> CROSSBOW;
+            case "Katana" -> KATANA;
+            case "Stick" -> STICK;
+            default -> HANDS;
+        };
+    }
 
     @Override
     public String getId() {

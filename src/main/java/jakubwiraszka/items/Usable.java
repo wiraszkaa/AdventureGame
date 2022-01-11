@@ -27,6 +27,15 @@ public enum Usable implements Item {
         };
     }
 
+    public static Usable getByName(String name) {
+        return switch (name) {
+            case "Damage Potion" -> DAMAGE_POTION;
+            case "Power Potion" -> POWER_POTION;
+            case "Agility Potion" -> AGILITY_POTION;
+            default -> HEALTH_POTION;
+        };
+    }
+
 
     @Override
     public String getId() {

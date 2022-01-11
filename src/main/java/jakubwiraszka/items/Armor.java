@@ -21,6 +21,14 @@ public enum Armor implements Item {
         };
     }
 
+    public static Armor getByName(String name) {
+        return switch (name) {
+            case "Light Armor" -> LIGHT_ARMOR;
+            case "Heavy Armor" -> HEAVY_ARMOR;
+            default -> CLOTHES;
+        };
+    }
+
 
     @Override
     public String getId() {

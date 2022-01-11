@@ -4,6 +4,10 @@ import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import jakubwiraszka.fight.Attack;
 import jakubwiraszka.fight.StrongAttack;
+import jakubwiraszka.items.Armor;
+import jakubwiraszka.items.Item;
+import jakubwiraszka.items.Usable;
+import jakubwiraszka.items.Weapon;
 import jakubwiraszka.observable.LevelListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,6 +42,13 @@ public class GameData {
             return jsonObject;
         };
         fxGsonBuilder.builder().registerTypeAdapter(LocationContent.class, serializer);
+        JsonSerializer<Item> itemJsonSerializer = (jsonElement, type, jsonSerializationContext) -> {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("type", jsonElement.getClass().getName());
+            jsonObject.add("data", jsonSerializationContext.serialize(jsonElement.getName()));
+            return jsonObject;
+        };
+        fxGsonBuilder.builder().registerTypeHierarchyAdapter(Item.class, itemJsonSerializer);
         JsonDeserializer<LocationContent> deserializer = (jsonElement, type, jsonDeserializationContext) -> {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
             if(jsonObject.get("id") != null) {
@@ -48,6 +59,17 @@ public class GameData {
         fxGsonBuilder.builder().registerTypeAdapter(LocationContent.class, deserializer);
         JsonDeserializer<Attack> attackJsonDeserializer = (jsonElement, type, jsonDeserializationContext) -> new StrongAttack();
         fxGsonBuilder.builder().registerTypeAdapter(Attack.class, attackJsonDeserializer);
+        JsonDeserializer<Item> itemJsonDeserializer = (jsonElement, type, jsonDeserializerContext) -> {
+            JsonObject jsonObject = jsonElement.getAsJsonObject();
+            String typeName = jsonObject.get("type").getAsString();
+            String data = jsonObject.get("data").getAsString();
+            return switch (typeName) {
+                case "jakubwiraszka.items.Usable" -> Usable.getByName(data);
+                case "jakubwiraszka.items.Armor" -> Armor.getByName(data);
+                default -> Weapon.getByName(data);
+            };
+        };
+        fxGsonBuilder.builder().registerTypeHierarchyAdapter(Item.class, itemJsonDeserializer);
         fxGson = fxGsonBuilder.create();
     }
 
