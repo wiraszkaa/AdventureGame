@@ -29,21 +29,25 @@ public class Hero extends Enemy {
     }
 
     public void equip(Item item) {
-        if(item.isWeapon()) {
-            setEquippedWeapon((Weapon) item);
-        } else if(item.isArmor()) {
-            setEquippedArmor((Armor) item);
+        if(item != null) {
+            if (item.isWeapon()) {
+                setEquippedWeapon((Weapon) item);
+            } else if (item.isArmor()) {
+                setEquippedArmor((Armor) item);
+            }
+            System.out.println(item.getName() + " equipped");
         }
-        System.out.println(item.getName() + " equipped");
     }
 
     public void throwAway(Item item) {
-        if(item.isArmor() && getEquippedArmor().equals(item)) {
-            setEquippedArmor(Armor.CLOTHES);
-        } else if(item.isWeapon() && getEquippedWeapon().equals(item)) {
-            setEquippedWeapon(Weapon.HANDS);
+        if(item != null) {
+            if (item.isArmor() && getEquippedArmor().equals(item)) {
+                setEquippedArmor(Armor.CLOTHES);
+            } else if (item.isWeapon() && getEquippedWeapon().equals(item)) {
+                setEquippedWeapon(Weapon.HANDS);
+            }
+            inventory.remove(item);
         }
-        inventory.remove(item);
     }
 
     @Override
@@ -74,12 +78,9 @@ public class Hero extends Enemy {
         return maxHealth;
     }
 
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
-    }
-
     public void addMaxHealth(int value) {
         this.maxHealth += value;
+        notifyListeners();
     }
 
     public Level getLevel() {
@@ -92,9 +93,5 @@ public class Hero extends Enemy {
 
     public ArrayList<Item> getInventory() {
         return inventory;
-    }
-
-    public void setInventory(ArrayList<Item> inventory) {
-        this.inventory = inventory;
     }
 }

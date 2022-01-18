@@ -72,14 +72,12 @@
                 <VBox>
                     <ListView fx:id="itemsListView"/>
                     <ToolBar nodeOrientation="LEFT_TO_RIGHT">
-                        <items>
-                            <Button fx:id="equipButton" onAction="#equip" alignment="CENTER" disable="true" text="Equip"
-                                    textAlignment="CENTER"/>
-                            <Button fx:id="useButton" onAction="#use" alignment="CENTER" disable="true" text="Use"
-                                    textAlignment="CENTER"/>
-                            <Button fx:id="throwButton" onAction="#throwAway" alignment="CENTER" disable="true"
-                                    text="Throw" textAlignment="CENTER"/>
-                        </items>
+                        <Button fx:id="equipButton" onAction="#equip" alignment="CENTER" disable="true" text="Equip"
+                                textAlignment="CENTER"/>
+                        <Button fx:id="useButton" onAction="#use" alignment="CENTER" disable="true" text="Use"
+                                textAlignment="CENTER"/>
+                        <Button fx:id="throwButton" onAction="#throwAway" alignment="CENTER" disable="true"
+                                text="Throw" textAlignment="CENTER"/>
                     </ToolBar>
                 </VBox>
             </left>

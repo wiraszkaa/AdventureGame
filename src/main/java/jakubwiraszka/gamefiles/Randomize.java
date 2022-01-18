@@ -1,6 +1,5 @@
-package jakubwiraszka.fight;
+package jakubwiraszka.gamefiles;
 
-import jakubwiraszka.gamefiles.*;
 import jakubwiraszka.items.Armor;
 import jakubwiraszka.items.Item;
 import jakubwiraszka.items.Usable;
@@ -74,18 +73,18 @@ public class Randomize {
 
     public Enemy randomEnemy(Hero hero, String name) {
         double health = (int) (hero.getMaxHealth() * 0.7 + random.nextInt((int) (hero.getMaxHealth() * 0.6)) + 1);
-        int power = (int) ((double) hero.getStatistics().getPower() * 0.7 + random.nextInt((int) (hero.getStatistics().getPower() * 0.6)));
-        int agility = (int) ((double) hero.getStatistics().getAgility() * 0.7 + random.nextInt((int) (hero.getStatistics().getAgility() * 0.6)));
+        int power = (int) ((double) hero.getStatistics().getPower() * 0.7 + random.nextInt((int) (hero.getStatistics().getPower() * 0.6 + 1)));
+        int agility = (int) ((double) hero.getStatistics().getAgility() * 0.7 + random.nextInt((int) (hero.getStatistics().getAgility() * 0.6 + 1)));
         switch (difficulty) {
             case EASY -> {
                 health = (int) (hero.getMaxHealth() * 0.7 + random.nextInt((int) (hero.getMaxHealth() * 0.3)) + 1);
-                power = (int) ((double) hero.getStatistics().getPower() * 0.7 + random.nextInt((int) (hero.getStatistics().getPower() * 0.3)));
-                agility = (int) ((double) hero.getStatistics().getAgility() * 0.7 + random.nextInt((int) (hero.getStatistics().getAgility() * 0.3)));
+                power = (int) ((double) hero.getStatistics().getPower() * 0.7 + random.nextInt((int) (hero.getStatistics().getPower() * 0.3 + 1)));
+                agility = (int) ((double) hero.getStatistics().getAgility() * 0.7 + random.nextInt((int) (hero.getStatistics().getAgility() * 0.3 + 1)));
             }
             case HARD -> {
                 health = (int) (hero.getMaxHealth() * 0.8 + random.nextInt((int) (hero.getMaxHealth() * 0.7)) + 1);
-                power = (int) ((double) hero.getStatistics().getPower() * 0.8 + random.nextInt((int) (hero.getStatistics().getPower() * 0.7)));
-                agility = (int) ((double) hero.getStatistics().getAgility() * 0.8 + random.nextInt((int) (hero.getStatistics().getAgility() * 0.7)));
+                power = (int) ((double) hero.getStatistics().getPower() * 0.8 + random.nextInt((int) (hero.getStatistics().getPower() * 0.7 + 1)));
+                agility = (int) ((double) hero.getStatistics().getAgility() * 0.8 + random.nextInt((int) (hero.getStatistics().getAgility() * 0.7 + 1)));
             }
         }
         return new Enemy(name, new Statistics(health, power, agility));
@@ -172,10 +171,6 @@ public class Randomize {
             case 3 -> Usable.AGILITY_POTION;
             default -> Usable.HEALTH_POTION;
         };
-    }
-
-    public void setMoves(int moves) {
-        this.moves = moves;
     }
 
     public void move() {

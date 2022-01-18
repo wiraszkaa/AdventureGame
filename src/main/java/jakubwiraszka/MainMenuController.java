@@ -2,15 +2,14 @@ package jakubwiraszka;
 
 import jakubwiraszka.dialogs.DialogBuilder;
 import jakubwiraszka.dialogs.DifficultyDialogController;
-import jakubwiraszka.dialogs.HeroStatsDialogController;
 import jakubwiraszka.gamefiles.*;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.util.Callback;
 
@@ -26,6 +25,10 @@ public class MainMenuController extends CreateInterfaceController {
     private Label messageLabel;
     @FXML
     private BorderPane mainBorderPane;
+    @FXML
+    private Button playButton;
+    @FXML
+    private Button modifyButton;
 
     public void initialize() {
         worldsListView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
@@ -37,6 +40,11 @@ public class MainMenuController extends CreateInterfaceController {
         worldsListView.setItems(GameData.getWorlds());
         worldsListView.getSelectionModel().selectFirst();
 
+        if(worldsListView.getItems().isEmpty()) {
+            playButton.setDisable(true);
+            modifyButton.setDisable(true);
+        }
+
         worldsListView.getItems().addListener((ListChangeListener<World>) change -> {
             while(change.next()) {
                 if (change.wasUpdated()) {
@@ -45,11 +53,14 @@ public class MainMenuController extends CreateInterfaceController {
 
                 } else {
                     for (World removedWorld : change.getRemoved()) {
+                        GameData.save();
                         System.out.println(removedWorld.getName() + " was removed");
                     }
                     for (World addedWorld : change.getAddedSubList()) {
-                        System.out.println(addedWorld.getName() + " was added");
                         GameData.save();
+                        playButton.setDisable(false);
+                        modifyButton.setDisable(false);
+                        System.out.println(addedWorld.getName() + " was added");
                     }
                 }
             }
@@ -77,9 +88,12 @@ public class MainMenuController extends CreateInterfaceController {
     @FXML
     public void play(ActionEvent event) {
         Node node = (Node) event.getSource();
-        GameInterfaceController gameInterfaceController = NewWindow.changePane(node, "gameinterface.fxml").getController();
-        gameInterfaceController.setWorld(GameData.findWorld(worldName));
-        gameInterfaceController.start();
+        FXMLLoader fxmlLoader = NewWindow.changePane(node, "gameinterface.fxml");
+        if(fxmlLoader != null) {
+            GameInterfaceController gameInterfaceController = fxmlLoader.getController();
+            gameInterfaceController.setWorld(GameData.findWorld(worldName));
+            gameInterfaceController.start();
+        }
     }
 
     @FXML
@@ -124,9 +138,12 @@ public class MainMenuController extends CreateInterfaceController {
     public void modify(ActionEvent event) {
         if(!Objects.requireNonNull(GameData.findWorld(worldName)).isStart()) {
             Node node = (Node) event.getSource();
-            ModifyInterfaceController modifyInterfaceController = NewWindow.changePane(node, "modifyinterface.fxml").getController();
-            modifyInterfaceController.setWorld(GameData.findWorld(worldName));
-            modifyInterfaceController.start();
+            FXMLLoader fxmlLoader = NewWindow.changePane(node, "modifyinterface.fxml");
+            if(fxmlLoader != null) {
+                ModifyInterfaceController modifyInterfaceController = fxmlLoader.getController();
+                modifyInterfaceController.setWorld(GameData.findWorld(worldName));
+                modifyInterfaceController.start();
+            }
         } else {
             messageLabel.setText("You can't modify this world, because it has already started!");
         }

@@ -1,9 +1,6 @@
 package jakubwiraszka;
 
-import jakubwiraszka.dialogs.DialogBuilder;
-import jakubwiraszka.dialogs.NewEnemyDialogController;
-import jakubwiraszka.dialogs.NewLocationDialogController;
-import jakubwiraszka.dialogs.NewTreasureDialogController;
+import jakubwiraszka.dialogs.*;
 import jakubwiraszka.gamefiles.*;
 import jakubwiraszka.map.GameMapBuilder;
 import javafx.fxml.FXML;
@@ -41,8 +38,6 @@ public class ModifyInterfaceController extends GameInterfaceController {
     private ContextMenu locationContextMenu;
     @FXML
     private GridPane buttonGridPane;
-    @FXML
-    private MenuItem notSaveMenuItem;
 
     public void initialize() {
     }
@@ -245,10 +240,13 @@ public class ModifyInterfaceController extends GameInterfaceController {
         }
         mapStackPane.getChildren().add(gridPane);
         buttonGridPane = gridPane;
+
+        Delay.createDelay(2, event -> mapStackPane.getChildren().remove(gridPane));
     }
 
     @FXML
     private void showNewLocationDialog(Node node) {
+        mapStackPane.getChildren().remove(buttonGridPane);
         int x = GridPane.getColumnIndex(node);
         int y = GridPane.getRowIndex(node);
         dialogBuilder.reset();
@@ -259,7 +257,6 @@ public class ModifyInterfaceController extends GameInterfaceController {
         dialogBuilder.addCancelButton();
         Dialog<ButtonType> dialog = dialogBuilder.getDialog();
         Optional<ButtonType> result = dialog.showAndWait();
-        mapStackPane.getChildren().remove(buttonGridPane);
         if (result.isPresent() && result.get() == ButtonType.OK) {
             NewLocationDialogController controller = dialogBuilder.getFxmlLoader().getController();
             controller.setPosition(new Position(x, y));

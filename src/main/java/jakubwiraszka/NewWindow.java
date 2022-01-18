@@ -29,24 +29,4 @@ public class NewWindow {
             return null;
         }
     }
-
-    @FXML
-    public static FXMLLoader newWindow(String name) {
-        FXMLLoader loader = new FXMLLoader(NewWindow.class.getResource(name));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if(root != null) {
-            Stage primaryStage = new Stage();
-            primaryStage.setTitle("Inventory");
-            primaryStage.setScene(new Scene(root, 1800, 900));
-            primaryStage.show();
-            return loader;
-        } else {
-            return null;
-        }
-    }
 }

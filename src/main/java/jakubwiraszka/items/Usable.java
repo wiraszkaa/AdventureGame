@@ -1,7 +1,6 @@
 package jakubwiraszka.items;
 
 import jakubwiraszka.gamefiles.ItemContent;
-import jakubwiraszka.gamefiles.Treasure;
 
 public enum Usable implements Item {
     HEALTH_POTION,

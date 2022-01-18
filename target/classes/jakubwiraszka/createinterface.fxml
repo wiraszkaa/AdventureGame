@@ -29,8 +29,8 @@
                <padding>
                   <Insets left="20.0" top="4.0" />
                </padding></Label>
-                    <Button fx:id="emptyButton" onAction="#create" text="Empty" />
-                    <Button fx:id="randomButton" onAction="#create" text="Random" />
+                    <Button fx:id="emptyButton" onAction="#createWorld" text="Empty" />
+                    <Button fx:id="randomButton" onAction="#createWorld" text="Random" />
                     <Button alignment="CENTER_RIGHT" onAction="#saveWorld" text="Save and exit">
                <HBox.margin>
                   <Insets left="100.0" />

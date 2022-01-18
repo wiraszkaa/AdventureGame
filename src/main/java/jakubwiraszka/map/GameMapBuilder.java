@@ -100,11 +100,18 @@ public class GameMapBuilder implements LocationContentListener {
         imageView.setPreserveRatio(true);
     }
 
-    private void handleNearLocations(Location location, boolean readVisited) {
-        findGameMapCell(location.getPosition()).update(location.getExits());
+    private void handleNearLocations(Location location) {
+        updateGameMapCell(location);
         for(Location i: world.getNearLocations(location)) {
-            if(location.isVisited() || !readVisited) {
-                findGameMapCell(i.getPosition()).update(i.getExits());
+            updateGameMapCell(i);
+        }
+    }
+
+    private void updateGameMapCell(Location location) {
+        if(location != null) {
+            GameMapCell gameMapCell = findGameMapCell(location.getPosition());
+            if (gameMapCell != null) {
+                gameMapCell.update(location.getExits());
             }
         }
     }
@@ -115,10 +122,10 @@ public class GameMapBuilder implements LocationContentListener {
             world.getLocations().addListener((ListChangeListener<Location>) change -> {
                 while (change.next()) {
                     for(Location i: change.getAddedSubList()) {
-                        handleNearLocations(i, false);
+                        handleNearLocations(i);
                     }
                     for(Location i: change.getRemoved()) {
-                        handleNearLocations(i, false);
+                        handleNearLocations(i);
                     }
                 }
             });
@@ -127,7 +134,7 @@ public class GameMapBuilder implements LocationContentListener {
                 while(change.next()) {
                     for (Position visitedPosition : change.getAddedSubList()) {
                         Location location = world.findLocation(visitedPosition, world.getLocations());
-                        findGameMapCell(visitedPosition).update(location.getExits());
+                        updateGameMapCell(location);
                         if(location.getContent() != null) {
                             modifyContentCell(location, getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()), true);
                         }
@@ -149,7 +156,10 @@ public class GameMapBuilder implements LocationContentListener {
             while(change.next()) {
                 for(LocationContent content: change.getRemoved()) {
                     Location location = world.findLocationByContent(content.getId());
-                    getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(getImageUrl("Nothing.png")));
+                    ImageView imageView = getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY());
+                    if(imageView != null) {
+                        imageView.setImage(new Image(getImageUrl("Nothing.png")));
+                    }
                 }
             }
         });
@@ -165,25 +175,28 @@ public class GameMapBuilder implements LocationContentListener {
     }
 
     public void setPlayerPosition(Position playerPosition) {
-        try {
-            getImageView(playerMapGridPane, this.playerPosition.getX(), this.playerPosition.getY()).setImage(new Image(getImageUrl("Nothing.png")));
-        } catch (NullPointerException e) {
-            System.out.println("Last position not set");
+        ImageView imageView = getImageView(playerMapGridPane, this.playerPosition.getX(), this.playerPosition.getY());
+        if(imageView != null) {
+            imageView.setImage(new Image(getImageUrl("Nothing.png")));
         }
         this.playerPosition = playerPosition;
-        try {
-            getImageView(playerMapGridPane, this.playerPosition.getX(), this.playerPosition.getY()).setImage(new Image(getImageUrl("Player.png")));
-        } catch (NullPointerException e) {
-            System.out.println("New Position is not valid");
+        ImageView imageView1 = getImageView(playerMapGridPane, this.playerPosition.getX(), this.playerPosition.getY());
+        if(imageView1 != null) {
+            imageView1.setImage(new Image(getImageUrl("Player.png")));
         }
     }
 
     @Override
     public void update(Location location) {
+        ImageView imageView = getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY());
         if(location.getContent() != null) {
-            getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(getImageUrl("Question.png")));
+            if(imageView != null) {
+                imageView.setImage(new Image(getImageUrl("Question.png")));
+            }
         } else {
-            getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY()).setImage(new Image(getImageUrl("Nothing.png")));
+            if(imageView != null) {
+                imageView.setImage(new Image(getImageUrl("Nothing.png")));
+            }
         }
     }
 }

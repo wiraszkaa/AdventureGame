@@ -1,5 +1,6 @@
 package jakubwiraszka.dialogs;
 
+import jakubwiraszka.Delay;
 import jakubwiraszka.InventoryController;
 import jakubwiraszka.fight.ChargedAttack;
 import jakubwiraszka.fight.QuickAttack;
@@ -7,10 +8,7 @@ import jakubwiraszka.fight.StrongAttack;
 import jakubwiraszka.gamefiles.Enemy;
 import jakubwiraszka.gamefiles.Hero;
 import jakubwiraszka.map.GameMapBuilder;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -18,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.util.Random;
 
@@ -74,7 +71,7 @@ public class FightInterfaceController {
         }
 
         if(charge >= hero.getAttack().getCharge()) {
-            double damage = hero.attack(enemy);
+            double damage = (double) Math.round(hero.attack(enemy) * 10) / 10;
             if (damage != -1) {
                 Label heroAttack = new Label("You attack for " + damage + " with " + hero.getEquippedWeapon().getName());
                 actionVBox.getChildren().add(heroAttack);
@@ -95,8 +92,8 @@ public class FightInterfaceController {
             enemy.setHealth(0);
             enemy.setAlive(false);
             Label win = new Label("\nYou have won and gained " + experience + " experience");
-            createDelay(1, event -> actionVBox.getChildren().add(win));
-            createDelay(2, event -> {
+            Delay.createDelay(1, event -> actionVBox.getChildren().add(win));
+            Delay.createDelay(2, event -> {
                 Stage stage = (Stage) actionVBox.getScene().getWindow();
                 stage.close();
             });
@@ -108,27 +105,27 @@ public class FightInterfaceController {
                 enemy.setAttack(new StrongAttack());
             }
 
-            double enemyDamage = enemy.attack(hero);
+            double enemyDamage = (double) Math.round(enemy.attack(hero) * 10) / 10;
             if(enemyDamage != -1) {
                 Label enemyAttack = new Label(enemy.getName() + " attacks for " + enemyDamage + " with " + enemy.getEquippedWeapon().getName());
-                createDelay(1, event -> actionVBox.getChildren().add(enemyAttack));
+                Delay.createDelay(1, event -> actionVBox.getChildren().add(enemyAttack));
             } else {
                 Label enemyMiss = new Label(enemy.getName() + " misses");
-                createDelay(1, event -> actionVBox.getChildren().add(enemyMiss));
+                Delay.createDelay(1, event -> actionVBox.getChildren().add(enemyMiss));
             }
             if(hero.getStatistics().getHealth() <= 0) {
                 hero.setHealth(0);
                 Label loseLabel = new Label("\nYou died!");
-                createDelay(2, event -> {
+                Delay.createDelay(2, event -> {
                     actionVBox.getChildren().add(loseLabel);
                     hero.setAlive(false);
                 });
-                createDelay(3, event -> {
+                Delay.createDelay(3, event -> {
                     Stage stage = (Stage) actionVBox.getScene().getWindow();
                     stage.close();
                 });
             } else {
-                createDelay(1, event -> setDisableButtons(false));
+                Delay.createDelay(1, event -> setDisableButtons(false));
             }
         }
     }
@@ -149,13 +146,6 @@ public class FightInterfaceController {
         inventoryController.setFightMode(enemy);
         hero.getLevel().addLevelListener(inventoryController.getPointsToSpendGUI());
         dialog.showAndWait();
-    }
-
-    private void createDelay(int seconds, EventHandler<ActionEvent> eventHandler) {
-        Timeline timeLine = new Timeline(
-                new KeyFrame(Duration.seconds(seconds), eventHandler)
-        );
-        timeLine.play();
     }
 
     private void setDisableButtons(boolean disableButtons) {

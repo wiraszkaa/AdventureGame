@@ -3,7 +3,6 @@ module jakubwiraszka.adventurefxmaven {
     requires javafx.fxml;
     requires com.google.gson;
     requires org.hildan.fxgson;
-    requires org.jetbrains.annotations;
 
     opens jakubwiraszka;
     opens jakubwiraszka.dialogs;

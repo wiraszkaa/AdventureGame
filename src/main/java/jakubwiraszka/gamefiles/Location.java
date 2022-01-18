@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Location {
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
     private final Position position;
     private LocationContent content;
     private HashMap<String, Position> exits;
@@ -51,16 +51,8 @@ public class Location {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Position getPosition() {

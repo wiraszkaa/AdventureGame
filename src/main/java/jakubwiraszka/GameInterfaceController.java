@@ -2,7 +2,6 @@ package jakubwiraszka;
 
 import jakubwiraszka.dialogs.DialogBuilder;
 import jakubwiraszka.dialogs.FightInterfaceController;
-import jakubwiraszka.fight.Randomize;
 import jakubwiraszka.gamefiles.*;
 import jakubwiraszka.items.Item;
 import jakubwiraszka.map.GameMapBuilder;
@@ -11,6 +10,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -102,7 +102,6 @@ public class GameInterfaceController {
     }
 
     public void start() {
-        world.setStart(true);
         world.handleVisited();
         currentLocation = world.findLocation(world.getHero().getPosition().getX(), world.getHero().getPosition().getY(), world.getLocations());
         Hero hero = world.getHero();
@@ -141,6 +140,8 @@ public class GameInterfaceController {
                 System.out.println("Added " + enemy + " to " + bossLocation.getPosition());
             }
         }
+
+        world.setStart(true);
 
         gameMapBuilder = new GameMapBuilder(world);
         gameMapStackPane.getChildren().addAll(gameMapBuilder.createGameMap(true));
@@ -438,14 +439,17 @@ public class GameInterfaceController {
     public void newEndlessWorld(ActionEvent event, Difficulty difficulty, String name, Hero hero) {
         World newWorld = new World(name, 15, 15, hero);
         newWorld.createStart();
-        newWorld.createRandom(GameData.getRandomLocationName(), GameData.getRandomLocationDescription(), GameData.getRandomLocationContent(), difficulty);
+        newWorld.createRandom(GameData.getRandomLocationName(), GameData.getRandomLocationDescription());
         newWorld.setEndlessMode(true);
         newWorld.setDifficulty(difficulty);
         GameData.getWorlds().add(newWorld);
         Node node = (Node) event.getSource();
-        GameInterfaceController gameInterfaceController = NewWindow.changePane(node, "gameinterface.fxml").getController();
-        gameInterfaceController.setWorld(newWorld);
-        gameInterfaceController.start();
+        FXMLLoader fxmlLoader = NewWindow.changePane(node, "gameinterface.fxml");
+        if(fxmlLoader != null) {
+            GameInterfaceController gameInterfaceController = fxmlLoader.getController();
+            gameInterfaceController.setWorld(newWorld);
+            gameInterfaceController.start();
+        }
     }
 
     public void setWorld(World world) {

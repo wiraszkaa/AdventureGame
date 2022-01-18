@@ -52,7 +52,7 @@ public class World {
         System.out.println("Set Starting location to position " + startLocation.getPosition().toString());
     }
 
-    public void createRandom(List<String> locationName, List<String> locationDescription, List<String> locationContent, Difficulty difficulty) {
+    public void createRandom(List<String> locationName, List<String> locationDescription) {
         Random random = new Random();
 
         double value = (double) (random.nextInt(4) + 5) / 10 * (double) height * (double) width;
@@ -384,9 +384,8 @@ public class World {
     }
 
     public boolean allEnemiesDead() {
-        for(LocationContent i: enemies) {
-            Enemy enemy = (Enemy) i;
-            if(enemy.isAlive()) {
+        for(Enemy i: enemies) {
+            if(i.isAlive()) {
                 return false;
             }
         }
@@ -397,23 +396,19 @@ public class World {
         return portal;
     }
 
-    public Location getStartLocation() {
-        return startLocation;
-    }
-
     public Enemy findEnemy(String id) {
-        for (LocationContent i : enemies) {
+        for (Enemy i : enemies) {
             if (Objects.equals(i.getId(), id)) {
-                return (Enemy) i;
+                return i;
             }
         }
         return null;
     }
 
     public Treasure findTreasure(String id) {
-        for (LocationContent i : treasures) {
+        for (Treasure i : treasures) {
             if (Objects.equals(i.getId(), id)) {
-                return (Treasure) i;
+                return i;
             }
         }
         return null;
@@ -619,6 +614,7 @@ public class World {
         worldMimic.boss = boss;
         worldMimic.portal = portal;
         worldMimic.startLocation = startLocation;
+        worldMimic.start = start;
         worldMimic.treasureNumber = treasureNumber;
         worldMimic.enemyNumber = enemyNumber;
         worldMimic.setEnemies(enemies);

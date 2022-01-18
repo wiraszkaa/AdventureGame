@@ -25,22 +25,8 @@ public class NewLocationDialogController {
         return location;
     }
 
-    @FXML
-    public void updateLocation(Location location) {
-        location.setName(nameTextField.getText());
-        location.setDescription(descriptionTextArea.getText());
-    }
-
     public void setWorld(World world) {
         this.world = world;
-    }
-
-    public void setNameTextField(String name) {
-        this.nameTextField.setText(name);
-    }
-
-    public void setDescriptionTextArea(String description) {
-        this.descriptionTextArea.setText(description);
     }
 
     public void setPosition(Position position) {

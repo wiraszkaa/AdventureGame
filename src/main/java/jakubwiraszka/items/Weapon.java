@@ -1,7 +1,5 @@
 package jakubwiraszka.items;
 
-import java.net.PortUnreachableException;
-
 public enum Weapon implements Item {
     HANDS,
     CROSSBOW,

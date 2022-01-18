@@ -8,7 +8,6 @@ import jakubwiraszka.items.Armor;
 import jakubwiraszka.items.Item;
 import jakubwiraszka.items.Usable;
 import jakubwiraszka.items.Weapon;
-import jakubwiraszka.observable.LevelListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.hildan.fxgson.FxGsonBuilder;
@@ -17,7 +16,7 @@ import java.util.*;
 
 public class GameData {
 
-    private static ObservableList<World> worlds = FXCollections.observableArrayList();
+    private static final ObservableList<World> worlds = FXCollections.observableArrayList();
     private static final ObservableList<String> randomLocationName = FXCollections.observableArrayList();
     private static final ObservableList<String> randomLocationDescription = FXCollections.observableArrayList();
     private static final ObservableList<String> randomLocationContent = FXCollections.observableArrayList();

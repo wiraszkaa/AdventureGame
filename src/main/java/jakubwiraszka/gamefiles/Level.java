@@ -1,12 +1,10 @@
 package jakubwiraszka.gamefiles;
 
 import jakubwiraszka.observable.LevelListener;
-import javafx.beans.Observable;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class Level {
     private int currentLevel;

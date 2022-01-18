@@ -19,17 +19,17 @@
     </center>
     <bottom>
         <HBox>
-            <Button minWidth="100.0" onAction="#play" prefWidth="480" text="Play">
-                <font>
-                    <Font name="Arial bold" size="50" />
-                </font>
-            </Button>
             <Button minWidth="100.0" onAction="#startNew" prefWidth="480" text="New Game">
                 <font>
                     <Font name="Arial bold" size="50" />
                 </font>
             </Button>
-            <Button minWidth="100.0" onAction="#modify" prefWidth="480" text="Modify">
+            <Button fx:id="playButton" minWidth="100.0" onAction="#play" prefWidth="480" text="Play">
+                <font>
+                    <Font name="Arial bold" size="50" />
+                </font>
+            </Button>
+            <Button fx:id="modifyButton" minWidth="100.0" onAction="#modify" prefWidth="480" text="Modify">
                 <font>
                     <Font name="Arial bold" size="50" />
                 </font>

@@ -2,18 +2,14 @@ package jakubwiraszka;
 
 import jakubwiraszka.gamefiles.Enemy;
 import jakubwiraszka.gamefiles.Hero;
-import jakubwiraszka.items.Armor;
 import jakubwiraszka.items.Item;
 import jakubwiraszka.items.Usable;
-import jakubwiraszka.items.Weapon;
 import jakubwiraszka.observable.LevelListener;
 import jakubwiraszka.visuals.HeroStatsGUI;
 import jakubwiraszka.visuals.PointsToSpendGUI;
-import jakubwiraszka.visuals.StatsGUI;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -91,7 +87,7 @@ public class InventoryController implements LevelListener {
             if(t1 != null) {
                 useButton.setText("Use");
                 throwButton.setDisable(false);
-                if((t1.isArmor() || t1.isWeapon()) && (!hero.getEquippedArmor().equals(t1) && !hero.getEquippedWeapon().equals(t1)) && !fightMode) {
+                if((t1.isArmor() || t1.isWeapon()) && !(hero.getEquippedArmor().equals(t1) || hero.getEquippedWeapon().equals(t1)) && !fightMode) {
                     equipButton.setDisable(false);
                     useButton.setDisable(true);
                 } else if(t1.isUsable()) {
@@ -219,15 +215,6 @@ public class InventoryController implements LevelListener {
         return nameTextField;
     }
 
-    public GridPane getStatsGridPane() {
-        return statsGridPane;
-    }
-
-    public void close() {
-        Stage stage = (Stage) statsGridPane.getScene().getWindow();
-        stage.close();
-     }
-
     @Override
     public void update(int currentExperience, int experienceForLevelUp, int currentLevel, int pointsToSpend) {
         if(pointsToSpend == 0) {
@@ -235,6 +222,10 @@ public class InventoryController implements LevelListener {
         }
         if(pointsToSpend == 1) {
             setAddition(false);
+        }
+        Scene scene = inventoryBorderPane.getScene();
+        if(scene != null) {
+            scene.getWindow().sizeToScene();
         }
     }
 

@@ -22,7 +22,7 @@ public class StatsGUI implements EnemyListener {
     private final HBox agilityHBox;
 
     public StatsGUI(Enemy enemy) {
-        healthValue = new Label("" + String.format("%.2f", enemy.getStatistics().getHealth()));
+        healthValue = new Label("" + String.format("%.1f", enemy.getStatistics().getHealth()));
         healthValue.setStyle("-fx-font-family: 'Limelight', regular; -fx-font-size: 40");
         powerValue = new Label("" + enemy.getStatistics().getPower());
         powerValue.setStyle("-fx-font-family: 'Limelight', regular; -fx-font-size: 40");
@@ -69,7 +69,7 @@ public class StatsGUI implements EnemyListener {
 
     @Override
     public void update(double health, double maxHealth, int power, int agility) {
-        healthValue.setText("" + String.format("%.2f", health));
+        healthValue.setText("" + String.format("%.1f", health));
         powerValue.setText("" + power);
         agilityValue.setText("" + agility);
     }

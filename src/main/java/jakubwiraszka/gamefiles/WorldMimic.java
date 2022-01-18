@@ -5,17 +5,17 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 
 public class WorldMimic {
-    String name;
-    ArrayList<Position> visitedLocations;
-    ArrayList<Location> locations;
-    ArrayList<Enemy> enemies;
+    final String name;
+    final ArrayList<Position> visitedLocations;
+    final ArrayList<Location> locations;
+    final ArrayList<Enemy> enemies;
     int enemyNumber;
-    ArrayList<Treasure> treasures;
+    final ArrayList<Treasure> treasures;
     int treasureNumber;
-    int height;
-    int width;
+    final int height;
+    final int width;
     boolean start = false;
-    Hero hero;
+    final Hero hero;
     Location startLocation;
     Portal portal;
     Enemy boss;

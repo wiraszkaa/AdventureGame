@@ -57,7 +57,7 @@ public class GameMapCell {
         if(exits == null || exits.size() == 0) {
             clear();
         } else {
-            GameMapBuilder.getImageView(cellGridPane, 1, 1).setImage(new Image(GameMapBuilder.getImageUrl("Path.png")));
+            setImage(1, 1, "Path.png");
             boolean isPath = exits.get("N") != null;
             changeNorth(isPath);
             isPath = exits.get("E") != null;
@@ -71,40 +71,40 @@ public class GameMapCell {
 
     public void changeNorth(boolean isPath) {
         if(isPath) {
-            GameMapBuilder.getImageView(cellGridPane, 1, 0).setImage(new Image(GameMapBuilder.getImageUrl("Path.png")));
+            setImage(1, 0, "Path.png");
         } else {
-            GameMapBuilder.getImageView(cellGridPane, 1, 0).setImage(new Image(GameMapBuilder.getImageUrl("Grass.png")));
+            setImage(1, 0, "Grass.png");
         }
     }
 
     public void changeEast(boolean isPath) {
         if(isPath) {
-            GameMapBuilder.getImageView(cellGridPane, 2, 1).setImage(new Image(GameMapBuilder.getImageUrl("Path.png")));
+            setImage(2, 1, "Path.png");
         } else {
-            GameMapBuilder.getImageView(cellGridPane, 2, 1).setImage(new Image(GameMapBuilder.getImageUrl("Grass.png")));
+            setImage(2, 1, "Grass.png");
         }
     }
 
     public void changeWest(boolean isPath) {
         if(isPath) {
-            GameMapBuilder.getImageView(cellGridPane, 0, 1).setImage(new Image(GameMapBuilder.getImageUrl("Path.png")));
+            setImage(0, 1, "Path.png");
         } else {
-            GameMapBuilder.getImageView(cellGridPane, 0, 1).setImage(new Image(GameMapBuilder.getImageUrl("Grass.png")));
+            setImage(0, 1, "Grass.png");
         }
     }
 
     public void changeSouth(boolean isPath) {
         if(isPath) {
-            GameMapBuilder.getImageView(cellGridPane, 1, 2).setImage(new Image(GameMapBuilder.getImageUrl("Path.png")));
+            setImage(1, 2, "Path.png");
         } else {
-            GameMapBuilder.getImageView(cellGridPane, 1, 2).setImage(new Image(GameMapBuilder.getImageUrl("Grass.png")));
+            setImage(1, 2, "Grass.png");
         }
     }
 
     public void clear() {
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
-                GameMapBuilder.getImageView(cellGridPane, i, j).setImage(new Image(GameMapBuilder.getImageUrl("Grass.png")));
+                setImage(i, j, "Grass.png");
             }
         }
     }
@@ -115,6 +115,13 @@ public class GameMapCell {
 
     private ImageView createGrassImageView() {
         return new ImageView(new Image(GameMapBuilder.getImageUrl("Grass.png")));
+    }
+
+    private void setImage(int x, int y, String source) {
+        ImageView imageView = GameMapBuilder.getImageView(cellGridPane, x, y);
+        if (imageView != null) {
+            imageView.setImage(new Image(GameMapBuilder.getImageUrl(source)));
+        }
     }
 
     public GridPane getGameMapCell() {

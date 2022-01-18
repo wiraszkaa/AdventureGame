@@ -7,6 +7,7 @@ import jakubwiraszka.map.GameMapBuilder;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -52,7 +53,7 @@ public class CreateInterfaceController extends ModifyInterfaceController {
     }
 
     @FXML
-    public void create(ActionEvent event) {
+    public void createWorld(ActionEvent event) {
         String name = nameTextField.getText();
         int height = heightSpinner.getValue();
         int width = widthSpinner.getValue();
@@ -60,7 +61,7 @@ public class CreateInterfaceController extends ModifyInterfaceController {
         World world = new World(name, height, width, this.hero);
         world.createStart();
         if(event.getSource().equals(randomButton)) {
-            world.createRandom(locationName, locationDescription, locationContent, Difficulty.MEDIUM);
+            world.createRandom(locationName, locationDescription);
             locationsListView.setItems(world.getLocations());
             enemiesListView.setItems(world.getEnemies());
             treasuresListView.setItems(world.getTreasures());
@@ -81,8 +82,11 @@ public class CreateInterfaceController extends ModifyInterfaceController {
 
     @FXML
     public void saveWorld() {
-        MainMenuController mainMenuController = NewWindow.changePane(mainBorderPane, "mainmenu.fxml").getController();
-        mainMenuController.addWorld(world);
+        FXMLLoader fxmlLoader = NewWindow.changePane(mainBorderPane, "mainmenu.fxml");
+        if (fxmlLoader != null) {
+            MainMenuController mainMenuController = fxmlLoader.getController();
+            mainMenuController.addWorld(world);
+        }
     }
 
     @FXML

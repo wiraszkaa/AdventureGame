@@ -1,7 +1,7 @@
 package jakubwiraszka.gamefiles;
 
 public class LocationContentID implements LocationContent {
-    public String id;
+    public final String id;
 
     public LocationContentID(String id) {
         this.id = id;

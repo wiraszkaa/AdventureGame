@@ -1,7 +1,6 @@
 package jakubwiraszka;
 
 import jakubwiraszka.gamefiles.GameData;
-import jakubwiraszka.map.GameMapBuilder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
