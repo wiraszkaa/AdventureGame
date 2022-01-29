@@ -1,8 +1,9 @@
 package jakubwiraszka.visuals;
 
 import jakubwiraszka.gamefiles.Enemy;
+import jakubwiraszka.gamefiles.Location;
 import jakubwiraszka.map.GameMapBuilder;
-import jakubwiraszka.observable.EnemyListener;
+import jakubwiraszka.observable.Listener;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -13,7 +14,7 @@ import javafx.scene.layout.VBox;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class StatsGUI implements EnemyListener {
+public class StatsGUI implements Listener {
     private final Label healthValue;
     private final Label powerValue;
     private final Label agilityValue;
@@ -68,7 +69,7 @@ public class StatsGUI implements EnemyListener {
     }
 
     @Override
-    public void update(double health, double maxHealth, int power, int agility) {
+    public void update(double health, double maxHealth, int power, int agility, Location location) {
         healthValue.setText("" + String.format("%.1f", health));
         powerValue.setText("" + power);
         agilityValue.setText("" + agility);

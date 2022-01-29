@@ -1,10 +1,11 @@
 package jakubwiraszka.visuals;
 
 import jakubwiraszka.gamefiles.Hero;
-import jakubwiraszka.observable.LevelListener;
+import jakubwiraszka.gamefiles.Location;
+import jakubwiraszka.observable.Listener;
 import javafx.scene.control.Label;
 
-public class PointsToSpendGUI implements LevelListener {
+public class PointsToSpendGUI implements Listener {
     private final Label pointsToSpendLabel;
 
     public PointsToSpendGUI(Hero hero) {
@@ -17,7 +18,7 @@ public class PointsToSpendGUI implements LevelListener {
     }
 
     @Override
-    public void update(int currentExperience, int experienceForLevelUp, int currentLevel, int pointsToSpend) {
+    public void update(double currentExperience, double experienceForLevelUp, int currentLevel, int pointsToSpend, Location location) {
         pointsToSpendLabel.setText("Points to spend: " + pointsToSpend);
     }
 }

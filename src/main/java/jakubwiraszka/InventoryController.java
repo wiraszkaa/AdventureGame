@@ -2,9 +2,10 @@ package jakubwiraszka;
 
 import jakubwiraszka.gamefiles.Enemy;
 import jakubwiraszka.gamefiles.Hero;
+import jakubwiraszka.gamefiles.Location;
 import jakubwiraszka.items.Item;
 import jakubwiraszka.items.Usable;
-import jakubwiraszka.observable.LevelListener;
+import jakubwiraszka.observable.Listener;
 import jakubwiraszka.visuals.HeroStatsGUI;
 import jakubwiraszka.visuals.PointsToSpendGUI;
 import javafx.event.ActionEvent;
@@ -19,7 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class InventoryController implements LevelListener {
+public class InventoryController implements Listener {
     @FXML
     private BorderPane inventoryBorderPane;
     @FXML
@@ -216,7 +217,7 @@ public class InventoryController implements LevelListener {
     }
 
     @Override
-    public void update(int currentExperience, int experienceForLevelUp, int currentLevel, int pointsToSpend) {
+    public void update(double currentExperience, double experienceForLevelUp, int currentLevel, int pointsToSpend, Location location) {
         if(pointsToSpend == 0) {
             setAddition(true);
         }

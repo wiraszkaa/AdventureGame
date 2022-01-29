@@ -4,7 +4,8 @@ import jakubwiraszka.fight.Attack;
 import jakubwiraszka.fight.StrongAttack;
 import jakubwiraszka.items.Armor;
 import jakubwiraszka.items.Weapon;
-import jakubwiraszka.observable.EnemyListener;
+import jakubwiraszka.observable.Listener;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -19,7 +20,7 @@ public class Enemy implements LocationContent {
     private Armor equippedArmor;
     private transient Attack attack;
 
-    transient ArrayList<EnemyListener> enemyListeners;
+    transient ArrayList<Listener> enemyListeners;
 
     public Enemy(String name, Statistics statistics) {
         this.name = name;
@@ -60,17 +61,17 @@ public class Enemy implements LocationContent {
 
     void notifyListeners() {
         if (!enemyListeners.isEmpty()) {
-            for (EnemyListener i : enemyListeners) {
-                i.update(statistics.getHealth(), statistics.getHealth(), statistics.getPower(), statistics.getAgility());
+            for (Listener i : enemyListeners) {
+                i.update(statistics.getHealth(), statistics.getHealth(), statistics.getPower(), statistics.getAgility(), null);
             }
         }
     }
 
-    public void addEnemyListener(EnemyListener enemyListener) {
+    public void addEnemyListener(Listener enemyListener) {
         enemyListeners.add(enemyListener);
     }
 
-    public void setEnemyListeners(ArrayList<EnemyListener> enemyListeners) {
+    public void setEnemyListeners(ArrayList<Listener> enemyListeners) {
         this.enemyListeners = enemyListeners;
     }
 

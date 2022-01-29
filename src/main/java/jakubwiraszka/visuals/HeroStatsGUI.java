@@ -1,6 +1,7 @@
 package jakubwiraszka.visuals;
 
 import jakubwiraszka.gamefiles.Hero;
+import jakubwiraszka.gamefiles.Location;
 import javafx.scene.control.Label;
 
 public class HeroStatsGUI extends StatsGUI {
@@ -15,8 +16,8 @@ public class HeroStatsGUI extends StatsGUI {
     }
 
     @Override
-    public void update(double health, double maxHealth, int power, int agility) {
-        super.update(health, maxHealth, power, agility);
+    public void update(double health, double maxHealth, int power, int agility, Location location) {
+        super.update(health, maxHealth, power, agility, location);
         maxHealthValue.setText("/ " + maxHealth);
     }
 }

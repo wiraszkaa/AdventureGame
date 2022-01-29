@@ -1,6 +1,6 @@
 package jakubwiraszka.gamefiles;
 
-import jakubwiraszka.observable.LevelListener;
+import jakubwiraszka.observable.Listener;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -12,7 +12,7 @@ public class Level {
     private int currentExperience;
     private final IntegerProperty pointsToSpend;
 
-    private transient ArrayList<LevelListener> levelListeners;
+    private transient ArrayList<Listener> levelListeners;
 
     public Level(int level) {
         currentLevel  = level;
@@ -36,8 +36,8 @@ public class Level {
 
      private void notifyListeners() {
          if (!levelListeners.isEmpty()) {
-             for (LevelListener i : levelListeners) {
-                 i.update(currentExperience, experienceForLevelUp, currentLevel, pointsToSpend.intValue());
+             for (Listener i : levelListeners) {
+                 i.update(currentExperience, experienceForLevelUp, currentLevel, pointsToSpend.intValue(), null);
              }
          }
      }
@@ -68,11 +68,11 @@ public class Level {
         notifyListeners();
     }
 
-    public void addLevelListener(LevelListener levelListener) {
+    public void addLevelListener(Listener levelListener) {
         levelListeners.add(levelListener);
     }
 
-    public void setLevelListeners(ArrayList<LevelListener> levelListeners) {
+    public void setLevelListeners(ArrayList<Listener> levelListeners) {
         this.levelListeners = levelListeners;
     }
 

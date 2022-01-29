@@ -2,8 +2,9 @@ package jakubwiraszka.visuals;
 
 import jakubwiraszka.gamefiles.Hero;
 import jakubwiraszka.gamefiles.Level;
+import jakubwiraszka.gamefiles.Location;
 import jakubwiraszka.map.GameMapBuilder;
-import jakubwiraszka.observable.LevelListener;
+import jakubwiraszka.observable.Listener;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -12,7 +13,7 @@ import javafx.scene.layout.HBox;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LevelGUI implements LevelListener {
+public class LevelGUI implements Listener {
     private final HBox hBox;
     private final Label currentExperienceLabel;
     private final Label experienceForLevelUpLabel;
@@ -56,9 +57,9 @@ public class LevelGUI implements LevelListener {
     }
 
     @Override
-    public void update(int currentExperience, int experienceForLevelUp, int currentLevel, int pointsToSpend) {
-        currentExperienceLabel.setText("" + currentExperience + " /");
-        experienceForLevelUpLabel.setText("" + experienceForLevelUp);
+    public void update(double currentExperience, double experienceForLevelUp, int currentLevel, int pointsToSpend, Location location) {
+        currentExperienceLabel.setText("" + (int) currentExperience + " /");
+        experienceForLevelUpLabel.setText("" + (int) experienceForLevelUp);
         levelLabel.setText("" + currentLevel);
         if(currentLevel > this.currentLevel) {
             hero.setHealth(hero.getMaxHealth());

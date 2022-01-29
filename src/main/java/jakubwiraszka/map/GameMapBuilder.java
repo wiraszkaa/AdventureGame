@@ -4,7 +4,7 @@ import jakubwiraszka.gamefiles.Location;
 import jakubwiraszka.gamefiles.LocationContent;
 import jakubwiraszka.gamefiles.Position;
 import jakubwiraszka.gamefiles.World;
-import jakubwiraszka.observable.LocationContentListener;
+import jakubwiraszka.observable.Listener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -17,7 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-public class GameMapBuilder implements LocationContentListener {
+public class GameMapBuilder implements Listener {
     private final GridPane gameMapGridPane;
     private final GridPane contentMapGridPane;
     private final GridPane playerMapGridPane;
@@ -187,7 +187,7 @@ public class GameMapBuilder implements LocationContentListener {
     }
 
     @Override
-    public void update(Location location) {
+    public void update(double value1, double value2, int value3, int value4, Location location) {
         ImageView imageView = getImageView(contentMapGridPane, location.getPosition().getX(), location.getPosition().getY());
         if(location.getContent() != null) {
             if(imageView != null) {

@@ -4,7 +4,7 @@ import jakubwiraszka.items.Armor;
 import jakubwiraszka.items.Item;
 import jakubwiraszka.items.Usable;
 import jakubwiraszka.items.Weapon;
-import jakubwiraszka.observable.EnemyListener;
+import jakubwiraszka.observable.Listener;
 
 import java.util.ArrayList;
 
@@ -62,8 +62,8 @@ public class Hero extends Enemy {
     @Override
     void notifyListeners() {
         if (!enemyListeners.isEmpty()) {
-            for (EnemyListener i : enemyListeners) {
-                i.update(getStatistics().getHealth(), getMaxHealth(), getStatistics().getPower(), getStatistics().getAgility());
+            for (Listener i : enemyListeners) {
+                i.update(getStatistics().getHealth(), getMaxHealth(), getStatistics().getPower(), getStatistics().getAgility(), null);
             }
         }
     }

@@ -1,6 +1,7 @@
 package jakubwiraszka.gamefiles;
 
-import jakubwiraszka.observable.LocationContentListener;
+import jakubwiraszka.observable.Listener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,7 +13,7 @@ public class Location {
     private HashMap<String, Position> exits;
     private boolean visited = false;
 
-    private transient ArrayList<LocationContentListener> locationContentListeners;
+    private transient ArrayList<Listener> locationContentListeners;
 
     public Location(String name, String description, Position position) {
         this.name = name;
@@ -25,17 +26,17 @@ public class Location {
 
     private void notifyListeners() {
         if (!locationContentListeners.isEmpty()) {
-            for (LocationContentListener i : locationContentListeners) {
-                i.update(this);
+            for (Listener i : locationContentListeners) {
+                i.update(-1, -1, -1, -1, this);
             }
         }
     }
 
-    public void addListener(LocationContentListener locationContentListener) {
+    public void addListener(Listener locationContentListener) {
         locationContentListeners.add(locationContentListener);
     }
 
-    public void setLocationContentListeners(ArrayList<LocationContentListener> locationContentListeners) {
+    public void setLocationContentListeners(ArrayList<Listener> locationContentListeners) {
         this.locationContentListeners = locationContentListeners;
     }
 
